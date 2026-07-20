@@ -1,7 +1,5 @@
 name: GEF CI/CD Pipeline
 
-# Réf: ENGINEERING_PLAYBOOK.md §9
-
 on:
   push:
     branches:

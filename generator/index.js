@@ -419,13 +419,138 @@ enabled = true
     console.log(chalk.red('Erreur lors de l\'installation des hooks Git.'));
   }
 
-  // CI/CD
+  // CI/CD — Généré selon la stack
   if (includeCI) {
-    console.log(chalk.yellow('🤖 Copie du template CI/CD...'));
-    const ciSrc = path.join(GEF_DIR, 'ci-templates', 'main.yml');
-    if (fs.existsSync(ciSrc)) {
-      fs.cpSync(ciSrc, path.join(process.cwd(), '.github', 'workflows', 'main.yml'));
+    console.log(chalk.yellow('🤖 Génération du pipeline CI/CD adapté à votre stack...'));
+    if (!fs.existsSync('.github/workflows')) fs.mkdirSync('.github/workflows', { recursive: true });
+
+    const isNode = stack.includes('Node') || stack.includes('React') || stack.includes('Next');
+    const isPython = stack.includes('Python');
+
+    // Bloc setup runtime
+    const setupRuntime = isNode
+      ? `      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Installer les dépendances
+        run: npm ci`
+      : isPython
+      ? `      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt`
+      : `      - name: Setup
+        run: echo "Configurez votre runtime ici"`;
+
+    // Bloc tests
+    const testBlock = isNode
+      ? `      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Tests
+        run: npm test --if-present`
+      : isPython
+      ? `      - name: Lint (flake8)
+        run: |
+          pip install flake8
+          flake8 src/ --max-line-length=120 --ignore=E501 || true
+
+      - name: Tests (pytest)
+        run: |
+          pip install pytest
+          pytest tests/ -v || true`
+      : `      - name: Tests
+        run: echo "Ajoutez vos commandes de tests ici"`;
+
+    // Bloc déploiement
+    let deployBlock = '';
+    if (cloud === 'Vercel') {
+      deployBlock = `
+  deploy:
+    name: Déploiement Vercel
+    needs: quality-gate
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: \${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: \${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: \${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'`;
+    } else if (cloud === 'AWS') {
+      deployBlock = `
+  deploy:
+    name: Déploiement AWS
+    needs: quality-gate
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-3
+      - name: Deploy
+        run: echo "Ajoutez ici votre commande de déploiement AWS (ex: eb deploy, ecs update, etc.)"`;
+    } else {
+      deployBlock = `
+  release:
+    name: Release Automatique
+    needs: quality-gate
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true`;
     }
+
+    const ciContent = `name: GEF CI/CD — ${projectName}
+
+on:
+  push:
+    branches:
+      - main
+      - 'feat/**'
+      - 'fix/**'
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  quality-gate:
+    name: Contrôle Qualité
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+${setupRuntime}
+
+${testBlock}
+
+      - name: Analyse de sécurité
+        run: echo "Ajoutez ici Trivy, Gitleaks ou équivalent"
+${deployBlock}
+`;
+    fs.writeFileSync('.github/workflows/main.yml', ciContent);
+    console.log(chalk.green('✅ Pipeline CI/CD généré.'));
   }
 
   if (!fs.existsSync('CHANGELOG.md')) fs.writeFileSync('CHANGELOG.md', '');
