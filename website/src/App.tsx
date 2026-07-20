@@ -1,5 +1,4 @@
 import React from 'react';
-import TerminalDemo from './components/TerminalDemo';
 import FeatureCard from './components/FeatureCard';
 import './index.css';
 
@@ -40,7 +39,34 @@ function App() {
             <a href="#features" className="btn-secondary">Découvrir les fonctionnalités</a>
           </div>
 
-          <TerminalDemo />
+          <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto', position: 'relative', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--border-glass)', boxShadow: '0 0 60px rgba(157, 78, 221, 0.15)' }}>
+            {/* Remplacer src par le chemin de votre vidéo une fois filmée */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              src=""
+              style={{ width: '100%', display: 'block', background: '#0d0d14' }}
+            />
+            {/* Placeholder affiché tant que la vidéo n'est pas définie */}
+            <div style={{
+              position: 'absolute', inset: 0,
+              display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(10, 10, 15, 0.92)',
+              gap: '1rem',
+              minHeight: '380px'
+            }}>
+              <div style={{ fontSize: '3.5rem', opacity: 0.5 }}>🎬</div>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', fontWeight: 500 }}>
+                Démo vidéo à venir
+              </p>
+              <p style={{ color: 'rgba(160,160,176,0.4)', fontSize: '0.8rem' }}>
+                Remplacez <code style={{ background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: '4px' }}>src=""</code> dans <code style={{ background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: '4px' }}>App.tsx</code> par le chemin de votre fichier .mp4
+              </p>
+            </div>
+          </div>
         </main>
 
         {/* Features Section */}
