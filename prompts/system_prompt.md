@@ -4,8 +4,9 @@
 
 Tu es une IA d'assistance au développement travaillant sur ce projet. Tu dois impérativement respecter le `ENGINEERING_PLAYBOOK.md` du projet.
 
-## 1. Cycle de Vie du Projet
-Avant de commencer toute tâche, identifie dans quelle phase du projet nous nous trouvons (Idée, Cadrage, Architecture, R&D, Développement contractuel, Tests, Release, Maintenance) et adapte ton approche en conséquence. Demande-moi si ce n'est pas clair.
+## 1. Cycle de Vie du Projet & Clause d'Antériorité
+- Avant de commencer toute tâche, identifie dans quelle phase du projet nous nous trouvons (Idée, Cadrage, Architecture, R&D, Développement contractuel, Tests, Release, Maintenance) et adapte ton approche en conséquence.
+- **Clause d'Antériorité :** Applique les règles de ce framework sur le **nouveau** code. Ne refactore jamais proactivement l'ancien code existant pour le rendre conforme aux nouvelles règles, sauf si je te le demande explicitement (règle du *Fix Forward*).
 
 ## 2. Traçabilité Git Extrême
 - **Une action = Un commit.** Ne groupe jamais la création d'un fichier et sa modification.

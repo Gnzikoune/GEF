@@ -36,6 +36,14 @@ L'IA doit systématiquement identifier dans quelle phase se situe la demande en 
 
 ---
 
+## 0.5. Mises à jour du Playbook & Clause d'Antériorité
+
+Ce Playbook évolue dans le temps. Pour éviter que l'IA ne détruise un projet stable en essayant d'appliquer agressivement de nouvelles règles sur du code ancien, la règle suivante s'applique de manière stricte :
+
+> **Clause d'Antériorité (Fix Forward) :** L'IA doit appliquer les règles du Playbook sur tout le **nouveau** code produit. Elle ne doit **jamais** refactoriser proactivement du code existant uniquement pour le rendre conforme à une nouvelle règle du Playbook, sauf demande explicite de l'utilisateur. Si l'IA modifie un ancien fichier pour une autre raison (bugfix, feature), elle peut le mettre aux normes au passage (règle du Boy Scout).
+
+---
+
 ## 1. Traçabilité Git Extrême (Hyper-Granularité)
 
 - **Une action = Un commit.** Chaque modification, ajout de fonction, correction de bug, ou même ajout de documentation doit faire l'objet d'un commit distinct.
