@@ -1,0 +1,46 @@
+#!/bin/bash
+# Hook: pre-commit
+# Réf: ENGINEERING_PLAYBOOK.md §1, §6, §12
+
+# 1. Vérification des secrets en clair
+# Recherche naïve de patterns de type api_key="qqchose" ou secret = "qqchose" dans le code mis en stage
+SECRETS=$(git diff --cached -G"(api_key|secret|token|password)[ ]*=[ ]*['\"][a-zA-Z0-9_\-]+['\"]" --name-only)
+if [ -n "$SECRETS" ]; then
+  echo -e "\033[31mErreur: Potentiel secret en clair détecté dans les fichiers suivants :\033[0m"
+  echo "$SECRETS"
+  echo "Bloqué selon le Playbook. Utilisez des variables d'environnement."
+  exit 1
+fi
+
+# 2. Vérification des fichiers de debug non voulus
+DEBUG_FILES=$(git diff --cached --name-only | grep -E "(^|/)(debug_|test_)" | grep -v "^tests/")
+if [ -n "$DEBUG_FILES" ]; then
+  echo -e "\033[31mErreur: Fichier de debug ou de test hors du dossier officiel 'tests/' détecté :\033[0m"
+  echo "$DEBUG_FILES"
+  echo "Bloqué selon le Playbook §12."
+  exit 1
+fi
+
+# 3. Lint / Format (Dégradation progressive acceptable)
+# On tente de trouver une commande de lint dans les scripts standards, sinon on avertit.
+if [ -f "package.json" ] && grep -q '"lint"' package.json; then
+  echo "Exécution du linter npm..."
+  npm run lint || { echo -e "\033[31mErreur Lint\033[0m"; exit 1; }
+elif [ -f "Makefile" ] && grep -q "^lint:" Makefile; then
+  echo "Exécution du linter Make..."
+  make lint || { echo -e "\033[31mErreur Lint\033[0m"; exit 1; }
+else
+  echo -e "\033[33mAvertissement: Aucun linter standard détecté (npm run lint, make lint). Configurez-en un dans PROJECT_CONFIG.md.\033[0m"
+fi
+
+# 4. Taille des fichiers modifiés
+for file in $(git diff --cached --name-only); do
+  if [ -f "$file" ]; then
+    LINES=$(wc -l < "$file")
+    if [ "$LINES" -gt 500 ]; then
+      echo -e "\033[33mAvertissement: Le fichier $file dépasse 500 lignes ($LINES lignes). Envisagez de le découper (Playbook §4).\033[0m"
+    fi
+  fi
+done
+
+exit 0
