@@ -13,7 +13,7 @@ Tu as pour mission de corriger un bug de manière rigoureuse et traçable, en re
 
 ### Étape 2 — Correction (Clean Code)
 1. Propose la correction en respectant les **Hard Limits** du Playbook :
-   - Fonction de correction : **30 lignes max**, **3 paramètres max**.
+   - Fonction de correction : **{{MAX_LINES}} lignes max**, **{{MAX_PARAMS}} paramètres max**.
    - Pas de duplication : appliquer la **Règle de 3** si nécessaire.
    - Utilise le *Early Return* pour éviter le nesting profond.
 2. Effectue un commit `fix:` avec la référence du ticket Kanban.

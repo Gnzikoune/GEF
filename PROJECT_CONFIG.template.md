@@ -1,34 +1,21 @@
-# PROJECT_CONFIG.md
+# Configuration Projet — GEF
 
-> Ce fichier contient tout ce qui est **spécifique à ce projet**. Il complète le `ENGINEERING_PLAYBOOK.md` universel, qui ne doit lui jamais contenir ces informations.
+Ce fichier sert de point de vérité technique pour le projet, ainsi que de contexte pour l'IA.
 
----
+- **Nom du projet :** {{PROJECT_NAME}}
+- **Date de création :** {{DATE}}
+- **Phase :** {{PHASE}}
 
-## Identification
-
-- **Projet :** {{PROJECT_NAME}}
-- **Porteurs :** Gildas (Pôle Technique & Innovation)
-- **Phase du projet :** {{PHASE}}
-- **Dernière mise à jour :** {{DATE}}
-
----
-
-## Architecture Cloud-Native
-
-- **Stack Technologique :** {{STACK}}
-- **Cloud Provider :** {{CLOUD}}
+## Choix Techniques (Générés par GEF)
+- **Stack / Langage :** {{STACK}}
 - **Base de données :** {{DATABASE}}
+- **Cloud Provider :** {{CLOUD}}
 
-## Rôles et Permissions
+## Workflows & Qualité
+- **Workflow Git :** {{GIT_WORKFLOW}}
+- **Sévérité (Hard Limits) :** {{STRICTNESS}}
+- **Linter / Formatter :** {{LINTER}}
+- **Langue par défaut :** {{LANGUAGE}}
 
-<À COMPLÉTER avec vos règles d'accès et sécurité>
-
-## Jalons de Release
-
-| Version | Jalon correspondant |
-|---------|---------------------|
-| `v0.1.0-mvp` | MVP fonctionnel |
-
-## Couverture de tests minimale
-
-<À COMPLÉTER>
+---
+*Fichier généré automatiquement. Ne supprimez pas les clés principales, l'IA s'en sert pour adapter ses réponses.*

@@ -85,6 +85,7 @@ function buildDbService(database, projectName) {
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ../database/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   db_data:`;
@@ -142,6 +143,17 @@ export function scaffoldDocker(stack, database, projectName) {
   const dockerfile = DOCKERFILES[stack] ?? DOCKERFILES.default;
   fs.writeFileSync('docker/Dockerfile', dockerfile);
   fs.writeFileSync('docker/docker-compose.yml', buildComposeContent(stack, database, projectName));
+
+  if (database === 'PostgreSQL') {
+    fs.mkdirSync('database', { recursive: true });
+    fs.writeFileSync('database/init.sql', `-- Initialisation de la base de données ${projectName}
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+`);
+  }
 
   console.log(chalk.green('✅ Fichiers Docker générés.'));
 }

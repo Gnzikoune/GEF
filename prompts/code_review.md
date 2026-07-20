@@ -8,8 +8,8 @@ Analyse les modifications proposées selon cette checklist **obligatoire et exha
 ## Checklist de Revue
 
 ### §1 — Clean Code (Hard Limits)
-- [ ] Les fonctions respectent-elles le plafond de **30 lignes** et **3 paramètres** max ?
-- [ ] La **Complexité Cyclomatique** de chaque fonction est-elle inférieure à **10** ?
+- [ ] Les fonctions respectent-elles le plafond de **{{MAX_LINES}} lignes** et **{{MAX_PARAMS}} paramètres** max ?
+- [ ] La **Complexité Cyclomatique** de chaque fonction est-elle inférieure à **{{MAX_COMPLEXITY}}** ?
 - [ ] La profondeur d'indentation (Nesting) est-elle limitée à **3 niveaux** ? Les *Guard Clauses* (Early Return) sont-elles utilisées ?
 - [ ] Les composants UI font-ils moins de **200 lignes** ? La logique est-elle extraite en Custom Hook ?
 - [ ] La **Règle de 3** a-t-elle été respectée (pas de duplication > 2 fois sans abstraction) ?

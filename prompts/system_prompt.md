@@ -15,8 +15,8 @@ Tu es une IA d'assistance au développement travaillant sur ce projet. Tu dois i
 
 ## 3. Clean Code — Hard Limits OBLIGATOIRES
 Tu ne peux **jamais** générer ou proposer du code qui viole ces règles :
-- **Fonctions :** 30 lignes max, 3 paramètres max.
-- **Complexité Cyclomatique :** <= 10. Utilise le *Early Return* (Guard Clauses) pour réduire le nesting.
+- **Fonctions :** {{MAX_LINES}} lignes max, {{MAX_PARAMS}} paramètres max.
+- **Complexité Cyclomatique :** <= {{MAX_COMPLEXITY}}. Utilise le *Early Return* (Guard Clauses) pour réduire le nesting.
 - **Profondeur (Nesting) :** 3 niveaux max.
 - **Composants UI :** 200 lignes max. Logique extraite en Custom Hook si > 50 lignes.
 - **Fichiers :** 400 lignes max.
@@ -25,7 +25,7 @@ Tu ne peux **jamais** générer ou proposer du code qui viole ces règles :
 ## 4. Sécurité — Hard Limits OWASP
 - Valide toutes les entrées aux frontières du système (ex: `Zod`, `Joi`). Zero Trust.
 - JWT (Access Token) : **15 minutes max**. Refresh Token : **7 jours max** en `HttpOnly`.
-- Payloads API JSON : **1 Mo max**. Uploads : **5 Mo max**.
+- Payloads API JSON : **{{MAX_PAYLOAD}} max**. Uploads : **5 Mo max**.
 - Rate Limiting : Bloquer après **5 tentatives échouées** pendant **15 minutes**.
 - Pas de secrets hardcodés. Toujours via `.env`.
 

@@ -1,11 +1,10 @@
-// features/scaffold-gef.js — Application de la surcouche GEF au projet
-// Réf. Playbook §6 : Documentation Diátaxis. §1 : SRP, une responsabilité par fonction.
+// features/scaffold-gef.js — Application de la surcouche GEF au projet (Moteur de Templates)
+// Réf. Playbook §6 : Documentation Diátaxis. §1 : SRP
 
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 
-// Structure Diátaxis complète — Réf. Playbook §6
 const DIATAXIS_DIRS = [
   'docs/tutorials',
   'docs/how-to',
@@ -20,91 +19,111 @@ const DIATAXIS_DIRS = [
   'database',
 ];
 
-/**
- * Crée la structure de dossiers du projet (Diátaxis + structure métier).
- * @param {boolean} includeCI
- */
 function createDirectories(includeCI) {
   const dirs = includeCI ? [...DIATAXIS_DIRS, '.github/workflows'] : DIATAXIS_DIRS;
   dirs.forEach((d) => fs.mkdirSync(d, { recursive: true }));
 }
 
 /**
- * Copie le Playbook et les prompts IA dans le dossier .gef/ du projet.
- * @param {string} gefDir
+ * Applique les règles de Hard Limits selon la sévérité choisie.
  */
-function copyGefAssets(gefDir) {
-  console.log(chalk.cyan('📚 Ajout du Playbook et des Prompts IA locaux...'));
+function applyTemplating(content, strictness, language) {
+  let maxLines = '30';
+  let maxParams = '3';
+  let maxComplexity = '10';
+  let maxPayload = '1 Mo';
+  let isEnglish = language === 'English';
+
+  if (strictness.includes('Startup')) {
+    maxLines = '50';
+    maxParams = '4';
+    maxComplexity = '15';
+    maxPayload = '5 Mo';
+  } else if (strictness.includes('Mission Critical')) {
+    maxLines = '15';
+    maxParams = '2';
+    maxComplexity = '5';
+    maxPayload = '100 Ko';
+  }
+
+  let result = content
+    .replace(/{{MAX_LINES}}/g, maxLines)
+    .replace(/{{MAX_PARAMS}}/g, maxParams)
+    .replace(/{{MAX_COMPLEXITY}}/g, maxComplexity)
+    .replace(/{{MAX_PAYLOAD}}/g, maxPayload);
+
+  if (isEnglish) {
+    result = result.replace(/Ce prompt est à fournir/g, 'This prompt is to be provided');
+    result = result.replace(/Tu es une IA d'assistance/g, 'You are an AI coding assistant');
+    // Simple traduction rudimentaire pour les instructions racines
+    result = `[ENGLISH MODE ACTIVATED - ALL RESPONSES MUST BE IN ENGLISH]\n\n${result}`;
+  }
+
+  return result;
+}
+
+/**
+ * Copie le Playbook et les prompts IA avec le templating dynamique.
+ */
+function copyAndTemplateGefAssets(gefDir, strictness, language) {
+  console.log(chalk.cyan('📚 Ajout du Playbook et des Prompts IA dynamiques...'));
   fs.mkdirSync('.gef/prompts', { recursive: true });
 
   const playbookSrc = path.join(gefDir, 'ENGINEERING_PLAYBOOK.md');
   if (fs.existsSync(playbookSrc)) {
-    fs.copyFileSync(playbookSrc, '.gef/ENGINEERING_PLAYBOOK.md');
+    const raw = fs.readFileSync(playbookSrc, 'utf8');
+    fs.writeFileSync('.gef/ENGINEERING_PLAYBOOK.md', applyTemplating(raw, strictness, language));
   }
 
   const promptsSrc = path.join(gefDir, 'prompts');
-  if (!fs.existsSync(promptsSrc)) return;
-  fs.readdirSync(promptsSrc).forEach((p) => {
-    fs.copyFileSync(path.join(promptsSrc, p), path.join('.gef/prompts', p));
-  });
-}
-
-/**
- * Génère le template ADR depuis le fichier templates/ du GEF.
- * @param {string} gefDir
- */
-function createAdrTemplate(gefDir) {
-  const templateSrc = path.join(gefDir, 'generator', 'templates', 'adr-template.md');
-  const dest = 'docs/explanation/adr/0000-template.md';
-  if (fs.existsSync(templateSrc)) {
-    fs.copyFileSync(templateSrc, dest);
+  if (fs.existsSync(promptsSrc)) {
+    fs.readdirSync(promptsSrc).forEach((p) => {
+      const raw = fs.readFileSync(path.join(promptsSrc, p), 'utf8');
+      fs.writeFileSync(path.join('.gef/prompts', p), applyTemplating(raw, strictness, language));
+    });
   }
 }
 
-/**
- * Génère le RESEARCH_LOG.md initial.
- */
-function createResearchLog() {
-  const dest = 'docs/research/RESEARCH_LOG.md';
-  if (fs.existsSync(dest)) return;
-  fs.writeFileSync(dest, `# Research Log — Journal de bord scientifique
-> Documentez ici la résolution des bugs bloquants (Réf. Playbook §6).
-
-## Template d'entrée
-- **Symptôme :** Ce qui était observé.
-- **Cause Racine :** L'explication technique précise.
-- **Résolution :** Ce qui a été modifié.
-- **Leçon apprise :** Ce qui aurait pu prévenir ce bug.
-`);
+function createAdrTemplate(gefDir) {
+  const templateSrc = path.join(gefDir, 'generator', 'templates', 'adr-template.md');
+  const dest = 'docs/explanation/adr/0000-template.md';
+  if (fs.existsSync(templateSrc)) fs.copyFileSync(templateSrc, dest);
 }
 
-/**
- * Génère PROJECT_CONFIG.md depuis le template GEF.
- * @param {object} answers
- * @param {string} gefDir
- */
-function createProjectConfig({ projectName, stack, phase, database, cloud }, gefDir) {
+function createResearchLog(language) {
+  const isEn = language === 'English';
+  const dest = 'docs/research/RESEARCH_LOG.md';
+  if (fs.existsSync(dest)) return;
+  fs.writeFileSync(
+    dest,
+    isEn
+      ? `# Research Log\n> Document bug fixes here.\n\n## 1. <Title>\n- **Context:** \n- **Root Cause:** \n- **Resolution:** \n- **Lesson Learned:** \n`
+      : `# Research Log — Journal de bord scientifique\n> Documentez ici la résolution des bugs bloquants.\n\n## 1. <Titre>\n- **Contexte :** \n- **Cause Racine :** \n- **Résolution :** \n- **Leçon apprise :** \n`
+  );
+}
+
+function createProjectConfig(answers, gefDir) {
   const templatePath = path.join(gefDir, 'PROJECT_CONFIG.template.md');
   if (!fs.existsSync(templatePath)) return;
 
-  const dateStr = new Date().toLocaleString('fr-FR', { month: 'long', year: 'numeric' });
+  const dateStr = new Date().toLocaleString(answers.language === 'English' ? 'en-US' : 'fr-FR', { month: 'long', year: 'numeric' });
   const content = fs.readFileSync(templatePath, 'utf-8')
-    .replace(/{{PROJECT_NAME}}/g, projectName)
-    .replace(/{{STACK}}/g, stack)
-    .replace(/{{PHASE}}/g, phase)
-    .replace(/{{DATABASE}}/g, database)
-    .replace(/{{CLOUD}}/g, cloud)
+    .replace(/{{PROJECT_NAME}}/g, answers.projectName)
+    .replace(/{{STACK}}/g, answers.stack)
+    .replace(/{{PHASE}}/g, answers.phase)
+    .replace(/{{DATABASE}}/g, answers.database)
+    .replace(/{{CLOUD}}/g, answers.cloud)
+    .replace(/{{GIT_WORKFLOW}}/g, answers.gitWorkflow)
+    .replace(/{{LINTER}}/g, answers.linter)
+    .replace(/{{STRICTNESS}}/g, answers.strictness)
+    .replace(/{{LANGUAGE}}/g, answers.language)
     .replace(/{{DATE}}/g, dateStr);
 
   fs.writeFileSync('PROJECT_CONFIG.md', content);
 }
 
-/**
- * Génère ou enrichit le README.md initial.
- * @param {object} answers
- */
-function createReadme({ projectName, stack, cloud, database }) {
-  const header = `# ${projectName}\n\n## Fonctionnalités\n<À COMPLÉTER>\n\n## Installation\n<À COMPLÉTER>\n\n## Architecture\nStack: ${stack}\nCloud: ${cloud}\nDB: ${database}\n`;
+function createReadme({ projectName, stack, cloud, database, gitWorkflow, strictness }) {
+  const header = `# ${projectName}\n\n## Fonctionnalités\n<À COMPLÉTER>\n\n## Architecture\n- Stack: ${stack}\n- Cloud: ${cloud}\n- DB: ${database}\n- Git: ${gitWorkflow}\n- Sévérité: ${strictness}\n`;
   if (fs.existsSync('README.md')) {
     const existing = fs.readFileSync('README.md', 'utf8');
     fs.writeFileSync('README.md', header + '\n---\n*Généré initialement par le framework GEF:*\n' + existing);
@@ -113,10 +132,6 @@ function createReadme({ projectName, stack, cloud, database }) {
   }
 }
 
-/**
- * Génère le .gitignore adapté à la stack.
- * @param {string} stack
- */
 function createGitignore(stack) {
   let content = '\n# GEF Standard\n.env\n.DS_Store\n';
   if (stack.includes('Python')) content += '__pycache__/\nvenv/\n.venv/\n.pytest_cache/\n';
@@ -128,17 +143,12 @@ function createGitignore(stack) {
   }
 }
 
-/**
- * Orchestre toute la surcouche GEF sur le projet généré.
- * @param {object} answers - Réponses de l'utilisateur (inquirer)
- * @param {string} gefDir - Chemin absolu vers la racine du GEF
- */
 export function scaffoldGef(answers, gefDir) {
   console.log(chalk.yellow('\n📁 Application de la surcouche GEF...'));
   createDirectories(answers.includeCI);
-  copyGefAssets(gefDir);
+  copyAndTemplateGefAssets(gefDir, answers.strictness, answers.language);
   createAdrTemplate(gefDir);
-  createResearchLog();
+  createResearchLog(answers.language);
   createProjectConfig(answers, gefDir);
   createReadme(answers);
   createGitignore(answers.stack);

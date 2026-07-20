@@ -12,6 +12,7 @@ import { scaffoldDocker } from './features/scaffold-docker.js';
 import { scaffoldCI } from './features/scaffold-ci.js';
 import { scaffoldGit } from './features/scaffold-git.js';
 import { scaffoldGef } from './features/scaffold-gef.js';
+import { scaffoldLinter } from './features/scaffold-linter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const GEF_DIR = path.resolve(path.dirname(__filename), '..');
@@ -34,10 +35,11 @@ async function run() {
   process.chdir(projectPath);
 
   scaffoldStack(answers.stack, answers.projectName, projectPath);
+  scaffoldLinter(answers.linter, answers.stack);
   scaffoldGef(answers, GEF_DIR);
   if (answers.includeDocker) scaffoldDocker(answers.stack, answers.database, answers.projectName);
   if (answers.includeCI) scaffoldCI(answers.stack, answers.cloud, answers.projectName);
-  scaffoldGit(GEF_DIR);
+  scaffoldGit(GEF_DIR, answers.gitWorkflow, answers.linter, answers.strictness);
 
   console.log(chalk.green.bold(`\n✅ Projet "${answers.projectName}" scaffoldé avec succès !`));
 }

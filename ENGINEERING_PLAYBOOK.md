@@ -19,15 +19,15 @@ L'IA doit toujours identifier la phase du projet avant d'agir (Idée → R&D →
 L'écriture du code doit suivre les **Google Engineering Practices** : la clarté prime sur la complexité (KISS). 
 
 ### 1.1. Tailles Maximales (Hard Limits)
-- **Fonctions / Méthodes :** `20 à 30 lignes max`.
-- **Paramètres :** `3 arguments max` (au-delà, utiliser un objet de configuration).
+- **Fonctions / Méthodes :** `{{MAX_LINES}} lignes max`.
+- **Paramètres :** `{{MAX_PARAMS}} arguments max` (au-delà, utiliser un objet de configuration).
 - **Composants UI :** `150 à 200 lignes max`. (La logique > 50 lignes doit être extraite en *Custom Hook*).
 - **Fichiers :** `300 à 400 lignes max`.
 
 ### 1.2. Complexité et Nesting
 - **Profondeur (Nesting) :** `3 niveaux max`.
 - **Guard Clauses (Early Return) :** Obligatoire. Éviter les `if/else` imbriqués.
-- **Complexité Cyclomatique :** Maximum `10` chemins logiques par fonction.
+- **Complexité Cyclomatique :** Maximum `{{MAX_COMPLEXITY}}` chemins logiques par fonction.
 
 ### 1.3. Règles de Refactoring (The Rule of Three)
 - **1ère fois :** Écrire pour résoudre.
@@ -64,7 +64,7 @@ Le code doit séparer le "métier" (règles de l'application) de "l'infrastructu
 
 ## 4. Sécurité : OWASP Secure-by-Design & Hard Limits
 
-*"La complexité est l'ennemie de la sécurité."* La stricte limite de Complexité Cyclomatique (10 max) vue au §1 est la première défense contre les angles morts de sécurité.
+*"La complexité est l'ennemie de la sécurité."* La stricte limite de Complexité Cyclomatique (`{{MAX_COMPLEXITY}}` max) vue au §1 est la première défense contre les angles morts de sécurité.
 
 - **Defense in Depth & Sanitisation :** Ne jamais faire confiance aux entrées. Validation stricte (ex: `Zod`, `Joi`). Requêtes paramétrées obligatoires contre SQLi et encodage contre XSS.
 - **Fail-Safe Defaults :** Tout accès est refusé par défaut.
@@ -74,7 +74,7 @@ Le code doit séparer le "métier" (règles de l'application) de "l'infrastructu
   - Durée de vie d'un **Access Token (JWT) : 15 minutes max**.
   - Durée de vie d'un **Refresh Token : 7 jours max** (en `HttpOnly`).
 - **Limites de Charge (Payload Limits) :**
-  - Corps de requête API (JSON) : **1 Mo max** (Protection DoS).
+  - Corps de requête API (JSON) : **{{MAX_PAYLOAD}} max** (Protection DoS).
   - Upload d'image : **5 Mo max**.
 - **Anti-Brute Force (Rate Limiting) :**
   - Bloquer un compte/IP pendant 15 minutes après **5 tentatives de connexion échouées**.

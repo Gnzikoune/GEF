@@ -51,4 +51,36 @@ export const PROJECT_QUESTIONS = [
     message: 'Voulez-vous inclure le template de CI/CD GEF ?',
     default: true,
   },
+  // NOUVELLES QUESTIONS DYNAMIQUES
+  {
+    type: 'list',
+    name: 'gitWorkflow',
+    message: 'Quelle stratégie Git souhaitez-vous utiliser ?',
+    choices: [
+      'GitHub Flow (Branches + PRs obligatoires - Recommandé)',
+      'Trunk-Based Development (Push direct sur main autorisé)',
+    ],
+  },
+  {
+    type: 'list',
+    name: 'strictness',
+    message: 'Niveau de sévérité du Clean Code (Hard Limits) ?',
+    choices: [
+      'Standard / Enterprise (30 lignes/fonction, complexité 10 - Recommandé)',
+      'Startup / R&D (Souple : 50 lignes/fonction, complexité 15)',
+      'Mission Critical (Strict : 15 lignes/fonction, complexité 5)',
+    ],
+  },
+  {
+    type: 'list',
+    name: 'linter',
+    message: 'Quel outil de Linting / Formatage ?',
+    choices: ['ESLint + Prettier', 'Biome', 'Ruff (Python)', 'Aucun'],
+  },
+  {
+    type: 'list',
+    name: 'language',
+    message: 'Langue de la documentation et des prompts IA ?',
+    choices: ['Français', 'English'],
+  },
 ];

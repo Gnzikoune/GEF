@@ -29,9 +29,10 @@ Tu dois implémenter la fonctionnalité demandée en respectant le `ENGINEERING_
    - Demande explicitement à l'utilisateur : "J'ai créé la PR, peux-tu la vérifier et la merger ?"
 
 7. **Clean Code & Sécurité (Hard Limits) (Réf. Playbook §1 et §4)**
-   - Tu dois absolument respecter ces limites mathématiques lorsque tu génères du code :
-     - **Fonction :** 30 lignes max, 3 paramètres max, Complexité Cyclomatique <= 10.
-     - **Nesting :** 3 niveaux max d'indentation. Utilise toujours le *Early Return*.
-     - **Composant UI :** 200 lignes max (extrais la logique > 50 lignes dans un Hook).
+   - Respecte impérativement les **Hard Limits** :
+     - **Fonctions :** {{MAX_LINES}} lignes max, {{MAX_PARAMS}} paramètres max.
+     - **Complexité Cyclomatique :** <= {{MAX_COMPLEXITY}}.
+     - **Nesting :** 3 niveaux max.
+     - **Composants UI :** 200 lignes max (extraire la logique si > 50 lignes dans un Hook).
      - **Règle de 3 :** Si tu dupliques un morceau de code pour la 3ème fois, tu dois le refactoriser (abstraction).
-     - **Sécurité :** Ne génère aucune faille. Valide toujours les inputs, limite les payloads JSON à 1 Mo, et respecte l'expiration des tokens (JWT < 15 mins).
+     - **Sécurité :** Ne génère aucune faille. Valide toujours les inputs, limite les payloads JSON à {{MAX_PAYLOAD}}, et respecte l'expiration des tokens (JWT < 15 mins).
