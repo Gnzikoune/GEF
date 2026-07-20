@@ -51,6 +51,18 @@ export const PROJECT_QUESTIONS = [
     message: 'Voulez-vous inclure le template de CI/CD GEF ?',
     default: true,
   },
+  {
+    type: 'list',
+    name: 'containerRegistry',
+    message: 'Vers quel Container Registry voulez-vous pousser vos images Docker ?',
+    choices: [
+      'Docker Hub',
+      'GitHub Container Registry (GHCR)',
+      'AWS ECR',
+      'Aucun (pas de push d\'image)',
+    ],
+    when: (ans) => ans.includeDocker && ans.includeCI && ans.cloud !== 'Vercel',
+  },
   // NOUVELLES QUESTIONS DYNAMIQUES
   {
     type: 'list',

@@ -46,7 +46,14 @@ async function run() {
   scaffoldLinter(answers.linter, answers.stack);
   scaffoldGef(answers, GEF_DIR);
   if (answers.includeDocker) scaffoldDocker(answers.stack, answers.database, answers.projectName);
-  if (answers.includeCI) scaffoldCI(answers.stack, answers.cloud, answers.projectName);
+  if (answers.includeCI) scaffoldCI(answers.stack, answers.cloud, answers.projectName, {
+    database: answers.database,
+    strictness: answers.strictness,
+    linter: answers.linter,
+    gitWorkflow: answers.gitWorkflow,
+    containerRegistry: answers.containerRegistry,
+    includeDocker: answers.includeDocker,
+  });
   scaffoldGit(GEF_DIR, answers.gitWorkflow, answers.linter, answers.strictness);
 
   console.log(chalk.green.bold(`\n✅ Projet "${answers.projectName}" scaffoldé avec succès !`));
