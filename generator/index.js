@@ -55,7 +55,8 @@ async function run() {
       type: 'confirm',
       name: 'includeDocker',
       message: 'Voulez-vous préparer un dossier Docker ?',
-      default: true
+      default: true,
+      when: (ans) => ans.cloud !== 'Vercel'
     },
     {
       type: 'confirm',
@@ -310,6 +311,55 @@ CMD ["sh"]
 `);
     }
     console.log(chalk.green('✅ Fichiers Docker générés.'));
+  }
+
+  // --- VERCEL ---
+  if (cloud === 'Vercel') {
+    console.log(chalk.yellow('▲  Génération de la configuration Vercel...'));
+    const isApi = stack.includes('Node') || stack.includes('Python');
+    const vercelConfig = {
+      version: 2,
+      name: projectName,
+      ...(isApi ? {
+        builds: [{ src: 'src/index.js', use: '@vercel/node' }],
+        routes: [{ src: '/(.*)', dest: 'src/index.js' }]
+      } : {}),
+      regions: ['cdg1']
+    };
+    fs.writeFileSync('vercel.json', JSON.stringify(vercelConfig, null, 2));
+    console.log(chalk.green('✅ vercel.json généré.'));
+  }
+
+  // --- SUPABASE ---
+  if (database === 'Supabase') {
+    console.log(chalk.yellow('⚡ Génération de la configuration Supabase...'));
+    fs.mkdirSync('supabase/migrations', { recursive: true });
+    fs.writeFileSync('supabase/config.toml', `[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+
+[storage]
+enabled = true
+`);
+    fs.writeFileSync('supabase/migrations/.gitkeep', '');
+    fs.writeFileSync('supabase/seed.sql', `-- Seed data pour ${projectName}
+-- Ajoutez ici vos données initiales
+`);
+    console.log(chalk.green('✅ Dossier supabase/ généré (config.toml + migrations/).'));
   }
 
   // Mise à jour du README existant ou création
