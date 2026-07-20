@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { PROJECT_QUESTIONS } from './cli/questions.js';
+import { printHelp, printVersion } from './cli/help.js';
 import { runUpdate } from './features/update.js';
 import { scaffoldStack } from './features/scaffold-stack.js';
 import { scaffoldDocker } from './features/scaffold-docker.js';
@@ -17,10 +18,17 @@ import { scaffoldLinter } from './features/scaffold-linter.js';
 const __filename = fileURLToPath(import.meta.url);
 const GEF_DIR = path.resolve(path.dirname(__filename), '..');
 
-async function run() {
-  console.log(chalk.cyan.bold('\n🚀 Bienvenue dans le générateur GEF Intelligent\n'));
+const arg = process.argv[2];
 
-  if (process.argv[2] === 'update') return runUpdate(GEF_DIR);
+async function run() {
+  // Gestion des commandes et flags
+  if (arg === '--help' || arg === '-h') return printHelp();
+  if (arg === '--version' || arg === '-v') return printVersion();
+  if (arg === 'update') return runUpdate(GEF_DIR);
+
+  // Mode interactif par défaut
+  console.log(chalk.cyan.bold('\n🚀 Bienvenue dans le générateur GEF Intelligent\n'));
+  console.log(chalk.dim('  Tapez `npx create-gef --help` pour voir toutes les commandes.\n'));
 
   const answers = await inquirer.prompt(PROJECT_QUESTIONS);
   const projectPath = path.resolve(process.cwd(), answers.projectName);
@@ -38,10 +46,18 @@ async function run() {
   scaffoldLinter(answers.linter, answers.stack);
   scaffoldGef(answers, GEF_DIR);
   if (answers.includeDocker) scaffoldDocker(answers.stack, answers.database, answers.projectName);
-  if (answers.includeCI) scaffoldCI(answers.stack, answers.cloud, answers.projectName);
+  if (answers.includeCI) scaffoldCI(answers.stack, answers.cloud, answers.projectName, {
+    database: answers.database,
+    strictness: answers.strictness,
+    linter: answers.linter,
+    gitWorkflow: answers.gitWorkflow,
+    containerRegistry: answers.containerRegistry,
+    includeDocker: answers.includeDocker,
+  });
   scaffoldGit(GEF_DIR, answers.gitWorkflow, answers.linter, answers.strictness);
 
   console.log(chalk.green.bold(`\n✅ Projet "${answers.projectName}" scaffoldé avec succès !`));
+  console.log(chalk.dim(`\n  cd ${answers.projectName} && git status\n`));
 }
 
 if (!process.env._GEF_RUNNING) {
