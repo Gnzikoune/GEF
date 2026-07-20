@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/Gnzikoune/GEF/compare/v1.1.0...v1.1.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* **generator:** installation Next/Vite non-interactive ([98882ae](https://github.com/Gnzikoune/GEF/commit/98882ae59fbcb78c628cadfa149a9b6ec3823006))
+* **generator:** rendre l'installation Next et Vite silencieuse et non-interactive ([#8](https://github.com/Gnzikoune/GEF/issues/8)) ([4806b15](https://github.com/Gnzikoune/GEF/commit/4806b1526dcdcd356ab8817c55f374b2485ece35))
+
 ## [1.1.0](https://github.com/Gnzikoune/GEF/compare/v1.0.0...v1.1.0) (2026-07-20)
 
 
