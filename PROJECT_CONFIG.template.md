@@ -8,14 +8,16 @@
 
 - **Projet :** {{PROJECT_NAME}}
 - **Porteurs :** Gildas (Pôle Technique & Innovation)
+- **Phase du projet :** {{PHASE}}
 - **Dernière mise à jour :** {{DATE}}
-- **Stack Technologique :** {{STACK}}
 
 ---
 
 ## Architecture Cloud-Native
 
-<À COMPLÉTER avec vos services d'infrastructure>
+- **Stack Technologique :** {{STACK}}
+- **Cloud Provider :** {{CLOUD}}
+- **Base de données :** {{DATABASE}}
 
 ## Rôles et Permissions
 
