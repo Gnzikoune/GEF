@@ -65,7 +65,7 @@ function applyTemplating(content, strictness, language) {
 /**
  * Copie le Playbook et les prompts IA avec le templating dynamique.
  */
-function copyAndTemplateGefAssets(gefDir, strictness, language) {
+export function copyAndTemplateGefAssets(gefDir, strictness, language) {
   console.log(chalk.cyan('📚 Ajout du Playbook et des Prompts IA dynamiques...'));
   fs.mkdirSync('.gef/prompts', { recursive: true });
 
