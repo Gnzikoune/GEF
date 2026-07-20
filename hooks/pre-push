@@ -1,0 +1,25 @@
+#!/bin/bash
+# Hook: pre-push
+# Réf: ENGINEERING_PLAYBOOK.md §13
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# 1. Rejet si la branche cible est main (push direct)
+if [ "$CURRENT_BRANCH" = "main" ] || [ "$CURRENT_BRANCH" = "master" ]; then
+  echo -e "\033[31mErreur: Push direct sur '$CURRENT_BRANCH' interdit.\033[0m"
+  echo "Le Playbook §13 impose de passer par des branches de feature (ex: feat/...) et des Pull Requests."
+  exit 1
+fi
+
+# 2. Exécution optionnelle des tests locaux
+if [ -f "package.json" ] && grep -q '"test"' package.json; then
+  echo "Exécution des tests locaux (npm test)..."
+  npm test || { echo -e "\033[31mErreur: Tests en échec. Push annulé.\033[0m"; exit 1; }
+elif [ -f "Makefile" ] && grep -q "^test:" Makefile; then
+  echo "Exécution des tests locaux (make test)..."
+  make test || { echo -e "\033[31mErreur: Tests en échec. Push annulé.\033[0m"; exit 1; }
+else
+  echo -e "\033[34mInfo: Aucun runner de tests standard détecté. Push autorisé.\033[0m"
+fi
+
+exit 0
