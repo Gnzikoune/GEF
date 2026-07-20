@@ -83,13 +83,14 @@ Le code doit séparer le "métier" (règles de l'application) de "l'infrastructu
 
 ---
 
-## 5. Stratégie Git : Trunk-Based Development (TBD)
+## 5. Stratégie Git : GitHub Flow (Pull Requests)
 
-Les équipes les plus performantes fuient l'Integration Hell des longues branches.
-- **Principe du Trunk :** Tous les développements sont poussés sur la branche principale (`main`) très régulièrement (au moins une fois par jour).
-- **Micro-Commits :** Un commit = une petite action isolée et testée. 
-- **Feature Flags (Toggles) :** Pour commiter une fonctionnalité non terminée sur `main` sans impacter les utilisateurs, le code doit être désactivé via un booléen en configuration.
-- **Conventional Commits Stricts :** `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`. Tout commit doit inclure l'ID du ticket Kanban (`#XYZ`).
+La stabilité de la branche principale est primordiale. Nous utilisons le **GitHub Flow** :
+- **Branche `main` verrouillée :** Les pushes directs sur `main` sont **strictement interdits**.
+- **Branches Courtes :** Créez des branches par fonctionnalité (`feat/xxx`, `fix/xxx`). Les branches ne doivent pas durer plus de quelques jours.
+- **Pull Requests (PR) Obligatoires :** Tout code doit passer par une PR. L'intégration Continue (CI) s'exécute sur la PR pour valider les tests et le linting.
+- **Revue de Code (Code Review) :** Une approbation est requise avant le merge. Le respect du Playbook y est vérifié.
+- **Conventional Commits :** `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`. Tout commit doit inclure l'ID du ticket Kanban (`#XYZ`).
 
 ---
 
