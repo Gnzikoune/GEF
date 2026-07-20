@@ -690,7 +690,11 @@ jobs:
   console.log(chalk.white(`\nN'oubliez pas d'éditer PROJECT_CONFIG.md et de faire votre premier commit !`));
 }
 
-run().catch(err => {
-  console.error(chalk.red('Une erreur est survenue :'), err);
-  process.exit(1);
-});
+// Verrou anti-double-exécution (npm charge parfois le fichier via 'main' ET via 'bin')
+if (!process.env._GEF_RUNNING) {
+  process.env._GEF_RUNNING = '1';
+  run().catch(err => {
+    console.error(chalk.red('Une erreur est survenue :'), err);
+    process.exit(1);
+  });
+}

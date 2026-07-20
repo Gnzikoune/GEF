@@ -2,7 +2,6 @@
   "name": "create-gef",
   "version": "1.0.0",
   "description": "Générateur interactif de projets respectant le framework GEF",
-  "main": "generator/index.js",
   "type": "module",
   "bin": {
     "create-gef": "./generator/index.js"
