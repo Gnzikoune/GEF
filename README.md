@@ -1,6 +1,8 @@
 # Gildas Engineering Framework (GEF)
 
 > Un framework d'ingénierie logicielle qui transforme des règles de travail en outils automatisés. Il garantit traçabilité, sécurité et qualité sur chaque projet, dès le premier commit.
+> 
+> **🛡️ Standards de l'Industrie Enforcés :** Trunk-Based Development, OWASP Security Limits (Rate Limiting, JWT Exp), et Clean Code Metrics (Max 30 lignes/fonction, Complexité < 10, Rule of Three).
 
 ---
 

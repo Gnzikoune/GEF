@@ -14,17 +14,32 @@ L'IA doit toujours identifier la phase du projet avant d'agir (Idée → R&D →
 
 ---
 
-## 1. Conventions de Code et de Nommage
+## 1. Clean Code : Métriques, Tailles et Refactoring
 
-L'écriture du code doit suivre les **Google Engineering Practices** : la clarté prime sur la complexité (KISS). Le code est lu beaucoup plus souvent qu'il n'est écrit.
+L'écriture du code doit suivre les **Google Engineering Practices** : la clarté prime sur la complexité (KISS). 
 
-- **Nommage Strict :**
-  - **Fichiers & Dossiers :** `kebab-case` (ex: `user-profile.tsx`) pour éviter les conflits OS.
-  - **Classes & Composants :** `PascalCase` (ex: `UserProfile`, `AuthService`).
-  - **Variables & Fonctions :** `camelCase` (ex: `getUserData`, `isLoggedIn`).
-  - **Constantes Globales :** `UPPER_SNAKE_CASE` (ex: `MAX_RETRY_COUNT`).
-- **Limites Indicatives :** Fonction (Max ~40 lignes), Composant UI (Max ~250 lignes), Fichier (Max ~500 lignes).
-- **Zéro tolérance :** Lint obligatoire, typage strict (TypeScript/mypy), zéro warning ignoré sans commentaire de justification.
+### 1.1. Tailles Maximales (Hard Limits)
+- **Fonctions / Méthodes :** `20 à 30 lignes max`.
+- **Paramètres :** `3 arguments max` (au-delà, utiliser un objet de configuration).
+- **Composants UI :** `150 à 200 lignes max`. (La logique > 50 lignes doit être extraite en *Custom Hook*).
+- **Fichiers :** `300 à 400 lignes max`.
+
+### 1.2. Complexité et Nesting
+- **Profondeur (Nesting) :** `3 niveaux max`.
+- **Guard Clauses (Early Return) :** Obligatoire. Éviter les `if/else` imbriqués.
+- **Complexité Cyclomatique :** Maximum `10` chemins logiques par fonction.
+
+### 1.3. Règles de Refactoring (The Rule of Three)
+- **1ère fois :** Écrire pour résoudre.
+- **2ème fois :** Tolérer la duplication.
+- **3ème fois :** Refactorisation obligatoire en abstraction réutilisable.
+
+### 1.4. Conventions de Nommage
+- **Fichiers / Dossiers :** `kebab-case` (ex: `user-profile.tsx`).
+- **Classes / Composants :** `PascalCase` (ex: `UserProfile`).
+- **Variables / Fonctions :** `camelCase` (ex: `getUserData`).
+- **Constantes Globales :** `UPPER_SNAKE_CASE` (ex: `MAX_RETRY_COUNT`).
+- **Rigueur :** Lint obligatoire, typage strict (TypeScript/mypy), zéro warning ignoré sans commentaire explicite.
 
 ---
 
@@ -47,12 +62,24 @@ Le code doit séparer le "métier" (règles de l'application) de "l'infrastructu
 
 ---
 
-## 4. Sécurité : OWASP Secure-by-Design
+## 4. Sécurité : OWASP Secure-by-Design & Hard Limits
 
-- **Defense in Depth :** Ne jamais faire confiance aux entrées. Valider strictement chaque donnée aux frontières du système (ex: `Zod`, `Joi`).
-- **Fail-Safe Defaults :** Tout accès est refusé par défaut. Les permissions doivent être demandées explicitement.
-- **Sanitisation :** Utiliser des requêtes paramétrées pour la DB et encoder les variables dans l'UI pour bloquer SQLi et XSS.
-- **Gestion des secrets :** Toujours via `.env`.
+*"La complexité est l'ennemie de la sécurité."* La stricte limite de Complexité Cyclomatique (10 max) vue au §1 est la première défense contre les angles morts de sécurité.
+
+- **Defense in Depth & Sanitisation :** Ne jamais faire confiance aux entrées. Validation stricte (ex: `Zod`, `Joi`). Requêtes paramétrées obligatoires contre SQLi et encodage contre XSS.
+- **Fail-Safe Defaults :** Tout accès est refusé par défaut.
+
+### 4.1. Hard Limits de Sécurité (Standard OWASP)
+- **Authentification & Sessions :** 
+  - Durée de vie d'un **Access Token (JWT) : 15 minutes max**.
+  - Durée de vie d'un **Refresh Token : 7 jours max** (en `HttpOnly`).
+- **Limites de Charge (Payload Limits) :**
+  - Corps de requête API (JSON) : **1 Mo max** (Protection DoS).
+  - Upload d'image : **5 Mo max**.
+- **Anti-Brute Force (Rate Limiting) :**
+  - Bloquer un compte/IP pendant 15 minutes après **5 tentatives de connexion échouées**.
+  - Limite globale par IP : **100 requêtes API / minute**.
+- **Gestion des secrets :** Toujours via variables d'environnement (`.env`). Jamais hardcodés.
 
 ---
 
