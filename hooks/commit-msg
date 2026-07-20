@@ -5,14 +5,13 @@
 COMMIT_MSG_FILE=$1
 COMMIT_MSG=$(cat $1)
 
-# Regex pour Conventional Commits
-PATTERN="^(feat|fix|docs|chore|refactor|style|perf|test|release)(\([a-zA-Z0-9_.-]+\))?: (.*)$"
+# Regex pour Conventional Commits + Issue Number (Kanban)
+PATTERN="^(feat|fix|docs|chore|refactor|style|perf|test|release)(\([a-zA-Z0-9_.-]+\))?: (.*) \(#[0-9]+\)$"
 
 if [[ ! $COMMIT_MSG =~ $PATTERN ]]; then
   echo -e "\033[31mErreur: Message de commit non conforme au Playbook §1.\033[0m"
-  echo "Le message doit commencer par un des préfixes suivants :"
-  echo "feat:, fix:, docs:, chore:, refactor:, style:, perf:, test:, release:"
-  echo "Exemple: 'feat: ajout du bouton login'"
+  echo "Le message doit suivre le format Conventional Commits ET inclure le numéro de ticket Kanban à la fin."
+  echo "Exemple: 'feat: ajout du bouton login (#42)'"
   exit 1
 fi
 

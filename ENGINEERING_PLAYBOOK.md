@@ -40,7 +40,7 @@ L'IA doit systématiquement identifier dans quelle phase se situe la demande en 
 
 Ce Playbook évolue dans le temps. Pour éviter que l'IA ne détruise un projet stable en essayant d'appliquer agressivement de nouvelles règles sur du code ancien, la règle suivante s'applique de manière stricte :
 
-> **Clause d'Antériorité (Fix Forward) :** L'IA doit appliquer les règles du Playbook sur tout le **nouveau** code produit. Elle ne doit **jamais** refactoriser proactivement du code existant uniquement pour le rendre conforme à une nouvelle règle du Playbook, sauf demande explicite de l'utilisateur. Si l'IA modifie un ancien fichier pour une autre raison (bugfix, feature), elle peut le mettre aux normes au passage (règle du Boy Scout).
+> **Clause d'Antériorité (Fix Forward) :** L'IA doit appliquer les règles du Playbook sur tout le **nouveau** code produit. Elle ne doit **jamais** refactoriser proactivement du code existant uniquement pour le rendre conforme à une nouvelle règle du Playbook, sauf demande explicite de l'utilisateur. Si l'IA modifie un ancien fichier pour une autre raison (bugfix, feature), elle peut le mettre aux normes au passage (règle du Boy Scout) et toujours documenter cela.
 
 ---
 
@@ -363,6 +363,32 @@ git push origin --delete feat/nom-de-la-fonctionnalite
 - Jamais de `git push --force` sur `main`.
 - Tout merge sur `main` doit passer par un commit de merge explicite (`--no-ff`).
 - Si une modification urgente est nécessaire directement : créer une branche `fix/nom-du-bug` et merger rapidement.
+
+---
+
+## 14. Pilotage Kanban et Pull Requests Autonomes
+
+L'IA agit comme un Tech Lead complet. Elle gère son propre tableau de bord.
+- **Création d'Issues :** Avant de démarrer un grand chantier, l'IA utilise la CLI GitHub (`gh issue create`) pour créer les tickets correspondant aux sous-tâches.
+- **Règle de Commit Strict :** TOUS les commits sans exception doivent inclure la référence du ticket à la fin de la première ligne (ex: `feat: ajout du bouton de login (#42)`). Le hook Git `commit-msg` bloquera les commits non conformes.
+- **Création de Pull Request :** Une fois une branche terminée, l'IA utilise `gh pr create` pour ouvrir la Pull Request (avec un résumé des changements et la mention "Closes #XYZ").
+- **Validation Humaine Obligatoire :** L'IA s'arrête ici. Elle **demande explicitement à l'utilisateur de valider** et de merger la PR lui-même. L'IA ne merge JAMAIS d'elle-même.
+
+---
+
+## 15. Auto-Documentation et ADRs (Architecture Decision Records)
+
+La mémoire technique du projet est sacrée.
+- **Règle ADR :** Chaque fois que l'IA choisit d'intégrer une nouvelle dépendance majeure, de changer un modèle de base de données, ou de structurer un nouveau micro-service, elle **DOIT** rédiger un rapport dans `docs/adr/` (en copiant le `0000-template.md`).
+- Ce rapport doit être écrit et commité **avant** que la première ligne de code de cette architecture ne soit écrite.
+
+---
+
+## 16. TDD (Test-Driven Development) Piloté par l'IA
+
+La qualité logicielle s'assure avant le code de production, pas après.
+- **Règle Playwright / Tests E2E :** Avant d'implémenter la logique visuelle ou backend d'une fonctionnalité complexe, l'IA doit rédiger le test de bout-en-bout (E2E) correspondant (généralement via Playwright, s'il est installé).
+- Le test doit modéliser le comportement attendu. Le code applicatif est ensuite écrit pour faire passer ce test au vert.
 
 ---
 

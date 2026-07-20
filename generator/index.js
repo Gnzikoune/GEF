@@ -14,6 +14,44 @@ const GEF_DIR = path.resolve(__dirname, '..');
 console.log(chalk.cyan.bold('\n🚀 Bienvenue dans le générateur GEF Intelligent\n'));
 
 async function run() {
+  if (process.argv[2] === 'update') {
+    console.log(chalk.blue('Mise à jour du projet courant vers la dernière version du GEF...'));
+    if (!fs.existsSync('.git')) {
+      console.log(chalk.red('Erreur: Ce dossier ne semble pas être un dépôt Git valide.'));
+      process.exit(1);
+    }
+    
+    // MAJ Playbook
+    if (fs.existsSync(path.join(GEF_DIR, 'ENGINEERING_PLAYBOOK.md'))) {
+      fs.mkdirSync('.gef', { recursive: true });
+      fs.copyFileSync(path.join(GEF_DIR, 'ENGINEERING_PLAYBOOK.md'), '.gef/ENGINEERING_PLAYBOOK.md');
+      console.log(chalk.green('✅ ENGINEERING_PLAYBOOK.md mis à jour.'));
+    }
+    
+    // MAJ Prompts
+    if (fs.existsSync(path.join(GEF_DIR, 'prompts'))) {
+      fs.mkdirSync('.gef/prompts', { recursive: true });
+      fs.readdirSync(path.join(GEF_DIR, 'prompts')).forEach(p => {
+        fs.copyFileSync(path.join(GEF_DIR, 'prompts', p), path.join('.gef/prompts', p));
+      });
+      console.log(chalk.green('✅ Prompts IA mis à jour.'));
+    }
+    
+    // MAJ Hooks
+    const hooksSrc = path.join(GEF_DIR, 'hooks');
+    if (fs.existsSync(hooksSrc)) {
+      const hooksDest = path.join(process.cwd(), '.git', 'hooks');
+      fs.cpSync(hooksSrc, hooksDest, { recursive: true });
+      try {
+        execSync(`chmod +x .git/hooks/commit-msg .git/hooks/pre-commit .git/hooks/pre-push`, { stdio: 'ignore' });
+      } catch(e) {}
+      console.log(chalk.green('✅ Hooks Git mis à jour.'));
+    }
+    
+    console.log(chalk.green.bold('\n🎉 Projet mis à jour avec succès !'));
+    return;
+  }
+
   const answers = await inquirer.prompt([
     {
       type: 'input',
@@ -157,6 +195,23 @@ def read_root():
   dirs.forEach(d => {
     if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
   });
+
+  // Template ADR
+  const adrTemplatePath = 'docs/adr/0000-template.md';
+  if (!fs.existsSync(adrTemplatePath)) {
+    fs.writeFileSync(adrTemplatePath, `# Titre de l'Architecture Decision Record\n\n## Contexte\nPourquoi prenons-nous cette décision ?\n\n## Décision\nQu'avons-nous décidé de faire ?\n\n## Conséquences\nQuels sont les impacts positifs et négatifs ?`);
+  }
+
+  // Playwright natif (Test E2E)
+  if (stack.includes('React') || stack.includes('Next')) {
+    console.log(chalk.yellow('🎭 Installation de Playwright pour le TDD E2E...'));
+    try {
+      execSync('npm init playwright@latest --yes -- --quiet --browser=chromium --browser=firefox --browser=webkit', { stdio: 'ignore' });
+      console.log(chalk.green('✅ Playwright configuré.'));
+    } catch(err) {
+      console.log(chalk.red('Impossible d\'installer Playwright automatiquement.'));
+    }
+  }
 
   // --- DOCKER INTELLIGENT ---
   if (includeDocker) {
@@ -596,6 +651,29 @@ ${deployBlock}
 `;
     fs.writeFileSync('.github/workflows/main.yml', ciContent);
     console.log(chalk.green('✅ Pipeline CI/CD généré.'));
+
+    console.log(chalk.yellow('📦 Intégration native de release-please...'));
+    const releasePleaseContent = `on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: release-please
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          release-type: node
+`;
+    fs.writeFileSync('.github/workflows/release-please.yml', releasePleaseContent);
+    console.log(chalk.green('✅ Workflow release-please.yml généré.'));
   }
 
   if (!fs.existsSync('CHANGELOG.md')) fs.writeFileSync('CHANGELOG.md', '');

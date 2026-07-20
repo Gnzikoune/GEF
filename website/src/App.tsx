@@ -54,22 +54,37 @@ function App() {
             <FeatureCard 
               icon="⚡" 
               title="Scaffolding Intelligent" 
-              description="N'impose aucune technologie. Lance Next.js, Vite, Express ou FastAPI nativement, puis applique la surcouche GEF." 
+              description="Aucun choix imposé. Next.js, Vite, Express ou FastAPI lancés nativement, puis la surcouche GEF appliquée par dessus." 
             />
             <FeatureCard 
               icon="🔒" 
               title="Sécurité par Défaut" 
-              description="Hooks Git (pre-commit, commit-msg) installés automatiquement pour bloquer les secrets en clair et imposer les Conventional Commits." 
+              description="Hooks Git installés automatiquement. Les commits sans référence Kanban (#42) ou sans format Conventional Commits sont bloqués." 
             />
             <FeatureCard 
               icon="🤖" 
               title="Autonomie IA" 
-              description="Le Playbook d'ingénierie et les prompts sont copiés directement dans le dossier .gef/ de votre projet pour guider votre assistant IA." 
+              description="Le Playbook et les prompts sont copiés dans .gef/ de chaque projet. L'IA est cadré dès la première session." 
             />
             <FeatureCard 
               icon="🔄" 
-              title="CI/CD Dynamique" 
-              description="Génère un pipeline GitHub Actions sur-mesure selon votre stack (Node/Python) et votre cloud provider (Vercel/AWS)." 
+              title="CI/CD + Release Please" 
+              description="Pipeline GitHub Actions sur-mesure ET automatisation des tags et notes de version générés depuis vos commits." 
+            />
+            <FeatureCard 
+              icon="📋" 
+              title="Kanban Autonome" 
+              description="L'IA crée ses propres tickets GitHub, lie ses commits, ouvre les Pull Requests et attend votre validation avant de merger." 
+            />
+            <FeatureCard 
+              icon="📝" 
+              title="Auto-Documentation ADR" 
+              description="Chaque décision architecturale est obligatoirement documentée dans docs/adr/ avant la première ligne de code." 
+            />
+            <FeatureCard 
+              icon="🎭" 
+              title="TDD Piloté par l'IA" 
+              description="Playwright installé nativement. L'IA écrit le test E2E avant le code applicatif pour garantir une qualité incassable." 
             />
           </div>
         </section>
