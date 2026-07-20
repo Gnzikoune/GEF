@@ -71,8 +71,12 @@ async function run() {
   let configContent = `# PROJECT_CONFIG.md\n- Projet : ${projectName}\n- Langage : ${stack}\n- Docker : ${includeDocker ? 'Oui' : 'Non'}\n<À COMPLÉTER avec les spécificités du projet>\n`;
   const templatePath = path.join(GEF_DIR, 'PROJECT_CONFIG.template.md');
   if (fs.existsSync(templatePath)) {
-    const tpl = fs.readFileSync(templatePath, 'utf-8');
-    configContent = tpl.replace('<À COMPLÉTER>', `Stack: ${stack}`);
+    let tpl = fs.readFileSync(templatePath, 'utf-8');
+    tpl = tpl.replace(/{{PROJECT_NAME}}/g, projectName);
+    tpl = tpl.replace(/{{STACK}}/g, stack);
+    const dateStr = new Date().toLocaleString('fr-FR', { month: 'long', year: 'numeric' });
+    tpl = tpl.replace(/{{DATE}}/g, dateStr);
+    configContent = tpl;
   }
   fs.writeFileSync('PROJECT_CONFIG.md', configContent);
 

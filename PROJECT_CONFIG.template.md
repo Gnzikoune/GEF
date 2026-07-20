@@ -1,4 +1,4 @@
-# PROJECT_CONFIG.md — Exemple (BantuVoice)
+# PROJECT_CONFIG.md
 
 > Ce fichier contient tout ce qui est **spécifique à ce projet**. Il complète le `ENGINEERING_PLAYBOOK.md` universel, qui ne doit lui jamais contenir ces informations.
 
@@ -6,37 +6,27 @@
 
 ## Identification
 
-- **Projet :** BantuVoice
-- **Porteurs :** Gildas & Aryad (Pôle Technique & Innovation, CSGR-IA)
-- **Dernière mise à jour :** Juin 2026
+- **Projet :** {{PROJECT_NAME}}
+- **Porteurs :** Gildas (Pôle Technique & Innovation)
+- **Dernière mise à jour :** {{DATE}}
+- **Stack Technologique :** {{STACK}}
 
 ---
 
-## Architecture Cloud-Native (Floci.io / AWS)
+## Architecture Cloud-Native
 
-Toute donnée persistante (audios, segments, langues, utilisateurs) doit passer par les services AWS simulés localement :
-
-- **Audios bruts** → Amazon S3 (bucket `bantuvoice-audios`)
-- **Métadonnées, segments, langues, utilisateurs** → Amazon DynamoDB
+<À COMPLÉTER avec vos services d'infrastructure>
 
 ## Rôles et Permissions
 
-- **JWT :** Durée de vie 24h.
-- Les routes admin (`/admin/*`) vérifient systématiquement le rôle via `Depends(require_admin)`.
-- Les linguistes ne doivent jamais pouvoir accéder aux endpoints d'administration.
+<À COMPLÉTER avec vos règles d'accès et sécurité>
 
 ## Jalons de Release
 
 | Version | Jalon correspondant |
 |---------|---------------------|
-| `v0.1.0-mvp` | MVP fonctionnel : Pipeline d'ingestion + Annotation + Dashboard Admin |
-| `v0.2.0` | Première fonctionnalité majeure post-MVP (export CSV, gestion multi-utilisateurs) |
-| `v1.0.0` | Premier corpus publié sur Hugging Face, prêt pour la communauté scientifique |
-
-## Packages GitHub
-
-Non utilisé pour l'instant. À envisager uniquement si les scripts d'export sont publiés comme bibliothèque Python réutilisable (`pip install bantuvoice-tools`).
+| `v0.1.0-mvp` | MVP fonctionnel |
 
 ## Couverture de tests minimale
 
-À définir — non spécifiée à ce jour.
+<À COMPLÉTER>
