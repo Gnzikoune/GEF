@@ -504,7 +504,7 @@ enabled = true
   console.log(chalk.yellow('🔗 Initialisation Git et installation des hooks de sécurité...'));
   try {
     if (!fs.existsSync('.git')) {
-      execSync('git init', { stdio: 'ignore' });
+      execSync('git init && git branch -M main', { stdio: 'ignore' });
     }
     const hooksSrc = path.join(GEF_DIR, 'hooks');
     if (fs.existsSync(hooksSrc)) {
