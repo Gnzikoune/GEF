@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.1.0](https://github.com/Gnzikoune/GEF/compare/v1.0.0...v1.1.0) (2026-07-20)
+
+
+### Features
+
+* **ci:** pipeline ci/cd progressif selon severite ([293050f](https://github.com/Gnzikoune/GEF/commit/293050f106aa1cf6f816ddc919aba6079c840e9c))
+* **ci:** pipeline ci/cd progressif selon severite ([#5](https://github.com/Gnzikoune/GEF/issues/5)) ([4b9d574](https://github.com/Gnzikoune/GEF/commit/4b9d574a31df7459a2b19b0155f39f5b91b1df98))
+* **cli:** ajout commandes --help et --version + mise a jour README et site ([#4](https://github.com/Gnzikoune/GEF/issues/4)) ([ca63acb](https://github.com/Gnzikoune/GEF/commit/ca63acbecb834af24648f881ec07f3fa46a3797c))
+* **generator:** implémentation des fonctionnalités promises manquantes ([#7](https://github.com/Gnzikoune/GEF/issues/7)) ([df35f62](https://github.com/Gnzikoune/GEF/commit/df35f6213f0b77937d98edb5b071dd0e9a6c0dee))
+* **generator:** implémentation des promesses manquantes ([1242c33](https://github.com/Gnzikoune/GEF/commit/1242c33f12ca8b854648ce7d21ac9ac8b8eedbf4))
+
+
+### Bug Fixes
+
+* **cli:** rendre la commande update dynamique ([45e6f19](https://github.com/Gnzikoune/GEF/commit/45e6f194be8545d36610c73e7340a1fcaec06463))
+* **cli:** rendre la commande update dynamique via PROJECT_CONFIG.md ([#6](https://github.com/Gnzikoune/GEF/issues/6)) ([5288ff3](https://github.com/Gnzikoune/GEF/commit/5288ff31a951e21e83a92a4e2b56bdc3e87ddf42))
+
 ## 1.0.0 (2026-07-20)
 
 
