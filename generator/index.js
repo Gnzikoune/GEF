@@ -11,9 +11,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const GEF_DIR = path.resolve(__dirname, '..');
 
-console.log(chalk.cyan.bold('\n🚀 Bienvenue dans le générateur GEF Intelligent\n'));
-
 async function run() {
+  console.log(chalk.cyan.bold('\n🚀 Bienvenue dans le générateur GEF Intelligent\n'));
   if (process.argv[2] === 'update') {
     console.log(chalk.blue('Mise à jour du projet courant vers la dernière version du GEF...'));
     if (!fs.existsSync('.git')) {
