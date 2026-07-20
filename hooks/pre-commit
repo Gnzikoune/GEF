@@ -37,8 +37,8 @@ fi
 for file in $(git diff --cached --name-only); do
   if [ -f "$file" ]; then
     LINES=$(wc -l < "$file")
-    if [ "$LINES" -gt 500 ]; then
-      echo -e "\033[33mAvertissement: Le fichier $file dépasse 500 lignes ($LINES lignes). Envisagez de le découper (Playbook §4).\033[0m"
+    if [ "$LINES" -gt 400 ]; then
+      echo -e "\033[33mAvertissement: Le fichier $file dépasse 400 lignes ($LINES lignes). Envisagez de le découper (Playbook §1).\033[0m"
     fi
   fi
 done

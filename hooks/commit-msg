@@ -1,6 +1,7 @@
 #!/bin/bash
 # Hook: commit-msg
-# Réf: ENGINEERING_PLAYBOOK.md §1
+# Hook: commit-msg
+# Réf: ENGINEERING_PLAYBOOK.md §5
 
 COMMIT_MSG_FILE=$1
 COMMIT_MSG=$(cat $1)
@@ -9,7 +10,7 @@ COMMIT_MSG=$(cat $1)
 PATTERN="^(feat|fix|docs|chore|refactor|style|perf|test|release)(\([a-zA-Z0-9_.-]+\))?: (.*) \(#[0-9]+\)$"
 
 if [[ ! $COMMIT_MSG =~ $PATTERN ]]; then
-  echo -e "\033[31mErreur: Message de commit non conforme au Playbook §1.\033[0m"
+  echo -e "\033[31mErreur: Message de commit non conforme au Playbook §5.\033[0m"
   echo "Le message doit suivre le format Conventional Commits ET inclure le numéro de ticket Kanban à la fin."
   echo "Exemple: 'feat: ajout du bouton login (#42)'"
   exit 1
@@ -20,7 +21,7 @@ DESCRIPTION="${BASH_REMATCH[3]}"
 
 if [ ${#DESCRIPTION} -lt 10 ]; then
   echo -e "\033[33mAvertissement: La description du commit est très courte (moins de 10 caractères).\033[0m"
-  echo "Playbook §1 recommande des messages détaillés pour faciliter la traçabilité."
+  echo "Playbook §5 recommande des messages détaillés pour faciliter la traçabilité."
   # Non bloquant
 fi
 
