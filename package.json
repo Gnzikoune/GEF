@@ -1,0 +1,19 @@
+{
+  "name": "create-gef",
+  "version": "1.0.0",
+  "description": "Générateur interactif de projets respectant le framework GEF",
+  "main": "generator/index.js",
+  "type": "module",
+  "bin": {
+    "create-gef": "./generator/index.js"
+  },
+  "scripts": {
+    "start": "node generator/index.js"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "inquirer": "^9.2.12"
+  },
+  "author": "Gildas",
+  "license": "ISC"
+}

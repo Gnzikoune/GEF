@@ -35,10 +35,10 @@ GEF/
 ├── 02.ENGINEERING_PLAYBOOK.md    ← Source de vérité (règles universelles)
 ├── PROJECT_CONFIG.template.md    ← Template de configuration projet
 ├── README.md                     ← Ce fichier
+├── package.json                  ← Package NPM global (rend le GEF exécutable via npx)
 │
 ├── generator/                    ← Brique A : CLI de génération de projet
-│   ├── index.js                  ← Point d'entrée (interface interactive)
-│   └── package.json
+│   └── index.js                  ← Point d'entrée (interface interactive)
 │
 ├── hooks/                        ← Brique B : Hooks Git de sécurité
 │   ├── commit-msg                ← Validation Conventional Commits
@@ -59,35 +59,41 @@ GEF/
 
 ---
 
-## 3. Installation
+## 3. Installation et Utilisation
+
+Le GEF est conçu pour être utilisé directement sans avoir besoin de cloner le dépôt, exactement comme `create-next-app` ou `create-vite`.
 
 **Prérequis :** Node.js (v18+), Git.
 
+Lancez simplement la commande suivante depuis le dossier où vous souhaitez créer vos projets :
+
 ```bash
-# 1. Cloner le framework
-git clone <url-du-dépôt-gef> GEF
-cd GEF/generator
-
-# 2. Installer les dépendances du générateur
-npm install
-
-# 3. (Optionnel) Rendre le générateur accessible globalement
-npm link
+npx create-gef
 ```
 
-Après `npm link`, la commande `gef` est disponible depuis n'importe quel dossier de votre machine.
+### Développement local du framework
+
+Si vous modifiez le framework GEF lui-même et que vous souhaitez tester la CLI localement :
+
+```bash
+# 1. Cloner le dépôt
+git clone <url-du-dépôt-gef> GEF
+cd GEF
+
+# 2. Installer les dépendances
+npm install
+
+# 3. Rendre la commande locale accessible globalement
+npm link
+```
+Après `npm link`, vous pouvez utiliser la commande `create-gef` partout sur votre machine.
 
 ---
 
 ## 4. Le Générateur de Projet (Brique A)
 
-Lance le générateur depuis le dossier dans lequel vous souhaitez créer votre projet :
+La commande `npx create-gef` (ou `create-gef` si linké) lance un assistant interactif.
 
-```bash
-gef
-# ou, sans npm link :
-node /chemin/vers/GEF/generator/index.js
-```
 
 ### Ce que le générateur fait
 
