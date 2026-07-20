@@ -42,7 +42,7 @@ async function run() {
   fs.mkdirSync(projectPath, { recursive: true });
   process.chdir(projectPath);
 
-  scaffoldStack(answers.stack, answers.projectName, projectPath);
+  scaffoldStack(answers, projectPath);
   scaffoldLinter(answers.linter, answers.stack);
   scaffoldGef(answers, GEF_DIR);
   if (answers.includeDocker) scaffoldDocker(answers.stack, answers.database, answers.projectName);

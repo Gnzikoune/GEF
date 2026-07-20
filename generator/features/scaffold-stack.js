@@ -32,18 +32,17 @@ def read_root():
 
 /**
  * Lance le scaffolding du framework choisi.
- * @param {string} stack
- * @param {string} projectName
+ * @param {Object} answers
  * @param {string} projectPath
  */
-export function scaffoldStack(stack, projectName, projectPath) {
-  if (stack === 'Projet vide') return;
+export function scaffoldStack(answers, projectPath) {
+  if (answers.stack === 'Projet vide') return;
 
   const handlers = {
-    'Next.js (React)': () => scaffoldNext(projectName, projectPath),
-    'React (Vite)': () => scaffoldVite(projectName, projectPath),
+    'Next.js (React)': () => scaffoldNext(answers, projectPath),
+    'React (Vite)': () => scaffoldVite(answers, projectPath),
     'API Node.js (Express)': () => scaffoldExpress(),
-    'API Python (FastAPI)': () => scaffoldFastapi(projectName),
+    'API Python (FastAPI)': () => scaffoldFastapi(answers.projectName),
   };
 
   const handler = handlers[stack];
@@ -57,21 +56,23 @@ export function scaffoldStack(stack, projectName, projectPath) {
   }
 }
 
-function scaffoldNext(projectName, projectPath) {
-  console.log(chalk.magenta('\n▲  Lancement de create-next-app :\n'));
+function scaffoldNext(answers, projectPath) {
+  console.log(chalk.magenta('\n▲  Lancement de create-next-app en mode silencieux :\n'));
   process.chdir(path.resolve(projectPath, '..'));
   fs.rmdirSync(projectPath);
-  execSync(`npx create-next-app@latest ${projectName}`, { stdio: 'inherit' });
+  
+  const eslintFlag = answers.linter.includes('ESLint') ? '--eslint' : '--no-eslint';
+  execSync(`npx create-next-app@latest ${answers.projectName} --typescript --tailwind ${eslintFlag} --app --src-dir --import-alias "@/*" --yes`, { stdio: 'inherit' });
   process.chdir(projectPath);
   console.log(chalk.yellow('\n🎭 Installation de Playwright (E2E)...'));
   execSync('npm init playwright@latest --yes -- --quiet --browser=chromium', { stdio: 'inherit' });
 }
 
-function scaffoldVite(projectName, projectPath) {
-  console.log(chalk.magenta('\n⚡ Lancement de create-vite :\n'));
+function scaffoldVite(answers, projectPath) {
+  console.log(chalk.magenta('\n⚡ Lancement de create-vite en mode silencieux :\n'));
   process.chdir(path.resolve(projectPath, '..'));
   fs.rmdirSync(projectPath);
-  execSync(`npm create vite@latest ${projectName}`, { stdio: 'inherit' });
+  execSync(`npm create vite@latest ${answers.projectName} -- --template react-ts`, { stdio: 'inherit' });
   process.chdir(projectPath);
   console.log(chalk.yellow('\nInstallation des dépendances...'));
   execSync('npm install', { stdio: 'inherit' });
