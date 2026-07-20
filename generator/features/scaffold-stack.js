@@ -63,6 +63,8 @@ function scaffoldNext(projectName, projectPath) {
   fs.rmdirSync(projectPath);
   execSync(`npx create-next-app@latest ${projectName}`, { stdio: 'inherit' });
   process.chdir(projectPath);
+  console.log(chalk.yellow('\n🎭 Installation de Playwright (E2E)...'));
+  execSync('npm init playwright@latest --yes -- --quiet --browser=chromium', { stdio: 'inherit' });
 }
 
 function scaffoldVite(projectName, projectPath) {
@@ -73,6 +75,8 @@ function scaffoldVite(projectName, projectPath) {
   process.chdir(projectPath);
   console.log(chalk.yellow('\nInstallation des dépendances...'));
   execSync('npm install', { stdio: 'inherit' });
+  console.log(chalk.yellow('\n🎭 Installation de Playwright (E2E)...'));
+  execSync('npm init playwright@latest --yes -- --quiet --browser=chromium', { stdio: 'inherit' });
 }
 
 function scaffoldExpress() {

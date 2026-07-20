@@ -46,8 +46,15 @@ fi\n\nexit 0\n`;
  */
 function generatePreCommit(linter, strictness) {
   let fileLimit = 400;
-  if (strictness.includes('Startup')) fileLimit = 500;
-  if (strictness.includes('Mission Critical')) fileLimit = 200;
+  let payloadLimitKb = 1000; // 1 Mo par défaut
+  if (strictness.includes('Startup')) {
+    fileLimit = 500;
+    payloadLimitKb = 5000; // 5 Mo
+  }
+  if (strictness.includes('Mission Critical')) {
+    fileLimit = 200;
+    payloadLimitKb = 100; // 100 Ko
+  }
 
   let linterCmd = '';
   if (linter.includes('ESLint')) linterCmd = 'npm run lint || { echo "Erreur Lint"; exit 1; }';
@@ -76,6 +83,13 @@ for file in $(git diff --cached --name-only); do
     LINES=$(wc -l < "$file")
     if [ "$LINES" -gt ${fileLimit} ]; then
       echo "Avertissement: $file dépasse ${fileLimit} lignes."
+    fi
+
+    # Vérification du Payload (Taille Max)
+    SIZE_KB=$(du -k "$file" | cut -f1)
+    if [ "$SIZE_KB" -gt ${payloadLimitKb} ]; then
+      echo "Erreur: $file ($SIZE_KB Ko) dépasse la limite de taille autorisée (${payloadLimitKb} Ko) pour ce niveau de sévérité."
+      exit 1
     fi
   fi
 done
