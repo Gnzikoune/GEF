@@ -120,12 +120,197 @@ async function run() {
     'docs/adr', 'docs/research', 'src', 'tests', 'scripts',
     'assets', 'infra', 'database'
   ];
-  if (includeDocker) dirs.push('docker');
   if (includeCI) dirs.push('.github/workflows');
   
   dirs.forEach(d => {
     if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
   });
+
+  // --- DOCKER INTELLIGENT ---
+  if (includeDocker) {
+    console.log(chalk.yellow('🐳 Génération des fichiers Docker adaptés à votre stack...'));
+    if (!fs.existsSync('docker')) fs.mkdirSync('docker');
+
+    // .dockerignore (toujours présent)
+    const dockerIgnoreLines = [
+      'node_modules', 'npm-debug.log', '.git', '.gitignore',
+      '.env', '*.log', 'dist', 'build', '__pycache__', 'venv', '.venv'
+    ];
+    fs.writeFileSync('.dockerignore', dockerIgnoreLines.join('\n') + '\n');
+
+    if (stack === 'Next.js (React)') {
+      fs.writeFileSync('docker/Dockerfile', `# Étape 1 : Build
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# Étape 2 : Production
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+EXPOSE 3000
+CMD ["node", "server.js"]
+`);
+      fs.writeFileSync('docker/docker-compose.yml', `version: '3.8'
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+`);
+    }
+
+    else if (stack === 'React (Vite)') {
+      fs.writeFileSync('docker/Dockerfile', `# Étape 1 : Build
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# Étape 2 : Serveur statique Nginx
+FROM nginx:alpine AS runner
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+`);
+      fs.writeFileSync('docker/docker-compose.yml', `version: '3.8'
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "80:80"
+`);
+    }
+
+    else if (stack === 'API Node.js (Express)') {
+      fs.writeFileSync('docker/Dockerfile', `FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 3000
+CMD ["node", "src/index.js"]
+`);
+      // docker-compose avec DB optionnelle
+      let dbService = '';
+      if (database === 'PostgreSQL') {
+        dbService = `
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${projectName.toLowerCase().replace(/\s+/g, '_')}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:`;
+      } else if (database === 'MongoDB') {
+        dbService = `
+  db:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - db_data:/data/db
+
+volumes:
+  db_data:`;
+      }
+      fs.writeFileSync('docker/docker-compose.yml', `version: '3.8'
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../.env
+    depends_on:
+      - db${dbService}
+`);
+    }
+
+    else if (stack === 'API Python (FastAPI)') {
+      fs.writeFileSync('docker/Dockerfile', `FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+`);
+      let dbService = '';
+      if (database === 'PostgreSQL') {
+        dbService = `
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${projectName.toLowerCase().replace(/\s+/g, '_')}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:`;
+      } else if (database === 'MongoDB') {
+        dbService = `
+  db:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - db_data:/data/db
+
+volumes:
+  db_data:`;
+      }
+      fs.writeFileSync('docker/docker-compose.yml', `version: '3.8'
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../.env
+    depends_on:
+      - db${dbService}
+`);
+    }
+
+    else {
+      // Projet vide — Dockerfile générique
+      fs.writeFileSync('docker/Dockerfile', `FROM alpine:latest
+WORKDIR /app
+COPY . .
+CMD ["sh"]
+`);
+    }
+    console.log(chalk.green('✅ Fichiers Docker générés.'));
+  }
 
   // Mise à jour du README existant ou création
   const readmeHeader = `# ${projectName}\n\n## Fonctionnalités\n<À COMPLÉTER>\n\n## Installation\n<À COMPLÉTER>\n\n## Architecture\nStack: ${stack}\nCloud: ${cloud}\nDB: ${database}\n`;
