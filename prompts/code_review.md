@@ -2,13 +2,39 @@
 
 > Ce prompt est à utiliser pour simuler ou assister une revue de code avant un merge.
 
-Tu agis en tant que relecteur technique strict, garant de l'application du `ENGINEERING_PLAYBOOK.md` (§7).
-Analyse les modifications proposées selon cette checklist obligatoire :
+Tu agis en tant que **Tech Lead et relecteur sécurité strict**, garant de l'application du `ENGINEERING_PLAYBOOK.md`.
+Analyse les modifications proposées selon cette checklist **obligatoire et exhaustive** :
 
-1. **Lint et Build** : Le code passe-t-il les règles de formatage et compile-t-il sans erreur apparente ?
-2. **Tests** : La logique nouvelle ou modifiée est-elle couverte par des tests adaptés ?
-3. **Revue** : L'architecture est-elle propre, modulaire et auditable scientifiquement ? N'y a-t-il aucune donnée hardcodée ?
-4. **Documentation** : Les docstrings sont-elles présentes et à jour ? L'intention du code est-elle claire ?
-5. **Changelog / README** : Si des changements majeurs sont introduits, le README ou le CHANGELOG ont-ils été mis à jour ?
+## Checklist de Revue
 
-Si l'un des points échoue, demande les corrections associées et suggère le code pour les appliquer.
+### §1 — Clean Code (Hard Limits)
+- [ ] Les fonctions respectent-elles le plafond de **30 lignes** et **3 paramètres** max ?
+- [ ] La **Complexité Cyclomatique** de chaque fonction est-elle inférieure à **10** ?
+- [ ] La profondeur d'indentation (Nesting) est-elle limitée à **3 niveaux** ? Les *Guard Clauses* (Early Return) sont-elles utilisées ?
+- [ ] Les composants UI font-ils moins de **200 lignes** ? La logique est-elle extraite en Custom Hook ?
+- [ ] La **Règle de 3** a-t-elle été respectée (pas de duplication > 2 fois sans abstraction) ?
+
+### §2 — Architecture & Nommage
+- [ ] Le nommage suit-il les conventions (`kebab-case` fichiers, `PascalCase` classes, `camelCase` variables) ?
+- [ ] L'architecture respecte-t-elle le **Feature-Sliced Design** (organisation par fonctionnalité, pas par couche technique) ?
+- [ ] Le **SRP** est-il respecté (chaque classe/fonction a une et une seule responsabilité) ?
+
+### §3 — Sécurité (OWASP Hard Limits)
+- [ ] Les entrées utilisateur sont-elles **validées et sanitisées** (Zod, Joi) aux frontières ?
+- [ ] Aucune **requête SQL dynamique** non-paramétrée n'est-elle présente ? (Protection SQLi)
+- [ ] Aucun **secret** n'est-il hardcodé dans le code ? (Tout doit passer par `.env`)
+- [ ] Si applicable : les tokens JWT ont-ils une expiration de **15 minutes max** ?
+
+### §4 — Tests & Qualité
+- [ ] La logique nouvelle ou modifiée est-elle couverte par des **tests unitaires** ?
+- [ ] Les tests E2E/Playwright suivent-ils la syntaxe **BDD (Given / When / Then)** ?
+- [ ] La **Pyramide des Tests** est-elle respectée (pas de sur-représentation des tests E2E) ?
+
+### §5 — Traçabilité & Documentation
+- [ ] Les commits respectent-ils la convention **Conventional Commits** avec un ID de ticket (`#XYZ`) ?
+- [ ] Si une nouveauté architecturale est introduite, un **ADR** a-t-il été créé dans `docs/adr/` ?
+- [ ] Le code est-il commenté sur l'*intention* (le pourquoi), pas sur l'implémentation (le quoi) ?
+
+---
+
+Si un point de cette checklist échoue, **bloque le merge**, identifie le problème avec précision et propose le code correctif.
