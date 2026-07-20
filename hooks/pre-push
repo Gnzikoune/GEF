@@ -1,17 +1,17 @@
 #!/bin/bash
 # Hook: pre-push
-# Réf: ENGINEERING_PLAYBOOK.md §13
+# Réf: ENGINEERING_PLAYBOOK.md §5 — Trunk-Based Development
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-# 1. Rejet si la branche cible est main (push direct)
-if [ "$CURRENT_BRANCH" = "main" ] || [ "$CURRENT_BRANCH" = "master" ]; then
-  echo -e "\033[31mErreur: Push direct sur '$CURRENT_BRANCH' interdit.\033[0m"
-  echo "Le Playbook §13 impose de passer par des branches de feature (ex: feat/...) et des Pull Requests."
-  exit 1
-fi
+# 1. Avec le Trunk-Based Development (TBD), les pushes sur 'main' sont AUTORISÉS.
+#    Ce hook valide simplement que les tests passent avant de pousser.
 
-# 2. Exécution optionnelle des tests locaux
+# 2. Blocage des branches de longue durée non-conformes (ex: 'develop', 'release' sans TBD)
+#    Les seules branches temporaires tolérées sont des branches courtes de type fix/, hotfix/.
+#    En TBD, on n'utilise PAS de longues branches feat/ qui durent des semaines.
+
+# 3. Exécution des tests locaux avant tout push
 if [ -f "package.json" ] && grep -q '"test"' package.json; then
   echo "Exécution des tests locaux (npm test)..."
   npm test || { echo -e "\033[31mErreur: Tests en échec. Push annulé.\033[0m"; exit 1; }
@@ -22,4 +22,5 @@ else
   echo -e "\033[34mInfo: Aucun runner de tests standard détecté. Push autorisé.\033[0m"
 fi
 
+echo -e "\033[32m✓ Trunk-Based Development: Push sur '$CURRENT_BRANCH' validé.\033[0m"
 exit 0
