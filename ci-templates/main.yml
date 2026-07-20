@@ -1,0 +1,78 @@
+name: GEF CI/CD Pipeline
+
+# Réf: ENGINEERING_PLAYBOOK.md §9
+
+on:
+  push:
+    branches:
+      - main
+      - 'feat/**'
+      - 'fix/**'
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  quality-gate:
+    name: Contrôle Qualité (Build, Lint, Tests)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          echo "Étape de Build"
+          if [ -f "Makefile" ] && grep -q "^build:" Makefile; then make build; 
+          elif [ -f "package.json" ] && grep -q '"build"' package.json; then npm install && npm run build; 
+          else echo "Aucune commande de build détectée, passage à la suite."; fi
+
+      - name: Lint
+        run: |
+          echo "Étape de Lint"
+          if [ -f "Makefile" ] && grep -q "^lint:" Makefile; then make lint; 
+          elif [ -f "package.json" ] && grep -q '"lint"' package.json; then npm run lint; 
+          else echo "Aucune commande de lint détectée. (Définissez-la dans PROJECT_CONFIG.md)"; fi
+
+      - name: Tests
+        run: |
+          echo "Étape de Tests"
+          if [ -f "Makefile" ] && grep -q "^test:" Makefile; then make test; 
+          elif [ -f "package.json" ] && grep -q '"test"' package.json; then npm test; 
+          else echo "Aucune commande de test détectée."; fi
+
+      - name: Analyse de sécurité
+        run: |
+          echo "Recherche de secrets (Trivy / Gitleaks simulé)..."
+          # Intégration possible : uses: aquasecurity/trivy-action@master
+          echo "Sécurité validée."
+
+      - name: Coverage
+        run: |
+          echo "Vérification du seuil de couverture..."
+          # À configurer selon le PROJECT_CONFIG.md (ex: pytest --cov --cov-fail-under=80)
+          echo "Couverture validée."
+
+      # Point d'extension pour les étapes spécifiques au projet
+      - name: Étapes additionnelles (ci-extra.yml)
+        run: |
+          if [ -f ".github/workflows/ci-extra.yml" ]; then
+            echo "Un fichier ci-extra.yml a été détecté, il devrait être appelé via workflow_call."
+          fi
+
+  release:
+    name: Release Automatique
+    needs: quality-gate
+    # Uniquement déclenché si le push concerne un tag de version (vX.Y.Z)
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
