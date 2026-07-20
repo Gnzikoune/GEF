@@ -89,7 +89,7 @@ Si vous modifiez le framework GEF lui-même et souhaitez tester la CLI localemen
 
 ```bash
 # 1. Cloner le dépôt
-git clone <url-du-dépôt-gef> GEF
+git clone https://github.com/Gnzikoune/GEF.git GEF
 cd GEF
 
 # 2. Installer les dépendances
@@ -223,3 +223,7 @@ Toutes les règles appliquées par ce framework sont définies dans un seul docu
 **[→ Lire l'Engineering Playbook](./ENGINEERING_PLAYBOOK.md)**
 
 En cas de contradiction entre un outil du framework et le Playbook, le Playbook a toujours raison.
+
+---
+
+> Projet open source par [Gildas](https://github.com/Gnzikoune) — Contributions bienvenues via Pull Request.

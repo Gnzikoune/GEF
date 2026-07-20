@@ -12,7 +12,7 @@ function App() {
         <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 0', marginBottom: '4rem' }}>
           <div style={{ fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.03em' }}>GEF.</div>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
-            <a href="https://github.com/votre-compte/GEF" target="_blank" rel="noreferrer" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: 500 }}>GitHub</a>
+            <a href="https://github.com/Gnzikoune/GEF" target="_blank" rel="noreferrer" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: 500 }}>GitHub</a>
             <a href="https://npmjs.com/package/create-gef" target="_blank" rel="noreferrer" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: 500 }}>NPM</a>
           </div>
         </nav>
