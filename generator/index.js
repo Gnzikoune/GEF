@@ -432,6 +432,20 @@ enabled = true
     fs.writeFileSync('.gitignore', gitignoreAdditions);
   }
 
+  // Copie de la documentation GEF locale (.gef/)
+  console.log(chalk.cyan('📚 Ajout du Playbook et des Prompts IA locaux...'));
+  fs.mkdirSync('.gef/prompts', { recursive: true });
+  const rootDir = path.resolve(__dirname, '..');
+  if (fs.existsSync(path.join(rootDir, 'ENGINEERING_PLAYBOOK.md'))) {
+    fs.copyFileSync(path.join(rootDir, 'ENGINEERING_PLAYBOOK.md'), '.gef/ENGINEERING_PLAYBOOK.md');
+  }
+  if (fs.existsSync(path.join(rootDir, 'prompts'))) {
+    const prompts = fs.readdirSync(path.join(rootDir, 'prompts'));
+    prompts.forEach(p => {
+      fs.copyFileSync(path.join(rootDir, 'prompts', p), path.join('.gef/prompts', p));
+    });
+  }
+
   // Git et Hooks
   console.log(chalk.yellow('🔗 Initialisation Git et installation des hooks de sécurité...'));
   try {
