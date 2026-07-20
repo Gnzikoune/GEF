@@ -2,7 +2,7 @@
 
 > Un framework d'ingénierie logicielle qui transforme des règles de travail en outils automatisés. Il garantit traçabilité, sécurité et qualité sur chaque projet, dès le premier commit.
 > 
-> **🛡️ Standards de l'Industrie Enforcés :** Trunk-Based Development, OWASP Security Limits (Rate Limiting, JWT Exp), et Clean Code Metrics (Max 30 lignes/fonction, Complexité < 10, Rule of Three).
+> **🛡️ Standards de l'Industrie Enforcés :** GitHub Flow (PRs obligatoires), OWASP Security Limits (Rate Limiting, JWT Exp), et Clean Code Metrics adaptatifs (Startup / Standard / Mission Critical).
 
 ---
 
@@ -41,12 +41,24 @@ GEF/
 ├── package.json                  ← Package NPM (rend le GEF exécutable via npx)
 │
 ├── generator/                    ← Brique A : CLI de génération de projet
-│   └── index.js                  ← Point d'entrée (interface interactive + commande update)
+│   ├── index.js                  ← Point d'entrée (routage des commandes : help, version, update, interactif)
+│   ├── cli/
+│   │   ├── questions.js          ← 11 questions Inquirer (stack, DB, cloud, git, lint, sévérité, langue...)
+│   │   └── help.js               ← Affichage de l'aide et de la version
+│   ├── features/
+│   │   ├── scaffold-stack.js     ← Scaffolding du framework cible (Next, Vite, Express, FastAPI)
+│   │   ├── scaffold-gef.js       ← Moteur de templates (Playbook, Prompts IA, Diataxis)
+│   │   ├── scaffold-git.js       ← Génération dynamique des hooks Git
+│   │   ├── scaffold-linter.js    ← Génération des configs Biome, ESLint, Ruff
+│   │   ├── scaffold-docker.js    ← Dockerfile, docker-compose, init.sql
+│   │   ├── scaffold-ci.js        ← Workflows GitHub Actions (CI/CD, release-please)
+│   │   └── update.js             ← Mise à jour d'un projet existant
+│   └── templates/
+│       └── adr-template.md       ← Template d'ADR prêt à l'emploi
 │
-├── hooks/                        ← Brique B : Hooks Git de sécurité
+├── hooks/                        ← Hooks Git (installés dans le dépôt GEF lui-même)
 │   ├── commit-msg                ← Conventional Commits + référence Kanban obligatoire (#XYZ)
-│   ├── pre-commit                ← Détection secrets, lint
-│   └── pre-push                  ← Blocage push direct sur main
+│   └── pre-commit                ← Détection secrets, lint
 │
 ├── ci-templates/                 ← Brique C : Template de base CI/CD
 │   └── main.yml                  ← (le générateur produit un CI adapté à la stack)
@@ -55,7 +67,7 @@ GEF/
 │   └── release-please.yml        ← Automatisation des releases du GEF lui-même
 │
 └── prompts/                      ← Brique D : Prompts pour assistants IA
-    ├── system_prompt.md          ← Prompt de base (à charger en début de session)
+    ├── system_prompt.md          ← Prompt de base (avec variables de template {{MAX_LINES}} etc.)
     ├── feature_development.md    ← Pour le développement d'une fonctionnalité
     ├── code_review.md            ← Pour une revue de code
     ├── bugfix.md                 ← Pour une correction de bug
@@ -71,6 +83,15 @@ Le GEF est conçu pour être utilisé directement sans avoir besoin de cloner le
 
 **Prérequis :** Node.js (v18+), Git, GitHub CLI (`gh`) pour les fonctionnalités Kanban.
 
+### Commandes disponibles
+
+| Commande | Description |
+|---|---|
+| `npx create-gef` | Lance le générateur interactif et crée un nouveau projet |
+| `npx create-gef update` | Met à jour le Playbook, les Prompts et les Hooks dans un projet existant |
+| `npx create-gef --help` | Affiche l'aide et toutes les commandes disponibles |
+| `npx create-gef --version` | Affiche la version actuelle du framework |
+
 ### Créer un nouveau projet
 
 ```bash
@@ -83,6 +104,13 @@ Depuis la racine d'un projet existant généré par GEF, mettez à jour le Playb
 
 ```bash
 npx create-gef update
+```
+
+### Afficher l'aide
+
+```bash
+npx create-gef --help
+npx create-gef --version
 ```
 
 ### Développement local du framework
@@ -107,24 +135,59 @@ npm link
 
 ### Ce que le générateur fait
 
-L'assistant pose 7 questions, puis exécute automatiquement :
+L'assistant pose **11 questions**, puis exécute automatiquement :
 
 | Étape | Action |
 |---|---|
-| **1. Scaffolding** | Installe le framework choisi (`npx create-next-app`, `npm create vite`, etc.) en mode **entièrement interactif** |
-| **2. Arborescence GEF** | Crée `docs/adr/`, `docs/research/`, `tests/`, `scripts/`, `infra/`, `database/` |
-| **3. Template ADR** | Crée `docs/adr/0000-template.md` prêt à l'emploi |
-| **4. Playwright** | Installe Playwright (tests E2E) nativement pour les stacks React et Next.js |
-| **5. Configuration** | Génère `PROJECT_CONFIG.md` pré-rempli avec vos choix (stack, cloud, DB, phase) |
-| **6. Documentation** | Génère `README.md` et `docs/research/RESEARCH_LOG.md` |
-| **7. Docker** | Génère `docker/Dockerfile` et `docker/docker-compose.yml` adaptés à votre stack *(ignoré si Cloud = Vercel)* |
-| **8. Vercel** | Génère `vercel.json` si Vercel est choisi comme Cloud Provider |
-| **9. Supabase** | Génère `supabase/config.toml` et `supabase/migrations/` si Supabase est choisi |
-| **10. Git & Hooks** | Initialise Git et installe les 3 hooks de sécurité GEF |
-| **11. CI/CD** | Génère `.github/workflows/main.yml` adapté à la stack et au cloud provider |
-| **12. Release Please** | Génère `.github/workflows/release-please.yml` pour automatiser les tags et releases |
+| **1. Scaffolding** | Installe le framework choisi (`npx create-next-app`, `npm create vite`, etc.) |
+| **2. Arborescence GEF** | Crée la structure Diatáxis : `docs/tutorials/`, `docs/how-to/`, `docs/reference/`, `docs/explanation/adr/` |
+| **3. Template ADR** | Crée `docs/explanation/adr/0000-template.md` prêt à l'emploi |
+| **4. Configuration** | Génère `PROJECT_CONFIG.md` pré-rempli avec tous les choix (stack, cloud, DB, git, lint, sévérité, langue) |
+| **5. Documentation** | Génère `README.md` et `docs/research/RESEARCH_LOG.md` |
+| **6. Linter** | Génère `biome.json`, `.eslintrc.json`, ou `ruff.toml` selon le choix |
+| **7. Docker** | Génère `docker/Dockerfile` et `docker/docker-compose.yml`. Si PostgreSQL : crée `database/init.sql` monté dans le container |
+| **8. Playbook & Prompts IA** | Copie le Playbook et les Prompts dans `.gef/` **en injectant les Hard Limits adaptées** au niveau de sévérité choisi |
+| **9. Hooks Git** | Génère les hooks dynamiques (`pre-push` bloque `main` si GitHub Flow, lance les tests si TBD) |
+| **10. CI/CD** | Génère `.github/workflows/main.yml` adapté à la stack et au cloud provider |
+| **11. Release Please** | Génère `.github/workflows/release-please.yml` pour automatiser les tags et releases |
 
 ### Stacks supportées
+
+| Framework | Scaffolding | Docker | CI |
+|---|---|---|---|
+| Next.js (React) | `npx create-next-app@latest` | Multi-stage → Node | Setup Node 20 + lint + tests |
+| React (Vite) | `npm create vite@latest` | Multi-stage → Nginx | Setup Node 20 + lint + tests |
+| API Node.js (Express) | `npm init` + `express` | Node Alpine + DB service | Setup Node 20 + lint + tests |
+| API Python (FastAPI) | `venv` + `requirements.txt` | Python 3.12-slim + DB service | Setup Python 3.12 + flake8 + pytest |
+| Projet vide | — | Alpine générique | Générique |
+
+### Stratégies Git supportées
+
+| Stratégie | Comportement du hook `pre-push` |
+|---|---|
+| **GitHub Flow** *(Recommandé)* | Bloque toute tentative de `git push` sur `main`. Force l'usage de branches et Pull Requests. |
+| **Trunk-Based Development** | Autorise les pushes sur `main`, mais exécute les tests locaux avant de valider. |
+
+### Niveaux de sévérité (Hard Limits)
+
+Le niveau choisi est injecté dans le Playbook et les Prompts IA générés dans `.gef/`. L'IA d'un projet "Mission Critical" ne générera **jamais** de fonction de plus de 15 lignes.
+
+| Niveau | Fonctions max | Params max | Complexité max | Payload JSON max |
+|---|---|---|---|---|
+| **Startup / R&D** | 50 lignes | 4 | 15 | 5 Mo |
+| **Standard / Enterprise** *(Recommandé)* | 30 lignes | 3 | 10 | 1 Mo |
+| **Mission Critical** | 15 lignes | 2 | 5 | 100 Ko |
+
+### Linters supportés
+
+| Linter | Fichier généré | Commandes ajoutées dans `package.json` |
+|---|---|---|
+| **Biome** | `biome.json` | `npm run lint`, `npm run lint:fix` |
+| **ESLint + Prettier** | `.eslintrc.json` + `.prettierrc` | `npm run lint`, `npm run lint:fix` |
+| **Ruff** *(Python)* | `ruff.toml` | — |
+| **Aucun** | — | — |
+
+### Cloud Providers supportés
 
 | Framework | Scaffolding | Docker | CI |
 |---|---|---|---|
@@ -161,8 +224,10 @@ Installés automatiquement par le générateur dans `.git/hooks/` de chaque proj
 | Hook | Règle appliquée |
 |---|---|
 | **`commit-msg`** | Bloque tout commit dont le message ne respecte pas le format `Conventional Commits + référence Kanban`. Format : `feat: description (#42)`. |
-| **`pre-commit`** | Détecte les secrets en clair (clés API, tokens). Bloquant. |
-| **`pre-push`** | Bloque tout push direct sur la branche `main`. |
+| **`pre-commit`** | Détecte les secrets en clair (clés API, tokens). Vérifie le formatage (linter). Analyse la taille des fichiers selon la sévérité choisie. Bloquant. |
+| **`pre-push`** | **Dynamique** : Bloque tout push direct sur `main` si le projet est en GitHub Flow. Exécute les tests locaux si en Trunk-Based Development. |
+
+Ces hooks sont générés à la volée par le générateur en fonction des choix de l'équipe, et installablés dans `.git/hooks/` du projet.
 
 Pour mettre à jour les hooks dans un projet existant :
 

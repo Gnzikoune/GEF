@@ -105,13 +105,53 @@ function App() {
             <FeatureCard 
               icon="📝" 
               title="Auto-Documentation ADR" 
-              description="Chaque décision architecturale est obligatoirement documentée dans docs/adr/ avant la première ligne de code." 
+              description="Chaque décision architecturale est obligatoirement documentée dans docs/explanation/adr/ avant la première ligne de code." 
             />
             <FeatureCard 
               icon="🎭" 
               title="TDD Piloté par l'IA" 
               description="Playwright installé nativement. L'IA écrit le test E2E avant le code applicatif pour garantir une qualité incassable." 
             />
+            <FeatureCard 
+              icon="🧠" 
+              title="Hard Limits Adaptatifs" 
+              description="3 niveaux de sévérité : Startup (souple), Enterprise (standard) ou Mission Critical (ultra-strict). Les Prompts IA sont calibrés automatiquement selon le niveau choisi." 
+            />
+            <FeatureCard 
+              icon="🍷" 
+              title="Stratégie Git Configurable" 
+              description="GitHub Flow (PRs obligatoires, main verrouillé) ou Trunk-Based Development. Le hook pre-push est généré à la volée selon votre choix." 
+            />
+            <FeatureCard 
+              icon="🧹" 
+              title="Linter clé en main" 
+              description="Biome, ESLint+Prettier, ou Ruff (Python). Le générateur écrit les fichiers de config et connecte les commandes au pre-commit automatiquement." 
+            />
+          </div>
+        </section>
+
+        {/* Commands Section */}
+        <section style={{ padding: '4rem 0' }}>
+          <h2>4 commandes. C'est tout.</h2>
+          <p style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 3rem auto' }}>
+            Un CLI simple, lisible, et entièrement documentable depuis votre terminal.
+          </p>
+          <div style={{ maxWidth: '700px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {[
+              { cmd: 'npx create-gef', desc: 'Lance le générateur interactif et crée un nouveau projet' },
+              { cmd: 'npx create-gef update', desc: 'Met à jour le Playbook, Prompts et Hooks dans un projet existant' },
+              { cmd: 'npx create-gef --help', desc: 'Affiche toutes les commandes et options disponibles' },
+              { cmd: 'npx create-gef --version', desc: 'Affiche la version actuelle du framework' },
+            ].map(({ cmd, desc }) => (
+              <div key={cmd} style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                padding: '1rem 1.5rem', background: 'var(--bg-card)', border: '1px solid var(--border-glass)',
+                borderRadius: '12px', gap: '1rem', flexWrap: 'wrap'
+              }}>
+                <code style={{ fontFamily: 'monospace', color: 'var(--accent-color)', fontWeight: 600, fontSize: '0.95rem' }}>{cmd}</code>
+                <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{desc}</span>
+              </div>
+            ))}
           </div>
         </section>
         
