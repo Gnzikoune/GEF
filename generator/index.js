@@ -80,36 +80,67 @@ async function run() {
 
   // --- SCAFFOLDING INTELLIGENT ---
   if (stack !== 'Projet vide') {
-    console.log(chalk.magenta(`\n📦 Installation du framework : ${stack}... Cela peut prendre quelques minutes.`));
-    
     try {
       if (stack === 'Next.js (React)') {
-        execSync('npx create-next-app@latest . --typescript --eslint --tailwind --no-src-dir --app --import-alias "@/*" --use-npm', { stdio: 'inherit' });
+        console.log(chalk.magenta(`\n▲  Lancement de create-next-app — répondez aux questions ci-dessous :\n`));
+        // On sort du dossier créé : create-next-app crée lui-même le sous-dossier
+        process.chdir(path.resolve(projectPath, '..'));
+        fs.rmdirSync(projectPath); // on enlève le dossier vide pour laisser create-next-app le créer
+        execSync(`npx create-next-app@latest ${projectName}`, { stdio: 'inherit' });
+        process.chdir(projectPath);
       } 
       else if (stack === 'React (Vite)') {
-        execSync('npm create vite@latest . -- --template react-ts', { stdio: 'inherit' });
+        console.log(chalk.magenta(`\n⚡ Lancement de create-vite — répondez aux questions ci-dessous :\n`));
+        process.chdir(path.resolve(projectPath, '..'));
+        fs.rmdirSync(projectPath);
+        execSync(`npm create vite@latest ${projectName}`, { stdio: 'inherit' });
+        process.chdir(projectPath);
+        // Vite ne lance pas npm install automatiquement
+        console.log(chalk.yellow('\nInstallation des dépendances...'));
         execSync('npm install', { stdio: 'inherit' });
       }
       else if (stack === 'API Node.js (Express)') {
+        console.log(chalk.magenta(`\n📦 Initialisation de l'API Node.js...\n`));
         execSync('npm init -y', { stdio: 'ignore' });
         execSync('npm install express cors dotenv', { stdio: 'inherit' });
-        fs.mkdirSync('src');
-        fs.writeFileSync('src/index.js', "const express = require('express');\nconst app = express();\n\napp.get('/', (req, res) => res.send('API Node.js Ready'));\n\napp.listen(3000, () => console.log('Server running on port 3000'));");
+        if (!fs.existsSync('src')) fs.mkdirSync('src');
+        fs.writeFileSync('src/index.js', `const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
+app.get('/', (req, res) => res.json({ message: 'API prête.' }));
+
+app.listen(PORT, () => console.log(\`Serveur lancé sur http://localhost:\${PORT}\`));
+`);
         const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-        pkg.scripts = { start: "node src/index.js", dev: "node src/index.js" };
+        pkg.scripts = { start: 'node src/index.js', dev: 'node --watch src/index.js' };
         fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
       }
       else if (stack === 'API Python (FastAPI)') {
-        // Compatibilité Windows / Unix
+        console.log(chalk.magenta(`\n🐍 Initialisation de l'API Python (FastAPI)...\n`));
         const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
         execSync(`${pythonCmd} -m venv venv`, { stdio: 'inherit' });
-        fs.writeFileSync('requirements.txt', 'fastapi\nuvicorn\n');
-        fs.mkdirSync('src');
-        fs.writeFileSync('src/main.py', "from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get('/')\ndef read_root():\n    return {'message': 'API FastAPI Ready'}\n");
+        fs.writeFileSync('requirements.txt', 'fastapi\nuvicorn[standard]\npython-dotenv\n');
+        if (!fs.existsSync('src')) fs.mkdirSync('src');
+        fs.writeFileSync('src/__init__.py', '');
+        fs.writeFileSync('src/main.py', `from fastapi import FastAPI
+
+app = FastAPI(title="${projectName}")
+
+@app.get("/")
+def read_root():
+    return {"message": "API prête."}
+`);
       }
-      console.log(chalk.green('✅ Framework installé.'));
+      console.log(chalk.green('\n✅ Framework installé.'));
     } catch (err) {
-      console.log(chalk.red('\nErreur lors de l\'installation du framework. Continuation avec la structure de base.'));
+      console.log(chalk.red('\nErreur lors du scaffolding. Continuation avec la structure de base GEF.'));
     }
   }
 
