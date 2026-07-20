@@ -24,7 +24,7 @@ async function run() {
     {
       type: 'list',
       name: 'phase',
-      message: 'Dans quelle phase se situe ce projet (Réf: Playbook §0) ?',
+      message: 'Dans quelle phase se situe ce projet ?',
       choices: ['Prototype (R&D)', 'Développement contractuel / Production']
     },
     {

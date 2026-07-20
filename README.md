@@ -13,19 +13,17 @@ GEF est un framework d'ingénierie logiciel garantissant le respect automatique 
 
 Pour démarrer un nouveau projet en respectant les standards GEF :
 
-1. Ouvrez un terminal (Bash sous Mac/Linux, PowerShell sous Windows).
-2. Clonez ce dépôt ou rendez-vous dans le dossier de GEF.
-3. Exécutez le générateur :
-
-**Sous Mac / Linux / Git Bash :**
-```bash
-./generator/gef-new.sh nom-de-mon-projet --lang python
-```
-
-**Sous Windows (PowerShell) :**
-```powershell
-.\generator\gef-new.ps1 nom-de-mon-projet -Lang node
-```
+1. Clonez ce dépôt sur votre machine.
+2. Rendez-vous dans le dossier `generator` et installez les dépendances Node.js :
+   ```bash
+   cd generator
+   npm install
+   ```
+3. Lancez l'assistant interactif :
+   ```bash
+   node index.js
+   ```
+   *(Astuce : vous pouvez exécuter `npm link` dans ce dossier pour pouvoir ensuite taper la commande `gef` depuis n'importe quel dossier de votre machine !)*
 
 Le script va créer le dossier, mettre en place l'arborescence, configurer le `.gitignore`, installer les Hooks Git, et copier le template de CI/CD.
 
