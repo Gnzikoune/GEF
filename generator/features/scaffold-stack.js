@@ -45,7 +45,7 @@ export function scaffoldStack(answers, projectPath) {
     'API Python (FastAPI)': () => scaffoldFastapi(answers.projectName),
   };
 
-  const handler = handlers[stack];
+  const handler = handlers[answers.stack];
   if (!handler) return;
 
   try {
