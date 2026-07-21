@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/Gnzikoune/GEF/compare/v1.2.0...v1.3.0) (2026-07-21)
+
+
+### Features
+
+* **generator:** automatisation des verrous mecaniques ([#10](https://github.com/Gnzikoune/GEF/issues/10)) ([1b92577](https://github.com/Gnzikoune/GEF/commit/1b9257770bb33ddf653ecbcb09cb4e5c50ff4826))
+* **generator:** verrous physiques anti-contournement (Linter, PR, CI) ([fede0ce](https://github.com/Gnzikoune/GEF/commit/fede0ce4a9dfa9e4fd5de6f84108fe4aee24ea48))
+
 ## [1.2.0](https://github.com/Gnzikoune/GEF/compare/v1.1.1...v1.2.0) (2026-07-21)
 
 
