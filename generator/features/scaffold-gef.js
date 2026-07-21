@@ -104,6 +104,16 @@ function copyAdditionalWorkflows(gefDir) {
   if (fs.existsSync(src)) fs.copyFileSync(src, path.join(destDir, 'pr-intention-check.yml'));
 }
 
+function copyIssueTemplates(gefDir) {
+  const srcDir = path.join(gefDir, '.github', 'ISSUE_TEMPLATE');
+  if (!fs.existsSync(srcDir)) return;
+  const destDir = '.github/ISSUE_TEMPLATE';
+  fs.mkdirSync(destDir, { recursive: true });
+  fs.readdirSync(srcDir).forEach(file => {
+    fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file));
+  });
+}
+
 function createResearchLog(language) {
   const isEn = language === 'English';
   const dest = 'docs/research/RESEARCH_LOG.md';
@@ -163,6 +173,7 @@ export function scaffoldGef(answers, gefDir) {
   copyAndTemplateGefAssets(gefDir, answers.strictness, answers.language);
   createAdrTemplate(gefDir);
   createPRTemplate(gefDir);
+  copyIssueTemplates(gefDir);
   if (answers.includeCI) copyAdditionalWorkflows(gefDir);
   createResearchLog(answers.language);
   createProjectConfig(answers, gefDir);
