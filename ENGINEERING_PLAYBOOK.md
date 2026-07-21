@@ -123,10 +123,12 @@ La qualité s'injecte avant le code, pas après.
 
 ## 8. Pilotage Kanban et Autonomie de l'IA
 
-L'IA agit comme un Tech Lead autonome.
+L'IA agit comme un Tech Lead autonome, mais sous le contrôle strict de l'intention métier.
+- **Le "Pourquoi" avant tout :** Chaque Issue, PR ou tâche doit obligatoirement commencer par expliciter le but ultime (l'intention métier). L'IA ne doit pas deviner le but, elle doit le suivre.
 - **Découpage en Issues :** Utiliser la CLI GitHub (`gh issue create`) pour découper un grand chantier en sous-tâches.
 - **Création de Pull Requests (PR) :** Si des branches temporaires sont requises pour une revue par l'utilisateur, utiliser `gh pr create`.
 - **Validation Humaine Obligatoire :** L'IA ne merge **JAMAIS** de Pull Request elle-même. Elle prépare tout et demande à l'utilisateur de cliquer sur le bouton de Merge.
+- **Crash Clause Anti-Contournement :** Face à un mur (erreur technique, consigne ambiguë, outil manquant), l'IA doit échouer bruyamment (Fail Fast) et s'arrêter pour demander de l'aide à l'utilisateur, plutôt que d'improviser une solution toxique ou de masquer l'erreur en silence.
 
 ---
 
