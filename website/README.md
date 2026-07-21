@@ -1,6 +1,6 @@
 # GEF — Site Vitrine
 
-Site web officiel du **Gildas Engineering Framework**, construit avec React + TypeScript + Vite.
+Site web officiel du **Guardian Engineering Framework**, construit avec React + TypeScript + Vite.
 
 ## Lancer en local
 
