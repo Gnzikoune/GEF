@@ -6,15 +6,29 @@ import { execSync } from 'child_process';
 import chalk from 'chalk';
 
 /**
+ * Détermine les limites métriques selon le niveau de sévérité.
+ */
+function getLimits(strictness) {
+  if (strictness.includes('Startup')) return { maxLines: 50, maxParams: 4, maxComplexity: 15 };
+  if (strictness.includes('Mission Critical')) return { maxLines: 15, maxParams: 2, maxComplexity: 5 };
+  return { maxLines: 30, maxParams: 3, maxComplexity: 10 }; // Standard
+}
+
+/**
  * Configure ESLint et Prettier.
  */
-function configureEslint(stack) {
-  console.log(chalk.yellow('🧹 Configuration de ESLint + Prettier...'));
+function configureEslint(stack, strictness) {
+  console.log(chalk.yellow('🧹 Configuration de ESLint + Prettier avec Hard Limits...'));
+  const limits = getLimits(strictness);
   const eslintConfig = {
     env: { browser: true, es2021: true, node: true },
     extends: ['eslint:recommended', 'prettier'],
     parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
-    rules: {},
+    rules: {
+      'max-lines-per-function': ['error', limits.maxLines],
+      'max-params': ['error', limits.maxParams],
+      'complexity': ['error', limits.maxComplexity]
+    },
   };
   fs.writeFileSync('.eslintrc.json', JSON.stringify(eslintConfig, null, 2));
   fs.writeFileSync('.prettierrc', '{\n  "semi": true,\n  "singleQuote": true,\n  "printWidth": 100\n}\n');
@@ -31,8 +45,9 @@ function configureEslint(stack) {
 /**
  * Configure Biome.
  */
-function configureBiome() {
-  console.log(chalk.yellow('⚡ Configuration de Biome...'));
+function configureBiome(strictness) {
+  console.log(chalk.yellow('⚡ Configuration de Biome avec Hard Limits...'));
+  const limits = getLimits(strictness);
   const biomeConfig = {
     $schema: "https://biomejs.dev/schemas/1.8.3/schema.json",
     formatter: {
@@ -44,7 +59,15 @@ function configureBiome() {
     },
     linter: {
       enabled: true,
-      rules: { recommended: true }
+      rules: {
+        recommended: true,
+        complexity: {
+          noExcessiveCognitiveComplexity: {
+            level: "error",
+            options: { maxAllowedComplexity: limits.maxComplexity }
+          }
+        }
+      }
     }
   };
   fs.writeFileSync('biome.json', JSON.stringify(biomeConfig, null, 2));
@@ -61,11 +84,15 @@ function configureBiome() {
 /**
  * Configure Ruff pour Python.
  */
-function configureRuff() {
-  console.log(chalk.yellow('🐍 Configuration de Ruff...'));
+function configureRuff(strictness) {
+  console.log(chalk.yellow('🐍 Configuration de Ruff avec Hard Limits...'));
+  const limits = getLimits(strictness);
   const ruffToml = `[lint]
-select = ["E", "F", "I"]
+select = ["E", "F", "I", "C90"]
 ignore = []
+
+[lint.mccabe]
+max-complexity = ${limits.maxComplexity}
 
 [format]
 quote-style = "double"
@@ -77,13 +104,13 @@ indent-style = "space"
 /**
  * Orchestre la génération de la configuration du linter.
  */
-export function scaffoldLinter(linterChoice, stack) {
+export function scaffoldLinter(linterChoice, stack, strictness) {
   if (linterChoice === 'Aucun' || !linterChoice) return;
 
   try {
-    if (linterChoice.includes('ESLint')) configureEslint(stack);
-    else if (linterChoice.includes('Biome')) configureBiome();
-    else if (linterChoice.includes('Ruff')) configureRuff();
+    if (linterChoice.includes('ESLint')) configureEslint(stack, strictness);
+    else if (linterChoice.includes('Biome')) configureBiome(strictness);
+    else if (linterChoice.includes('Ruff')) configureRuff(strictness);
     console.log(chalk.green('✅ Linter configuré.'));
   } catch (err) {
     console.log(chalk.red('Erreur lors de la configuration du linter.'));

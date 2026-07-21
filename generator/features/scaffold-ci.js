@@ -129,6 +129,8 @@ function buildTestBlock(isNode, isPython, database) {
   if (isNode) {
     return `      - name: Tests (avec couverture)
         run: npm test -- --coverage --if-present${dbEnv}
+        # Note: Configurez Jest ou Vitest dans votre projet pour échouer si la couverture < 80%
+        # Ex Jest: "coverageThreshold": { "global": { "lines": 80 } }
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v4
@@ -139,7 +141,7 @@ function buildTestBlock(isNode, isPython, database) {
     return `      - name: Tests (pytest + coverage)
         run: |
           pip install pytest pytest-cov
-          pytest tests/ -v --cov=src --cov-report=xml${dbEnv}
+          pytest tests/ -v --cov=src --cov-report=xml --cov-fail-under=80${dbEnv}
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v4

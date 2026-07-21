@@ -90,6 +90,20 @@ function createAdrTemplate(gefDir) {
   if (fs.existsSync(templateSrc)) fs.copyFileSync(templateSrc, dest);
 }
 
+function createPRTemplate(gefDir) {
+  const templateSrc = path.join(gefDir, 'generator', 'templates', 'PULL_REQUEST_TEMPLATE.md');
+  fs.mkdirSync('.github', { recursive: true });
+  const dest = '.github/PULL_REQUEST_TEMPLATE.md';
+  if (fs.existsSync(templateSrc)) fs.copyFileSync(templateSrc, dest);
+}
+
+function copyAdditionalWorkflows(gefDir) {
+  const src = path.join(gefDir, 'ci-templates', 'pr-intention-check.yml');
+  const destDir = '.github/workflows';
+  fs.mkdirSync(destDir, { recursive: true });
+  if (fs.existsSync(src)) fs.copyFileSync(src, path.join(destDir, 'pr-intention-check.yml'));
+}
+
 function createResearchLog(language) {
   const isEn = language === 'English';
   const dest = 'docs/research/RESEARCH_LOG.md';
@@ -148,6 +162,8 @@ export function scaffoldGef(answers, gefDir) {
   createDirectories(answers.includeCI);
   copyAndTemplateGefAssets(gefDir, answers.strictness, answers.language);
   createAdrTemplate(gefDir);
+  createPRTemplate(gefDir);
+  if (answers.includeCI) copyAdditionalWorkflows(gefDir);
   createResearchLog(answers.language);
   createProjectConfig(answers, gefDir);
   createReadme(answers);
