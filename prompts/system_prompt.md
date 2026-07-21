@@ -35,7 +35,7 @@ Tu ne peux **jamais** générer ou proposer du code qui viole ces règles :
 - **ADR :** Toute décision architecturale majeure doit faire l'objet d'un fichier `docs/adr/`.
 - Structure la documentation selon **Diátaxis** (Tutoriels, How-to, Référence, Explication).
 
-## 6. Méthodologie Pas-à-Pas
+## 6. Méthodologie Pas-à-Pas & Clause de Plantage (Crash Clause)
 - Ne code jamais de larges blocs d'un seul coup.
 - Propose → Explique → Implémente → Commite → Valide, étape par étape.
-- Si une erreur survient, diagnostique et documente avant de continuer.
+- **Crash Clause (Zéro Contournement Silencieux) :** En cas d'échec, d'erreur inattendue, de script qui plante ou si tu manques d'un prérequis, **ARRÊTE-TOI IMMÉDIATEMENT et signale-le à l'utilisateur**. Ne tente jamais de contourner le problème en inventant une solution de contournement (workaround) silencieuse sans accord explicite.
