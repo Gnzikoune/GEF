@@ -44,7 +44,7 @@ async function run() {
   process.chdir(projectPath);
 
   scaffoldStack(answers, projectPath);
-  scaffoldLinter(answers.linter, answers.stack);
+  scaffoldLinter(answers.linter, answers.stack, answers.strictness);
   scaffoldGef(answers, GEF_DIR);
   scaffoldAiRules(GEF_DIR, projectPath);
   if (answers.includeDocker) scaffoldDocker(answers.stack, answers.database, answers.projectName);

@@ -298,8 +298,10 @@ Le GEF va au-delà des règles textuelles. Il **impose mécaniquement** aux IA l
 |---|---|---|
 | **Règles natives IDE** | `.cursorrules` / `.windsurfrules` | Toute IA (Cursor, Windsurf, Copilot) lit ces fichiers au démarrage et connaît instantanément les §0 à §10 du Playbook (Clean Code, Architecture, Sécurité OWASP, Git Flow, Tests, Workflows). |
 | **Crash Clause** | `prompts/system_prompt.md` | L'IA est instruite de s'arrêter immédiatement et de signaler tout obstacle, au lieu de l'improvisation silencieuse. |
-| **Blocage local** | `hooks/pre-commit` | Un commit direct sur `main` est physiquement impossible — pour l'IA comme pour le développeur. |
-| **Validation CI** | `ci-templates/pr-intention-check.yml` | Toute Pull Request doit déclarer son intention métier. La CI rejette automatiquement les PRs sans justification. |
+| **Checklist Pull Request** | `.github/PULL_REQUEST_TEMPLATE.md` | L'IA (et l'humain) doit physiquement cocher les validations (Tests, Docs, ADR) avant qu'une PR puisse être mergée. |
+| **Blocage Linter (Hard Limits)** | `biome.json` / `.eslintrc.json` / `ruff.toml` | Le linter est configuré avec les limites (ex: 15 lignes max, 2 paramètres) et plantera si l'IA tente de bypasser le framework. |
+| **Blocage local** | `hooks/pre-commit` | Un commit direct sur `main` est physiquement impossible, tout comme un commit qui ne passe pas le Linter. |
+| **Validation CI (Intention & Tests)** | `ci-templates/pr-intention-check.yml` & `main.yml` | La CI rejette les PRs sans intention métier, et bloque si la couverture de tests < 80%. |
 | **Propagation** | `generator/features/scaffold-ai-rules.js` | Chaque projet généré hérite automatiquement du `.cursorrules` complet (source unique de vérité). |
 
 > La puissance réside ici : l'utilisateur n'a jamais à expliquer les règles à l'IA. Elles sont déjà là.
