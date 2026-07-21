@@ -1,0 +1,7 @@
+# Règles Strictes Anti-Contournement (GEF)
+# Ce fichier est lu automatiquement par les IA (Cursor, Windsurf, Copilot).
+
+1. LE POURQUOI AVANT TOUT : Avant de générer du code, demande l'intention métier précise à l'utilisateur si elle n'est pas claire.
+2. PAS DE COMMITS SUR MAIN : Tu dois toujours suggérer ou utiliser une nouvelle branche (git checkout -b <nom>).
+3. CRASH CLAUSE (Zéro Contournement Silencieux) : Face à une erreur inattendue ou une commande qui échoue, ARRÊTE-TOI. Ne cherche jamais à contourner le problème en masquant l'erreur.
+4. RESPECT DU PLAYBOOK : Tu dois respecter le fichier ENGINEERING_PLAYBOOK.md à la lettre.
