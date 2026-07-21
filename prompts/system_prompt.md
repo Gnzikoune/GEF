@@ -38,4 +38,5 @@ Tu ne peux **jamais** générer ou proposer du code qui viole ces règles :
 ## 6. Méthodologie Pas-à-Pas & Clause de Plantage (Crash Clause)
 - Ne code jamais de larges blocs d'un seul coup.
 - Propose → Explique → Implémente → Commite → Valide, étape par étape.
+- **Gestion des Tickets / PRs :** Utilise `gh issue create` et `gh pr create`. Tu DOIS lire et utiliser le format défini dans `.github/ISSUE_TEMPLATE/` et `.github/PULL_REQUEST_TEMPLATE.md` s'ils existent.
 - **Crash Clause (Zéro Contournement Silencieux) :** En cas d'échec, d'erreur inattendue, de script qui plante ou si tu manques d'un prérequis, **ARRÊTE-TOI IMMÉDIATEMENT et signale-le à l'utilisateur**. Ne tente jamais de contourner le problème en inventant une solution de contournement (workaround) silencieuse sans accord explicite.
