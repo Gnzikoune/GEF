@@ -14,6 +14,7 @@ import { scaffoldCI } from './features/scaffold-ci.js';
 import { scaffoldGit } from './features/scaffold-git.js';
 import { scaffoldGef } from './features/scaffold-gef.js';
 import { scaffoldLinter } from './features/scaffold-linter.js';
+import { scaffoldAiRules } from './features/scaffold-ai-rules.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const GEF_DIR = path.resolve(path.dirname(__filename), '..');
@@ -45,6 +46,7 @@ async function run() {
   scaffoldStack(answers, projectPath);
   scaffoldLinter(answers.linter, answers.stack);
   scaffoldGef(answers, GEF_DIR);
+  scaffoldAiRules(projectPath);
   if (answers.includeDocker) scaffoldDocker(answers.stack, answers.database, answers.projectName);
   if (answers.includeCI) scaffoldCI(answers.stack, answers.cloud, answers.projectName, {
     database: answers.database,
