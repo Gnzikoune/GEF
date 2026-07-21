@@ -1,0 +1,22 @@
+name: Intention Check (Anti-Bypass)
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  check-intention:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vérifier la présence du Pourquoi
+        run: |
+          BODY="${{ github.event.pull_request.body }}"
+          
+          if echo "$BODY" | grep -iqE "(intention|pourquoi)"; then
+            echo "✅ Intention détectée dans la description de la PR."
+            exit 0
+          else
+            echo "❌ ERREUR: Le Playbook GEF exige que chaque Pull Request explique explicitement le 'Pourquoi' (l'intention métier)."
+            echo "Veuillez modifier la description de votre Pull Request pour y inclure un bloc décrivant votre intention."
+            exit 1
+          fi
