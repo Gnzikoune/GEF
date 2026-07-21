@@ -134,8 +134,8 @@ Ces limites sont non-négociables. L'IA ne peut JAMAIS générer du code qui les
 ## § 9. MÉTHODOLOGIE PAS-À-PAS — PILOTAGE & AUTONOMIE
 
 - **Cycle de travail** : `Propose → Explique → Implémente → Commite → Valide`. Jamais de larges blocs d'un coup.
-- **Découpage en Issues** : Utiliser `gh issue create` pour transformer un grand chantier en sous-tâches traçables.
-- **Création de PR** : Utiliser `gh pr create` avec la mention `Closes #XYZ` et une description incluant l'intention métier.
+- **Découpage en Issues** : Utiliser `gh issue create` pour transformer un grand chantier en sous-tâches traçables. **L'IA DOIT lire et utiliser le format défini dans `.github/ISSUE_TEMPLATE/` (s'il existe) et respecter le `CONTRIBUTING.md`.**
+- **Création de PR** : Utiliser `gh pr create` avec la mention `Closes #XYZ` et utiliser impérativement le `.github/PULL_REQUEST_TEMPLATE.md`.
 - **Zéro Scories** : Scripts de debug, fichiers temporaires et commentaires "commentés" sont supprimés AVANT tout push.
 - **Séparation R&D** : Les expérimentations sans cahier des charges vivent dans un dépôt privé séparé. L'historique Git officiel reste propre.
 
@@ -182,8 +182,14 @@ Ces limites sont non-négociables. L'IA ne peut JAMAIS générer du code qui les
 - Commit dédié : `docs(adr): création ADR-XXX — [titre] (#ticket)`
 - ⚠️ Ne PAS consigner les ADR dans le RESEARCH_LOG (réservé aux bugs).
 
-### Fin d'une tâche (Avant de conclure)
-- [ ] **Vérification Documentaire** : As-tu mis à jour le `README.md`, le `CHANGELOG.md` ou la doc Diátaxis si tes changements impactent l'architecture, l'installation ou les fonctionnalités globales ? **Tu dois toujours faire cette vérification proactivement, sans que l'utilisateur te le demande.**
+### Fin d'une tâche (Avant de conclure — OBLIGATOIRE ET AUTOMATIQUE)
+L'IA NE DOIT PAS attendre que l'utilisateur pose ces questions. Elle DOIT les vérifier et les exécuter de sa propre initiative avant de conclure sa réponse :
+
+- [ ] **Tâches achevées** : Relire le fichier `task.md` (si existant). Toutes les cases sont-elles cochées ? Sinon, finir le travail ou signaler clairement ce qui reste.
+- [ ] **Vérification Documentaire** : Le `README.md`, le `CHANGELOG.md` ou la doc Diátaxis ont-ils besoin d'être mis à jour suite à ces changements ?
+- [ ] **Synchronisation** : Si `.cursorrules` a été modifié, synchroniser `.windsurfrules` immédiatement (`cp .cursorrules .windsurfrules`).
+- [ ] **Commit propre** : Aucune scorie (fichier temporaire, `console.log` de debug) dans le commit final.
+- [ ] **PR ouverte** : La branche est-elle pushée et la PR créée sur GitHub ?
 
 ---
 
