@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.0](https://github.com/Gnzikoune/GEF/compare/v1.1.1...v1.2.0) (2026-07-21)
+
+
+### Features
+
+* ajout des regles cursor et IDE IA lors du scaffold ([#4](https://github.com/Gnzikoune/GEF/issues/4)) ([b9fa757](https://github.com/Gnzikoune/GEF/commit/b9fa75744fa8229ca31c6c0d93dc16e18bd947f2))
+* ajout des regles IA globales au framework lui-meme ([#6](https://github.com/Gnzikoune/GEF/issues/6)) ([e4c32b5](https://github.com/Gnzikoune/GEF/commit/e4c32b5bfbb4fffeed782c1d0ebb0d33d3573452))
+* ajout du verrouillage de la branche main dans le hook pre-commi… ([61513df](https://github.com/Gnzikoune/GEF/commit/61513dfabe876cbb5e71a1ea35bbd4bbf296d469))
+* ajout du verrouillage de la branche main dans le hook pre-commit ([#3](https://github.com/Gnzikoune/GEF/issues/3)) ([9f76e4f](https://github.com/Gnzikoune/GEF/commit/9f76e4f11a9edfe1dfeb8481351331b4b18339df))
+* ajout du workflow CI forcant l intention dans la PR ([#5](https://github.com/Gnzikoune/GEF/issues/5)) ([389a31a](https://github.com/Gnzikoune/GEF/commit/389a31a63b7c7029cd8c02d4f1721a5a06b30ba0))
+* cursorrules completement refait avec toutes les regles GEF + source unique de verite ([#8](https://github.com/Gnzikoune/GEF/issues/8)) ([bc50b69](https://github.com/Gnzikoune/GEF/commit/bc50b69758b8fa8d8c158c00f5bd1d4e3c02708c))
+* cursorrules complets - toutes les regles GEF injectees nativement dans les IDEs IA ([60fefcf](https://github.com/Gnzikoune/GEF/commit/60fefcf6d6156f90e88207a89264ef468c52c732))
+* integration de toutes les regles du playbook dans les cursorrules ([#7](https://github.com/Gnzikoune/GEF/issues/7)) ([888feae](https://github.com/Gnzikoune/GEF/commit/888feaefb71901570c18781736537e3b912c85b4))
+* workflow CI qui bloque les PR sans intention metier declaree ([bee28e3](https://github.com/Gnzikoune/GEF/commit/bee28e322613abbb95b7adec2f3d8beb3ffaa013))
+
 ## [1.1.1](https://github.com/Gnzikoune/GEF/compare/v1.1.0...v1.1.1) (2026-07-20)
 
 
