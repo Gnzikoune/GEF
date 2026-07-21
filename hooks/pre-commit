@@ -1,6 +1,14 @@
 #!/bin/bash
 # Hook: pre-commit
-# Réf: ENGINEERING_PLAYBOOK.md §1, §6, §12
+# Réf: ENGINEERING_PLAYBOOK.md §1, §5, §6, §12
+
+# 0. Vérification de la branche (Protection Anti-Contournement)
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
+  echo -e "\033[31mErreur: Commits directs sur '$BRANCH' strictement interdits (Playbook §5).\033[0m"
+  echo "L'IA ou le développeur humain doit créer une branche (git checkout -b <nom-branche>) et passer par une Pull Request."
+  exit 1
+fi
 
 # 1. Vérification des secrets en clair
 # Recherche naïve de patterns de type api_key="qqchose" ou secret = "qqchose" dans le code mis en stage
