@@ -1,8 +1,10 @@
-# Gildas Engineering Framework (GEF)
+# Guardian Engineering Framework (GEF)
 
 > Un framework d'ingénierie logicielle qui transforme des règles de travail en outils automatisés. Il garantit traçabilité, sécurité et qualité sur chaque projet, dès le premier commit.
 > 
 > **🛡️ Standards de l'Industrie Enforcés :** GitHub Flow (PRs obligatoires), OWASP Security Limits (Rate Limiting, JWT Exp), Clean Code Metrics adaptatifs (Startup / Standard / Mission Critical), et **Garantie Anti-Contournement IA** (Crash Clause, `.cursorrules` complets, CI d'intention).
+>
+> *Guardian — le gardien mécanique qui protège vos projets des dérives silencieuses.*
 
 ---
 
@@ -318,4 +320,4 @@ En cas de contradiction entre un outil du framework et le Playbook, le Playbook 
 
 ---
 
-> Projet open source par [Gildas](https://github.com/Gnzikoune) — Contributions bienvenues via Pull Request.
+> **Guardian Engineering Framework** — Projet open source par [Gildas](https://github.com/Gnzikoune) — Contributions bienvenues via Pull Request.

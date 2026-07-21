@@ -1,4 +1,4 @@
-# Engineering Playbook — Standards "Elite" pour le Gildas Engineering Framework (GEF)
+# Engineering Playbook — Standards "Elite" pour le Guardian Engineering Framework (GEF)
 
 > **IMPORTANT :** En tant qu'IA, je m'engage à lire, comprendre et respecter scrupuleusement ces règles tout au long du développement du projet. Ce document est la référence absolue de notre façon de travailler ensemble, sur **tous les projets**, quels que soient le langage, la stack ou le domaine (SaaS, IA, jeu vidéo, mobile, backend...).
 >

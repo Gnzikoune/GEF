@@ -29,7 +29,7 @@ function App() {
           </h1>
           
           <p style={{ maxWidth: '600px', margin: '0 auto 3rem auto', fontSize: '1.25rem' }}>
-            Gildas Engineering Framework transforme les règles de travail en outils automatisés. Obtenez une traçabilité, une sécurité et une qualité absolues dès le premier commit.
+            Guardian Engineering Framework transforme les règles de travail en outils automatisés. Obtenez une traçabilité, une sécurité et une qualité absolues dès le premier commit.
           </p>
           
           <div style={{ display: 'flex', gap: '1rem', marginBottom: '4rem' }}>
@@ -157,7 +157,7 @@ function App() {
         
         {/* Footer */}
         <footer style={{ marginTop: '6rem', padding: '2rem 0', borderTop: '1px solid var(--border-glass)', textAlign: 'center', color: 'var(--text-secondary)' }}>
-          <p>© {new Date().getFullYear()} Gildas Engineering Framework. MIT License.</p>
+          <p>© {new Date().getFullYear()} Guardian Engineering Framework. MIT License.</p>
         </footer>
       </div>
     </>

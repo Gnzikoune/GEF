@@ -20,7 +20,7 @@ export function printVersion() {
 export function printHelp() {
   console.log(`
 ${chalk.bold.white('create-gef')} ${chalk.dim(`v${pkg.version}`)}
-${chalk.dim('Générateur interactif de projets respectant le Gildas Engineering Framework.')}
+${chalk.dim('Générateur interactif de projets respectant le Guardian Engineering Framework.')}
 
 ${chalk.bold.cyan('USAGE')}
 

@@ -1,4 +1,4 @@
-# Contribuer au framework GEF (Gildas Engineering Framework)
+# Contribuer au Guardian Engineering Framework (GEF)
 
 Tout d'abord, **merci** de l'intérêt que vous portez au GEF ! 🎉 
 
