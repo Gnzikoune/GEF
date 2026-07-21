@@ -46,7 +46,7 @@ async function run() {
   scaffoldStack(answers, projectPath);
   scaffoldLinter(answers.linter, answers.stack);
   scaffoldGef(answers, GEF_DIR);
-  scaffoldAiRules(projectPath);
+  scaffoldAiRules(GEF_DIR, projectPath);
   if (answers.includeDocker) scaffoldDocker(answers.stack, answers.database, answers.projectName);
   if (answers.includeCI) scaffoldCI(answers.stack, answers.cloud, answers.projectName, {
     database: answers.database,
