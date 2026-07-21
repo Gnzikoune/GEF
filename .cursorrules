@@ -182,6 +182,9 @@ Ces limites sont non-négociables. L'IA ne peut JAMAIS générer du code qui les
 - Commit dédié : `docs(adr): création ADR-XXX — [titre] (#ticket)`
 - ⚠️ Ne PAS consigner les ADR dans le RESEARCH_LOG (réservé aux bugs).
 
+### Fin d'une tâche (Avant de conclure)
+- [ ] **Vérification Documentaire** : As-tu mis à jour le `README.md`, le `CHANGELOG.md` ou la doc Diátaxis si tes changements impactent l'architecture, l'installation ou les fonctionnalités globales ? **Tu dois toujours faire cette vérification proactivement, sans que l'utilisateur te le demande.**
+
 ---
 
 *Ce fichier est la loi fondamentale du GEF. Il garantit un niveau d'ingénierie DORA "Elite" sur tous les projets.*
