@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/Gnzikoune/GEF/compare/v1.7.0...v1.8.0) (2026-07-24)
+
+
+### Features
+
+* add anti-amnesia checkpoints and external context memory ([#48](https://github.com/Gnzikoune/GEF/issues/48)) ([#46](https://github.com/Gnzikoune/GEF/issues/46)) ([4733c8b](https://github.com/Gnzikoune/GEF/commit/4733c8bf3129e0a6dded2f314e3c6700a67e7109))
+
 ## [1.7.0](https://github.com/Gnzikoune/GEF/compare/v1.6.0...v1.7.0) (2026-07-24)
 
 
