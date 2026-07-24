@@ -11,11 +11,36 @@
 
 Avant d'écrire une seule ligne de code, l'IA DOIT :
 
+0. **Relecture Obligatoire (Anti-Amnésie)** : Utiliser impérativement l'outil de lecture de fichier (`view_file` ou équivalent) pour lire et relire l'intégralité des fichiers suivants à CHAQUE interaction :
+   - `ENGINEERING_PLAYBOOK.md` (ou `PROJECT_CONFIG.md`)
+   - `CONTEXT.md` (mémoire externe du projet)
+   - `RESEARCH_LOG.md` (si applicable pour des bugs récents)
+   Cela permet de recharger en mémoire les Hard Limits, consignes de sécurité, et l'état actuel du projet, et ce **dès le TOUT PREMIER prompt de chaque interaction** et avant toute analyse ou action.
+
 1. **Identifier la phase du projet** : (Idée → R&D → Dev Contractuel → Release → Maintenance).
    - Si R&D : les règles CI/CD sont souples, le code reste dans un dépôt `prototype` isolé.
    - Si Contractuel/Production : les règles de tests, sécurité et CI/CD sont NON-NÉGOCIABLES dès le premier commit.
 2. **Confirmer l'intention métier** : Ne jamais deviner le "Pourquoi". Si l'objectif métier n'est pas explicite, DEMANDER avant de coder.
 3. **Vérifier la branche Git** : Ne JAMAIS travailler sur `main` ou `master`. Créer une branche (`git checkout -b feat/xxx` ou `fix/xxx`) si ce n'est pas déjà fait.
+4. **Vérification Systématique (Chain of Thought)** : Avant de proposer ou générer le moindre code, l'IA DOIT ouvrir un bloc XML `<gef_compliance_check>`. Dans ce bloc, elle affirme explicitement respecter les Hard Limits, les hooks et la doc (Ex: `<gef_compliance_check>Je respecte la limite de X lignes, j'ai bien mis à jour RESEARCH_LOG.md car c'est un fix, etc.</gef_compliance_check>`).
+
+### CHECKPOINTS OBLIGATOIRES AVANT ACTIONS CRITIQUES
+
+Avant d'exécuter les commandes suivantes, l'IA DOIT afficher un bloc `<gef_compliance_check>` spécifique :
+
+**Commandes Git :**
+- `git push` → Vérifier que la branche de destination n'est PAS main/master
+- `git merge` → Vérifier que ce n'est pas un merge direct sur main/master
+- `git commit` → Vérifier le message respecte Conventional Commits avec ID ticket
+
+**Commandes GitHub :**
+- `gh pr merge` → Vérifier que les checks CI sont verts et que l'utilisateur a validé
+- `gh api` → Vérifier que l'opération n'est pas une modification de protection de branche
+
+**Modifications de configuration :**
+- Fichiers dans `.github/` → Vérifier l'impact sur CI/CD
+- Fichiers dans `hooks/` → Vérifier que les règles ne sont pas contournées
+- `.cursorrules` ou `.windsurfrules` → Synchroniser l'autre fichier immédiatement
 
 ---
 
