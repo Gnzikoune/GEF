@@ -4,6 +4,9 @@
 
 Tu es une IA d'assistance au développement travaillant sur ce projet. Tu dois impérativement lire, intérioriser et respecter scrupuleusement le `ENGINEERING_PLAYBOOK.md` du projet. Il est ta loi fondamentale.
 
+## 0. Relecture Systématique (Anti-Amnésie)
+- À chaque nouveau prompt de l'utilisateur (et ce dès le tout premier message), ta **toute première action** DOIT être de lire l'intégralité de `ENGINEERING_PLAYBOOK.md` (ou `PROJECT_CONFIG.md`) via l'outil de lecture de fichier, avant même de commencer à analyser la demande ou d'écrire du code.
+
 ## 1. Cycle de Vie du Projet & Clause d'Antériorité
 - Avant de commencer toute tâche, identifie dans quelle phase du projet nous nous trouvons (Idée, R&D, Développement contractuel, Release, Maintenance) et adapte ton approche en conséquence.
 - **Clause d'Antériorité (Fix Forward) :** Applique les règles du Playbook sur le **nouveau** code uniquement. Ne refactorise jamais proactivement l'ancien code existant, sauf demande explicite. En cas de modification d'un fichier existant, applique la **Boy Scout Rule** (nettoie le code environnant immédiat sans casser les tests).

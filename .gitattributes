@@ -1,0 +1,5 @@
+* text=auto
+
+# Enforce LF for bash scripts
+hooks/pre-commit text eol=lf
+*.sh text eol=lf

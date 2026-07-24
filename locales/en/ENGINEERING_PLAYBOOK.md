@@ -39,7 +39,8 @@ Writing code must follow the **Google Engineering Practices**: clarity takes pre
 - **Classes / Components:** `PascalCase` (e.g.: `UserProfile`).
 - **Variables / Functions:** `camelCase` (e.g.: `getUserData`).
 - **Global Constants:** `UPPER_SNAKE_CASE` (e.g.: `MAX_RETRY_COUNT`).
-- **Rigor:** Mandatory lint, strict typing (TypeScript/mypy), zero ignored warnings without an explicit comment.
+- **Rigor:** Mandatory lint (CI must fail on lint errors, no `|| true` allowed), strict typing (TypeScript/mypy), zero ignored warnings without an explicit comment.
+  - *Note: Modern linters (Biome, Ruff) might not strictly enforce GEF Hard Limits by default. The developer must ensure their configuration or rely on pre-commit warnings.*
 
 ---
 
@@ -80,6 +81,7 @@ The code must separate the "business" (application rules) from the "infrastructu
   - Block an account/IP for 15 minutes after **5 failed login attempts**.
   - Global limit per IP: **100 API requests / minute**.
 - **Secrets Management:** Always via environment variables (`.env`). Never hardcoded.
+- **SAST Analysis (Static Application Security Testing):** Code scanning via `Semgrep` (OWASP Top 10 rules) is **mandatory** and blocking in CI.
 
 ---
 
@@ -124,11 +126,14 @@ Quality is injected before the code, not after.
 ## 8. Kanban Steering and AI Autonomy
 
 The AI acts as an autonomous Tech Lead, but under strict control of the business intent.
+- **Systematic Verification Process (Anti-Amnesia):** At each new user prompt, the VERY FIRST action of the AI must be to read and re-read the `ENGINEERING_PLAYBOOK.md` (or `PROJECT_CONFIG.md`) file to recharge itself with the hard rules, even before starting to analyze the request or write code.
 - **The "Why" first and foremost:** Each Issue, PR, or task must necessarily begin by explaining the ultimate goal (the business intent). The AI must not guess the goal, it must follow it.
+  - *CI Mechanic:* The intention declared in a PR must be at least **30 characters** long, otherwise it will be rejected by the anti-bypass CI.
 - **Breakdown into Issues:** Use the GitHub CLI (`gh issue create`) to break down a large undertaking into sub-tasks.
 - **Pull Request (PR) Creation:** If temporary branches are required for a user review, use `gh pr create`.
 - **Mandatory Human Validation:** The AI **NEVER** merges a Pull Request itself. It prepares everything and asks the user to click the Merge button.
 - **Anti-Workaround Crash Clause:** Faced with a wall (technical error, ambiguous instruction, missing tool), the AI must fail noisily (Fail Fast) and stop to ask the user for help, rather than improvising a toxic solution or silently masking the error.
+- **AI Synchronization:** The AI must ensure its behavioral rules are universal. The `.cursorrules` and `.windsurfrules` files must be kept perfectly identical (verified via pre-commit).
 
 ---
 

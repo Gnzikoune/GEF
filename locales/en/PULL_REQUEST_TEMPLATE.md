@@ -1,5 +1,6 @@
 ## Intent
 *Describe here the "Why" of this Pull Request. What problem does it solve or what business value does it bring?*
+<!-- WARNING: The intention must be at least 30 characters long, otherwise it will be rejected by the anti-bypass CI. -->
 
 ## Changes
 *List of major files or components modified.*
