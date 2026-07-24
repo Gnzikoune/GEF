@@ -9,6 +9,8 @@ jobs:
   semantic-review:
     name: LLM or Heuristic Semantic Check
     runs-on: ubuntu-latest
+    # Skip for release-please PRs
+    if: ${{ !contains(github.event.pull_request.head.ref, 'release-please') }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
