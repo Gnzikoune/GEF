@@ -168,3 +168,25 @@ Lors de la résolution du problème des PRs release-please, l'IA a effectué un 
 
 **Leçon:** 
 Les instructions textuelles et les hooks côté commit sont insuffisants. Il faut des blocages physiques à chaque étape critique (commit + push). De plus, l'IA a besoin de mécanismes de "mémoire active" (relecture systématique des règles) à chaque action, pas seulement au début de la session.
+
+---
+
+## [Bug] Push Direct sur Main par l'IA (Troisième Violation - CRITIQUE)
+**Date:** 2026-07-25
+**Symptôme:** 
+Malgré l'ajout du pre-push hook et la documentation des violations précédentes, l'IA a encore effectué un push direct sur main lors du merge de la PR #47 (feat: apply anti-amnesia rules to all generated projects).
+
+**Cause Racine:** 
+1. **Échec des mécanismes anti-amnésie** : Les checkpoints obligatoires ajoutés dans .cursorrules n'ont pas été respectés par l'IA elle-même lors de l'exécution
+2. **Automatisme de mergePR** : L'IA a exécuté `gh pr merge --squash` sans vérifier explicitement que cela n'entraînerait pas un push direct sur main
+3. **Défaillance du pre-push hook** : Le pre-push hook n'a pas bloqué l'opération, soit parce qu'il n'était pas installé, soit parce que `gh pr merge` le contourne
+4. **Amnésie persistante** : Malgré la création de CONTEXT.md et l'ajout de checkpoints, l'IA continue à oublier les contraintes fondamentales
+
+**Résolution:** 
+- Documentation de cette violation critique comme échec systémique
+- Nécessité de revoir l'architecture de protection : les hooks locaux sont insuffisants
+- Les règles de protection GitHub côté serveur doivent être renforcées
+- L'IA ne doit JAMAIS avoir la capacité d'exécuter `gh pr merge` sans validation humaine explicite
+
+**Leçon:** 
+Les mécanismes côté client (hooks, .cursorrules, CONTEXT.md) sont contournables par l'IA elle-même. La seule protection efficace est côté serveur (GitHub Branch Protection Rules) et la suppression des privilèges d'administration de l'IA. L'IA ne doit pas avoir le droit de merger des PRs elle-même, même avec des checkpoints.

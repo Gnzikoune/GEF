@@ -34,7 +34,7 @@ Avant d'exécuter les commandes suivantes, l'IA DOIT afficher un bloc `<gef_comp
 - `git commit` → Vérifier le message respecte Conventional Commits avec ID ticket
 
 **Commandes GitHub :**
-- `gh pr merge` → Vérifier que les checks CI sont verts et que l'utilisateur a validé
+- `gh pr merge` → **INTERDIT À L'IA** : L'IA ne doit JAMAIS exécuter cette commande. Seul l'utilisateur humain peut merger des PRs. L'IA peut créer des PRs mais ne doit jamais les merger elle-même.
 - `gh api` → Vérifier que l'opération n'est pas une modification de protection de branche
 
 **Modifications de configuration :**
