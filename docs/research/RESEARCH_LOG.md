@@ -84,3 +84,51 @@ Mise en place d'un Juge Sémantique Hybride pour la CI qui vérifie le contenu d
 
 **Leçon:** 
 Un contrôle basé sur un regex est vulnérable à des comportements de type "bypass paresseux". Il faut augmenter la rigueur du contrôle en remplaçant la validation syntaxique par une validation sémantique ou structurelle dure (Issue Forms yaml).
+
+---
+
+## [Bug] Double exécution du message de bienvenue et du CLI
+**Date:** 2026-07-19
+**Symptôme:** 
+Lors de l'import ou du lancement du CLI, le message d'accueil s'affichait deux fois, ou la logique principale s'exécutait en double.
+
+**Cause Racine:** 
+La logique de démarrage (message de bienvenue, initialisation) était placée au niveau racine du module (exécutée dès l'import) au lieu d'être encapsulée dans la fonction principale `run()`. De plus, le champ `main` du `package.json` causait des conflits d'exécution.
+
+**Résolution:** 
+Déplacement de la logique dans la fonction `run()` et ajout d'un verrou anti-double-exécution pour garantir qu'un processus ne démarre qu'une seule fois.
+
+**Leçon:** 
+Isoler systématiquement les effets de bord (side-effects) dans des fonctions explicites au lieu de les laisser au niveau global d'un script ou d'un module.
+
+---
+
+## [Bug] Échec de la CI Release-Please dû au nommage de branche
+**Date:** 2026-07-20
+**Symptôme:** 
+Les workflows de CI (particulièrement `release-please`) échouaient ou ne se déclenchaient pas correctement sur la branche principale.
+
+**Cause Racine:** 
+Le générateur de projet initialisait Git avec la branche par défaut `master` (comportement par défaut de Git local), alors que toute la CI et les standards GitHub actuels s'attendent à ce que la branche principale soit nommée `main`.
+
+**Résolution:** 
+Modification du générateur pour forcer la création et le renommage de la branche en `main` via `git init && git branch -M main`.
+
+**Leçon:** 
+Ne jamais s'appuyer sur les conventions locales par défaut de Git sans les expliciter. Toujours forcer la standardisation des noms de branches (`main`) dès le script d'initialisation.
+
+---
+
+## [Bug] Commande "update" du CLI rigide et statique
+**Date:** 2026-07-20
+**Symptôme:** 
+La commande CLI pour mettre à jour le framework ou la configuration ne pouvait pas s'adapter aux spécificités de chaque projet généré.
+
+**Cause Racine:** 
+La commande de mise à jour s'appuyait sur une logique codée en dur (hardcoded) dans le CLI, sans lire la configuration propre au projet.
+
+**Résolution:** 
+Refactorisation de la commande `update` pour la rendre dynamique, en forçant la lecture des paramètres depuis `PROJECT_CONFIG.md` avant toute exécution.
+
+**Leçon:** 
+Un outil d'ingénierie (framework) doit rester agnostique. Toute variable ou comportement spécifique à un projet doit être externalisé dans un fichier de configuration lu à l'exécution.
