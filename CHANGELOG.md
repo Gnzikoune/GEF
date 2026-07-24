@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/Gnzikoune/GEF/compare/v1.3.1...v1.4.0) (2026-07-24)
+
+
+### Features
+
+* verrouillage mécanique absolu de l'architecture (Issue Forms, Hooks, CoT) ([a82af05](https://github.com/Gnzikoune/GEF/commit/a82af05a0c745d2f721262d2a9bfa8f257b7a68f))
+* verrouillage mécanique absolu de l'architecture (Issue Forms, Hooks, CoT) ([#43](https://github.com/Gnzikoune/GEF/issues/43)) ([c4be363](https://github.com/Gnzikoune/GEF/commit/c4be3630c6738c8bd5a85ff5caf40a43cd508ff2))
+
+
+### Bug Fixes
+
+* application de la conformité stricte GEF et méta-règle de relecture ([4e6d87b](https://github.com/Gnzikoune/GEF/commit/4e6d87bbe77dc4ba54a970aee545be65331d4f27))
+* application de la conformité stricte GEF et méta-règle de relecture ([#42](https://github.com/Gnzikoune/GEF/issues/42)) ([6e2313c](https://github.com/Gnzikoune/GEF/commit/6e2313c602cdf2d732f5ff43424966eec82ac7d1))
+
 ## [1.3.1](https://github.com/Gnzikoune/GEF/compare/v1.3.0...v1.3.1) (2026-07-24)
 
 
