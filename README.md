@@ -1,10 +1,20 @@
-# Guardian Engineering Framework (GEF)
+<div align="center">
 
-> Un framework d'ingénierie logicielle qui transforme des règles de travail en outils automatisés. Il garantit traçabilité, sécurité et qualité sur chaque projet, dès le premier commit.
-> 
+# Guardian Engineering Framework 🛡️ ⚙️
+
+**Un framework d'ingénierie logicielle qui transforme des règles de travail en outils automatisés**
+
+*Traçabilité · Sécurité · Qualité logicielle*
+
+![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat&logo=nodedotjs&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=flat&logo=githubactions&logoColor=white)
+![Git Hooks](https://img.shields.io/badge/Hooks-Native-FF4154?style=flat&logo=git&logoColor=white)
+![AI-Powered](https://img.shields.io/badge/AI-Cursor%20%7C%20Windsurf-8A2BE2?style=flat)
+![Status](https://img.shields.io/badge/Status-Production_Ready-4CAF50?style=flat)
+
+</div>
+
 > **🛡️ Standards de l'Industrie Enforcés :** GitHub Flow (PRs obligatoires), OWASP Security Limits (Rate Limiting, JWT Exp), Clean Code Metrics adaptatifs (Startup / Standard / Mission Critical), et **Garantie Anti-Contournement IA** (Crash Clause, `.cursorrules` complets, CI d'intention).
->
-> *Guardian — le gardien mécanique qui protège vos projets des dérives silencieuses.*
 
 ---
 
