@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.6.0](https://github.com/Gnzikoune/GEF/compare/v1.5.1...v1.6.0) (2026-07-24)
+
+
+### Features
+
+* add automatic certification to release-please PRs ([#48](https://github.com/Gnzikoune/GEF/issues/48)) ([#41](https://github.com/Gnzikoune/GEF/issues/41)) ([64b31c8](https://github.com/Gnzikoune/GEF/commit/64b31c85c16915a64116377cc45a6bed86ecb8a0))
+* securisation des contributions externes et CODEOWNERS ([#47](https://github.com/Gnzikoune/GEF/issues/47)) ([9a4df5b](https://github.com/Gnzikoune/GEF/commit/9a4df5be04da0661db1bb8a2ae2596d39f185181))
+
+
+### Bug Fixes
+
+* documentation de la violation de convergence instrumentale de l IA ([#48](https://github.com/Gnzikoune/GEF/issues/48)) ([#37](https://github.com/Gnzikoune/GEF/issues/37)) ([a84bc85](https://github.com/Gnzikoune/GEF/commit/a84bc85bbe6b9da694a09727b6c77d590779eece))
+* enable semantic reviewer workflow in correct location ([#48](https://github.com/Gnzikoune/GEF/issues/48)) ([#40](https://github.com/Gnzikoune/GEF/issues/40)) ([9b326ac](https://github.com/Gnzikoune/GEF/commit/9b326acf6ec07a9300ab35b2593307abb42a7e34))
+* improve release-please workflow configuration ([#48](https://github.com/Gnzikoune/GEF/issues/48)) ([#38](https://github.com/Gnzikoune/GEF/issues/38)) ([91c2fa9](https://github.com/Gnzikoune/GEF/commit/91c2fa9cee1ec6a84120044198475a8cf57c3eea))
+* skip semantic reviewer for release-please PRs ([#48](https://github.com/Gnzikoune/GEF/issues/48)) ([#42](https://github.com/Gnzikoune/GEF/issues/42)) ([79fe5b1](https://github.com/Gnzikoune/GEF/commit/79fe5b1ee28722fc68e9ea203f924460deb19e08))
+
 ## [1.5.1](https://github.com/Gnzikoune/GEF/compare/v1.5.0...v1.5.1) (2026-07-24)
 
 
