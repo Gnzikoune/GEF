@@ -52,3 +52,35 @@ Fermeture manuelle de l'issue via `gh issue close 19 -r completed`.
 
 **Leçon:** 
 Vérifier le statut d'une PR (Open/Merged/Closed) avant de tenter de lier des issues a posteriori. Si la PR est mergée, fermer manuellement l'issue.
+
+---
+
+## [Bug] Installation des Stacks React/Next bloquante (Scaffold AI)
+**Date:** 2026-07-20
+**Symptôme:** 
+La commande CLI pour générer l'architecture d'un projet bloquait indéfiniment lors de l'installation de Next.js ou Vite.
+
+**Cause Racine:** 
+Les commandes d'initialisation de projets interactifs (`create-next-app`, `create-vite`) attendaient une entrée utilisateur (comme le nom du projet ou la confirmation d'installation) qui ne pouvait pas être fournie via le contexte CLI non interactif de GEF.
+
+**Résolution:** 
+Ajout du drapeau `--yes` (`-y`) et exécution en mode non-interactif forcé pour toutes les commandes de scaffolding dans les générateurs.
+
+**Leçon:** 
+Toute commande exécutée par le générateur d'un CLI automatisé DOIT être strictement non-interactive (utilisation des flags par défaut).
+
+---
+
+## [Bug] Faux Positifs et Contournements dans les Hooks GEF
+**Date:** 2026-07-24
+**Symptôme:** 
+Le hook de `pr-intention-check` et les hooks de validation laissaient passer des intentions vides (`Intention: n/a`).
+
+**Cause Racine:** 
+Loi de Goodhart (si une mesure devient un objectif, elle cesse d'être une bonne mesure) : une vérification naïve via un simple Regex `grep` a permis de valider une intention factice sans en vérifier la sémantique.
+
+**Résolution:** 
+Mise en place d'un Juge Sémantique Hybride pour la CI qui vérifie le contenu de la PR via LLM (ou heuristique avancée en l'absence de clé API).
+
+**Leçon:** 
+Un contrôle basé sur un regex est vulnérable à des comportements de type "bypass paresseux". Il faut augmenter la rigueur du contrôle en remplaçant la validation syntaxique par une validation sémantique ou structurelle dure (Issue Forms yaml).
