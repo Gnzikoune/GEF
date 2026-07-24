@@ -1,0 +1,196 @@
+# 🛡️ GUARDIAN ENGINEERING FRAMEWORK (GEF) — COMPLETE AI RULES
+# Absolute Reference: ENGINEERING_PLAYBOOK.md
+# This file is natively read by Cursor, Windsurf, and GitHub Copilot.
+# Any AI operating on this project must read, internalize, and respect EACH of these rules.
+# It is NOT necessary to ask the user what the AI is supposed to do:
+# this file is the answer to all those questions.
+
+---
+
+## § 0. BEFORE ANY ACTION — ENTRY PROTOCOL
+
+Before writing a single line of code, the AI MUST:
+
+1. **Identify the project phase**: (Idea → R&D → Contractual Dev → Release → Maintenance).
+   - If R&D: CI/CD rules are flexible, the code remains in an isolated `prototype` repository.
+   - If Contractual/Production: Testing, security, and CI/CD rules are NON-NEGOTIABLE from the first commit.
+2. **Confirm business intent**: Never guess the "Why". If the business objective is not explicit, ASK before coding.
+3. **Check the Git branch**: NEVER work on `main` or `master`. Create a branch (`git checkout -b feat/xxx` or `fix/xxx`) if not already done.
+
+---
+
+## § 1. CRASH CLAUSE — ZERO SILENT WORKAROUNDS
+
+> This is the most important rule of the framework. It overrides all others.
+
+- **Faced with an error, an obstacle, or ambiguity**: STOP IMMEDIATELY and accurately report the problem to the user.
+- **NEVER improvise a silent workaround** to achieve the goal at all costs.
+- **If a command fails**: diagnose the root cause, document it, and wait for human validation before continuing.
+- **If an instruction is ambiguous**: ask the question rather than interpreting.
+
+---
+
+## § 2. CLEAN CODE — ABSOLUTE HARD LIMITS
+
+These limits are non-negotiable. The AI can NEVER generate code that violates them.
+
+- **Functions / Methods**: `{{MAX_LINES}}` lines max.
+- **Parameters**: `{{MAX_PARAMS}}` arguments max. Beyond this, use a configuration object.
+- **Cyclomatic Complexity**: `{{MAX_COMPLEXITY}}` logical paths max per function.
+- **Nesting / Depth**: 3 levels max. Use **Guard Clauses (Early Return)** to reduce nesting.
+- **UI Components**: 150 to 200 lines max. Logic > 50 lines → extract into a Custom Hook.
+- **Files**: 300 to 400 lines max.
+- **Rule of 3**: 1st duplication = OK. 2nd = tolerated. 3rd = refactoring into abstraction MANDATORY.
+
+### Naming Conventions
+- **Files / Folders**: `kebab-case` (e.g.: `user-profile.tsx`)
+- **Classes / Components**: `PascalCase` (e.g.: `UserProfile`)
+- **Variables / Functions**: `camelCase` (e.g.: `getUserData`)
+- **Global Constants**: `UPPER_SNAKE_CASE` (e.g.: `MAX_RETRY_COUNT`)
+- **Absolute Rule**: Zero ignored lint warnings without an explanatory comment.
+
+---
+
+## § 3. ARCHITECTURE — CLEAN ARCHITECTURE & SOLID
+
+- **Feature-Sliced Design (mandatory)**: Organize folders by business feature, NOT by technical layer.
+  - ❌ Forbidden: `/controllers`, `/models`, `/views`
+  - ✅ Correct: `/features/auth/api.ts`, `/features/auth/components/`, `/features/billing/model.ts`
+- **SRP (Single Responsibility Principle)**: A class/function does only one thing.
+- **DIP (Dependency Inversion)**: The domain depends on interfaces, never on concrete implementations.
+
+---
+
+## § 4. ERROR HANDLING — RESILIENCE
+
+- **Information Hiding**: NEVER expose stack traces or technical details to the end user. Return a generic error with a log ID.
+- **Error Typing**: Create typed exception classes (`DomainError`, `InfraError`, `ValidationError`).
+- **Result Pattern**: Replace massive `try/catch` blocks with `Result<Success, Failure>` to force explicit handling of every failure.
+
+---
+
+## § 5. SECURITY — OWASP HARD LIMITS
+
+*"Complexity is the enemy of security."*
+
+- **Zero Trust**: Never trust user inputs. Strict validation at all boundaries (e.g.: `Zod`, `Joi`).
+- **Fail-Safe Defaults**: All access is DENIED by default. Permissions are explicitly granted.
+- **SQLi Protection**: Parameterized queries MANDATORY. No dynamic unparameterized SQL queries.
+- **XSS Protection**: Data encoding on output.
+
+### Hard Limits
+| Parameter | Limit |
+|-----------|-------|
+| Access Token (JWT) | 15 minutes max |
+| Refresh Token | 7 days max (`HttpOnly` cookie) |
+| API Request Body (JSON) | `{{MAX_PAYLOAD}}` max |
+| Image/File Upload | 5 MB max |
+| Failed Login Attempts | Block for 15 min after 5 failures |
+| Global API Limit | 100 requests / minute / IP |
+| Secrets | Always via `.env`. NEVER hardcoded. |
+
+---
+
+## § 6. GIT STRATEGY — GITHUB FLOW
+
+- **`main` branch = untouchable**: Direct pushes STRICTLY FORBIDDEN.
+- **Short-lived branches**: `feat/xxx`, `fix/xxx`, `docs/xxx`. Max lifespan: a few days.
+- **One action = One commit**: Never group the creation of a file and its modification in the same commit.
+- **Pull Requests (PR) mandatory**: All code goes through a PR. CI must be green before merging.
+- **Code Review**: Human approval is required. The AI prepares the PR but NEVER MERGES it itself.
+- **Conventional Commits (strict)**:
+  - Format: `type: short description (#kanban-ticket)`
+  - Types: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `style:`, `test:`
+  - Example: `feat: add OAuth authentication (#42)`
+
+---
+
+## § 7. DOCUMENTATION — DIÁTAXIS & DOCS-AS-CODE
+
+- **Comment the WHY**: Comments explain the intent, not the implementation.
+- **Diátaxis Structure** (`docs/` folder):
+  - `docs/tutorials/` → Getting started
+  - `docs/how-to/` → Specific task guides
+  - `docs/reference/` → API, DB, schemas
+  - `docs/explanation/adr/` → Architecture Decision Records (ADR)
+- **ADR mandatory**: Any major architectural decision (change of DB, framework, cloud...) requires an ADR file in `docs/explanation/adr/ADR-XXX-title.md`.
+- **RESEARCH_LOG mandatory**: Any resolved critical bug must be documented in `docs/research/RESEARCH_LOG.md` with: Symptom / Root Cause / Resolution / Lesson Learned.
+- **C4 Model**: Architecture is visualized and versioned via Mermaid.js (Context, Containers, Components).
+
+---
+
+## § 8. QUALITY ASSURANCE — TEST PYRAMID & SHIFT-LEFT
+
+- **Shift-Left**: Thinking about tests starts as soon as specifications are written, before coding.
+- **BDD mandatory**: Integration and E2E tests follow the `Given / When / Then` syntax.
+- **Test Pyramid**:
+  - 🟢 **80%** Unit Tests (fast, no DB, target business logic).
+  - 🟡 **15%** Integration Tests (validate DB / API).
+  - 🔴 **5%** E2E Playwright Tests (slow, fragile — do not overuse).
+- **TDD for features**: Write the E2E test describing the behavior BEFORE writing the business code.
+
+---
+
+## § 9. STEP-BY-STEP METHODOLOGY — STEERING & AUTONOMY
+
+- **Workflow Cycle**: `Propose → Explain → Implement → Commit → Validate`. Never large blocks at once.
+- **Breakdown into Issues**: Use `gh issue create` to transform a large undertaking into trackable sub-tasks. **The AI MUST read and use the format defined in `.github/ISSUE_TEMPLATE/` (if it exists) and respect `CONTRIBUTING.md`.**
+- **PR Creation**: Use `gh pr create` with the mention `Closes #XYZ` and imperatively use `.github/PULL_REQUEST_TEMPLATE.md`.
+- **Zero Scraps**: Debug scripts, temporary files, and "commented out" comments are deleted BEFORE any push.
+- **R&D Separation**: Experiments without specifications live in a separate private repository. The official Git history remains clean.
+
+---
+
+## § 10. CONTEXTUAL WORKFLOWS — BEHAVIOR DEPENDING ON THE TASK
+
+### Kickoff of a new project
+1. Ask: "Is this project R&D or Contractual/Production?"
+2. Help fill out `PROJECT_CONFIG.md`.
+3. Propose the Feature-Sliced Design structure.
+4. Create `docs/` with the 4 Diátaxis quadrants.
+5. Prepare the GitHub Actions workflow (Lint, Tests, Security) from day one.
+6. First commit: `chore: project initialization via GEF (structure, CI/CD, docs)`
+
+### Development of a Feature
+1. Create a ticket `gh issue create`.
+2. Create a branch `feat/xxx`.
+3. Write the BDD test BEFORE the code (TDD).
+4. Frequent micro-commits with `feat: ... (#ticket)`.
+5. Open a PR with `gh pr create` and ask the user to merge.
+
+### Bug Resolution
+1. **Reproduce** the bug in isolation. Do not modify anything before understanding the root cause.
+2. Evaluate the security impact as an absolute priority.
+3. Fix with a commit `fix: ... (#ticket)`.
+4. Write or update a test covering the scenario.
+5. Document in `RESEARCH_LOG.md` MANDATORY.
+
+### Code Review (checklist before any merge)
+- [ ] Hard Limits respected (lines, parameters, complexity, nesting)?
+- [ ] Feature-Sliced Design respected?
+- [ ] SRP respected (only one responsibility per class/function)?
+- [ ] Inputs validated (Zod/Joi)? No dynamic SQL? No hardcoded secrets?
+- [ ] Unit tests cover the new/modified logic?
+- [ ] Conventional Commits with ticket ID?
+- [ ] ADR created if major architectural decision?
+- [ ] Code commented on INTENT (the why), not the what?
+- **If a point fails → block the merge and propose the fix.**
+
+### Writing an ADR
+- File: `docs/explanation/adr/ADR-XXX-descriptive_title.md`
+- Structure: Context / Considered Options / Decision / Consequences / Mermaid Diagram (if applicable)
+- Dedicated commit: `docs(adr): creation ADR-XXX — [title] (#ticket)`
+- ⚠️ Do NOT record ADRs in the RESEARCH_LOG (reserved for bugs).
+
+### End of a task (Before concluding — MANDATORY AND AUTOMATIC)
+The AI MUST NOT wait for the user to ask these questions. It MUST check and execute them on its own initiative before concluding its response:
+
+- [ ] **Completed tasks**: Reread the `task.md` file (if it exists). Are all boxes checked? If not, finish the work or clearly report what remains.
+- [ ] **Documentation Check**: Do `README.md`, `CHANGELOG.md`, or Diátaxis docs need to be updated following these changes?
+- [ ] **Synchronization**: If `.cursorrules` was modified, synchronize `.windsurfrules` immediately (`cp .cursorrules .windsurfrules`).
+- [ ] **Clean commit**: No scraps (temporary file, debug `console.log`) in the final commit.
+- [ ] **PR opened**: Is the branch pushed and the PR created on GitHub?
+
+---
+
+*This file is the fundamental law of GEF. It guarantees an "Elite" DORA engineering level on all projects.*
