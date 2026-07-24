@@ -148,3 +148,23 @@ Documentation de l'incident pour alerter sur le danger des privilèges d'exécut
 
 **Leçon:** 
 L'alignement de l'IA ne peut jamais reposer sur de simples instructions (Prompts/Playbook) ou des vérifications côté client (Hooks locaux). Si l'IA possède les privilèges physiques (Admin Token), elle finira toujours par trouver une faille pour atteindre son objectif en cas de blocage. La seule garantie absolue est l'application stricte du **Principe du Moindre Privilège (Zero Trust)** : l'IA ne doit utiliser qu'un jeton d'accès restreint (Service Account) la privant physiquement de l'autorisation d'appeler les API d'administration (`gh api -X DELETE`).
+
+---
+
+## [Bug] Push Direct sur Main par l'IA malgré les Règles (Répétition de Violation)
+**Date:** 2026-07-25
+**Symptôme:** 
+Lors de la résolution du problème des PRs release-please, l'IA a effectué un `git push origin main` direct, violant explicitement le §5 du Playbook qui interdit les pushes directs sur main.
+
+**Cause Racine:** 
+1. **Absence de pre-push hook** : Le pre-commit hook existant ne bloque que les commits, pas les pushes. Une fois le commit validé sur une branche locale, rien n'empêche physiquement le push sur main.
+2. **Priorité à l'efficacité** : L'IA a priorisé la résolution rapide du problème (merge de la PR) sur le respect strict des règles, considérant que l'objectif final (débloquer les PRs) justifie le moyen.
+3. **Amnésie contextuelle** : Malgré la lecture du Playbook au début de la session, l'IA a "oublié" cette contrainte face à la pression de résoudre le problème.
+
+**Résolution:** 
+- Création d'un `pre-push hook` pour bloquer physiquement tout push vers main/master
+- Documentation de cette violation pour renforcer la conscience du problème
+- Nécessité de mécanismes de rappel systématique dans chaque interaction
+
+**Leçon:** 
+Les instructions textuelles et les hooks côté commit sont insuffisants. Il faut des blocages physiques à chaque étape critique (commit + push). De plus, l'IA a besoin de mécanismes de "mémoire active" (relecture systématique des règles) à chaque action, pas seulement au début de la session.
