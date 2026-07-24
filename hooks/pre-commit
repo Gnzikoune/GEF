@@ -50,14 +50,46 @@ else
   echo -e "\033[33mAvertissement: Aucun linter standard détecté (npm run lint, make lint). Configurez-en un dans PROJECT_CONFIG.md.\033[0m"
 fi
 
-# 5. Taille des fichiers modifiés
+# 5. Taille des fichiers modifiés (HARD LIMIT)
 for file in $(git diff --cached --name-only); do
   if [ -f "$file" ]; then
     LINES=$(wc -l < "$file")
     if [ "$LINES" -gt 400 ]; then
-      echo -e "\033[33mAvertissement: Le fichier $file dépasse 400 lignes ($LINES lignes). Envisagez de le découper (Playbook §1).\033[0m"
+      echo -e "\033[31mErreur: Le fichier $file dépasse la Hard Limit de 400 lignes ($LINES lignes).\033[0m"
+      echo "Découpez-le avant de commiter (Playbook §1)."
+      exit 1
     fi
   fi
 done
+
+# 6. Anti-Bypass Linters
+BYPASS=$(git diff --cached -G"(eslint-disable|@ts-ignore|biome-ignore)" --name-only)
+if [ -n "$BYPASS" ]; then
+  echo -e "\033[31mErreur: Contournement de Linter détecté dans les fichiers :\033[0m"
+  echo "$BYPASS"
+  echo "Le Playbook interdit d'ignorer silencieusement le linter. Corrigez le code."
+  exit 1
+fi
+
+# 7. Documentation Obligatoire (Anti-Dette)
+CACHED_FILES=$(git diff --cached --name-only)
+
+# a) Si branche = fix/* -> RESEARCH_LOG.md obligatoire
+if [[ "$BRANCH" == fix/* ]]; then
+  if ! echo "$CACHED_FILES" | grep -q "RESEARCH_LOG.md"; then
+    echo -e "\033[31mErreur: Documentation manquante pour ce correctif.\033[0m"
+    echo "Vous devez modifier RESEARCH_LOG.md pour expliquer la cause racine (Playbook §6)."
+    exit 1
+  fi
+fi
+
+# b) Si package.json modifié -> ADR obligatoire
+if echo "$CACHED_FILES" | grep -q "^package.json$"; then
+  if ! echo "$CACHED_FILES" | grep -q "^docs/explanation/adr/"; then
+    echo -e "\033[31mErreur: Modification des dépendances détectée sans ADR.\033[0m"
+    echo "Vous avez modifié package.json. Veuillez justifier avec un nouveau fichier dans docs/explanation/adr/."
+    exit 1
+  fi
+fi
 
 exit 0

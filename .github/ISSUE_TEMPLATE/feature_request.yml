@@ -1,0 +1,38 @@
+name: Feature Request (Évolution)
+description: Proposer une idée ou une amélioration pour le projet
+title: "feat: [description courte]"
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: intention
+    attributes:
+      label: Intention Métier (Le Pourquoi)
+      description: Expliquez le but final de cette évolution. Quel est le problème réel que cela résout pour l'utilisateur ou l'architecture ?
+      placeholder: "Cette évolution permet de résoudre le problème de..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Implémentation proposée (Le Quoi)
+      description: Comment envisagez-vous de réaliser cette évolution ?
+      placeholder: "Je propose d'ajouter un composant..."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considérées
+      description: Quelles autres options avez-vous envisagées ?
+    validations:
+      required: false
+  - type: checkboxes
+    id: compliance
+    attributes:
+      label: Conformité GEF
+      description: L'architecture GEF exige une rigueur absolue. Cochez ces cases pour confirmer votre engagement.
+      options:
+        - label: J'ai lu le ENGINEERING_PLAYBOOK.md et cette évolution s'y conforme.
+          required: true
+        - label: J'ai vérifié qu'une issue similaire n'existe pas déjà.
+          required: true

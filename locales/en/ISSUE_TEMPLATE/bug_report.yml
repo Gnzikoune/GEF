@@ -1,0 +1,47 @@
+name: Bug Report
+description: Report a bug in the code or architecture
+title: "fix: [short description]"
+labels: ["bug"]
+body:
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what is broken.
+      placeholder: "When I click on button X, the application crashes with error..."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this behavior deterministically?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should have happened?
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Node version, Browser, etc.
+      placeholder: "Windows 11, Node v20"
+    validations:
+      required: true
+  - type: checkboxes
+    id: compliance
+    attributes:
+      label: Compliance & Documentation
+      description: In GEF, a bug fix MUST be accompanied by documentation (Research Log).
+      options:
+        - label: I commit to documenting the root cause of this bug in `RESEARCH_LOG.md` during the PR.
+          required: true

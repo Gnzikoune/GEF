@@ -1,0 +1,47 @@
+name: Bug Report (Anomalie)
+description: Signaler un bug dans le code ou l'architecture
+title: "fix: [description courte]"
+labels: ["bug"]
+body:
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Description du Bug
+      description: Une description claire et concise de ce qui ne fonctionne pas.
+      placeholder: "Lorsque je clique sur le bouton X, l'application crashe avec l'erreur..."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes pour reproduire
+      description: Comment pouvons-nous reproduire ce comportement de manière déterministe ?
+      placeholder: |
+        1. Aller sur '...'
+        2. Cliquer sur '....'
+        3. Voir l'erreur
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportement attendu
+      description: Que devrait-il se passer normalement ?
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environnement
+      description: OS, Version de Node, Navigateur, etc.
+      placeholder: "Windows 11, Node v20"
+    validations:
+      required: true
+  - type: checkboxes
+    id: compliance
+    attributes:
+      label: Conformité & Documentation
+      description: Dans GEF, un correctif de bug DOIT s'accompagner d'une documentation (Research Log).
+      options:
+        - label: Je m'engage à documenter la cause racine de ce bug dans `RESEARCH_LOG.md` lors de la PR.
+          required: true
