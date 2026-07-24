@@ -26,13 +26,13 @@ function createDirectories(includeCI) {
 
 /**
  * Applique les règles de Hard Limits selon la sévérité choisie.
+ * La substitution opère sur le fichier source de la bonne locale — pas de traduction à la volée.
  */
-function applyTemplating(content, strictness, language) {
+function applyTemplating(content, strictness) {
   let maxLines = '30';
   let maxParams = '3';
   let maxComplexity = '10';
   let maxPayload = '1 Mo';
-  let isEnglish = language === 'English';
 
   if (strictness.includes('Startup')) {
     maxLines = '50';
@@ -46,40 +46,47 @@ function applyTemplating(content, strictness, language) {
     maxPayload = '100 Ko';
   }
 
-  let result = content
+  return content
     .replace(/{{MAX_LINES}}/g, maxLines)
     .replace(/{{MAX_PARAMS}}/g, maxParams)
     .replace(/{{MAX_COMPLEXITY}}/g, maxComplexity)
     .replace(/{{MAX_PAYLOAD}}/g, maxPayload);
+}
 
-  if (isEnglish) {
-    result = result.replace(/Ce prompt est à fournir/g, 'This prompt is to be provided');
-    result = result.replace(/Tu es une IA d'assistance/g, 'You are an AI coding assistant');
-    // Simple traduction rudimentaire pour les instructions racines
-    result = `[ENGLISH MODE ACTIVATED - ALL RESPONSES MUST BE IN ENGLISH]\n\n${result}`;
-  }
-
-  return result;
+/**
+ * Résout le dossier source des assets GEF selon la langue choisie.
+ * Priorité : locales/<lang>/ → fallback sur locales/fr/ → fallback racine.
+ */
+function resolveLocaleDir(gefDir, language) {
+  const lang = language === 'English' ? 'en' : 'fr';
+  const localeDir = path.join(gefDir, 'locales', lang);
+  if (fs.existsSync(localeDir)) return localeDir;
+  const frFallback = path.join(gefDir, 'locales', 'fr');
+  if (fs.existsSync(frFallback)) return frFallback;
+  return gefDir; // fallback legacy
 }
 
 /**
  * Copie le Playbook et les prompts IA avec le templating dynamique.
+ * Lit les fichiers depuis locales/<fr|en>/ pour un support bilingue propre.
  */
 export function copyAndTemplateGefAssets(gefDir, strictness, language) {
   console.log(chalk.cyan('📚 Ajout du Playbook et des Prompts IA dynamiques...'));
   fs.mkdirSync('.gef/prompts', { recursive: true });
 
-  const playbookSrc = path.join(gefDir, 'ENGINEERING_PLAYBOOK.md');
+  const localeDir = resolveLocaleDir(gefDir, language);
+
+  const playbookSrc = path.join(localeDir, 'ENGINEERING_PLAYBOOK.md');
   if (fs.existsSync(playbookSrc)) {
     const raw = fs.readFileSync(playbookSrc, 'utf8');
-    fs.writeFileSync('.gef/ENGINEERING_PLAYBOOK.md', applyTemplating(raw, strictness, language));
+    fs.writeFileSync('.gef/ENGINEERING_PLAYBOOK.md', applyTemplating(raw, strictness));
   }
 
-  const promptsSrc = path.join(gefDir, 'prompts');
+  const promptsSrc = path.join(localeDir, 'prompts');
   if (fs.existsSync(promptsSrc)) {
     fs.readdirSync(promptsSrc).forEach((p) => {
       const raw = fs.readFileSync(path.join(promptsSrc, p), 'utf8');
-      fs.writeFileSync(path.join('.gef/prompts', p), applyTemplating(raw, strictness, language));
+      fs.writeFileSync(path.join('.gef/prompts', p), applyTemplating(raw, strictness));
     });
   }
 }
@@ -90,8 +97,12 @@ function createAdrTemplate(gefDir) {
   if (fs.existsSync(templateSrc)) fs.copyFileSync(templateSrc, dest);
 }
 
-function createPRTemplate(gefDir) {
-  const templateSrc = path.join(gefDir, 'generator', 'templates', 'PULL_REQUEST_TEMPLATE.md');
+function createPRTemplate(gefDir, language) {
+  const localeDir = resolveLocaleDir(gefDir, language);
+  // Priorité : locales/<lang>/PULL_REQUEST_TEMPLATE.md → fallback generator/templates
+  const localeSrc = path.join(localeDir, 'PULL_REQUEST_TEMPLATE.md');
+  const legacySrc = path.join(gefDir, 'generator', 'templates', 'PULL_REQUEST_TEMPLATE.md');
+  const templateSrc = fs.existsSync(localeSrc) ? localeSrc : legacySrc;
   fs.mkdirSync('.github', { recursive: true });
   const dest = '.github/PULL_REQUEST_TEMPLATE.md';
   if (fs.existsSync(templateSrc)) fs.copyFileSync(templateSrc, dest);
@@ -127,7 +138,10 @@ function createResearchLog(language) {
 }
 
 function createProjectConfig(answers, gefDir) {
-  const templatePath = path.join(gefDir, 'PROJECT_CONFIG.template.md');
+  const localeDir = resolveLocaleDir(gefDir, answers.language);
+  const templatePath = fs.existsSync(path.join(localeDir, 'PROJECT_CONFIG.template.md'))
+    ? path.join(localeDir, 'PROJECT_CONFIG.template.md')
+    : path.join(gefDir, 'PROJECT_CONFIG.template.md');
   if (!fs.existsSync(templatePath)) return;
 
   const dateStr = new Date().toLocaleString(answers.language === 'English' ? 'en-US' : 'fr-FR', { month: 'long', year: 'numeric' });
@@ -146,11 +160,15 @@ function createProjectConfig(answers, gefDir) {
   fs.writeFileSync('PROJECT_CONFIG.md', content);
 }
 
-function createReadme({ projectName, stack, cloud, database, gitWorkflow, strictness }) {
-  const header = `# ${projectName}\n\n## Fonctionnalités\n<À COMPLÉTER>\n\n## Architecture\n- Stack: ${stack}\n- Cloud: ${cloud}\n- DB: ${database}\n- Git: ${gitWorkflow}\n- Sévérité: ${strictness}\n`;
+function createReadme({ projectName, stack, cloud, database, gitWorkflow, strictness, language }) {
+  const isEn = language === 'English';
+  const header = isEn
+    ? `# ${projectName}\n\n## Features\n<TO DO>\n\n## Architecture\n- Stack: ${stack}\n- Cloud: ${cloud}\n- DB: ${database}\n- Git: ${gitWorkflow}\n- Severity: ${strictness}\n`
+    : `# ${projectName}\n\n## Fonctionnalités\n<À COMPLÉTER>\n\n## Architecture\n- Stack: ${stack}\n- Cloud: ${cloud}\n- DB: ${database}\n- Git: ${gitWorkflow}\n- Sévérité: ${strictness}\n`;
+  const footer = isEn ? '*Initially generated by GEF framework:*\n' : '*Généré initialement par le framework GEF:*\n';
   if (fs.existsSync('README.md')) {
     const existing = fs.readFileSync('README.md', 'utf8');
-    fs.writeFileSync('README.md', header + '\n---\n*Généré initialement par le framework GEF:*\n' + existing);
+    fs.writeFileSync('README.md', header + '\n---\n' + footer + existing);
   } else {
     fs.writeFileSync('README.md', header);
   }
@@ -172,7 +190,7 @@ export function scaffoldGef(answers, gefDir) {
   createDirectories(answers.includeCI);
   copyAndTemplateGefAssets(gefDir, answers.strictness, answers.language);
   createAdrTemplate(gefDir);
-  createPRTemplate(gefDir);
+  createPRTemplate(gefDir, answers.language);
   copyIssueTemplates(gefDir);
   if (answers.includeCI) copyAdditionalWorkflows(gefDir);
   createResearchLog(answers.language);

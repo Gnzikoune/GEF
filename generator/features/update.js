@@ -38,12 +38,12 @@ export function runUpdate(gefDir) {
     process.exit(1);
   }
 
-  // 2. Extraire l'environnement du projet
+  // 2. Extraire l'environnement du projet (supporte FR et EN)
   const content = fs.readFileSync(configPath, 'utf8');
-  const gitWorkflow = extractFromConfig(content, /- \*\*Workflow Git \*\*: (.*)/, 'GitHub Flow');
-  const strictness = extractFromConfig(content, /- \*\*Sévérité \(Hard Limits\) \*\*: (.*)/, 'Standard / Enterprise');
-  const linter = extractFromConfig(content, /- \*\*Linter \/ Formatter \*\*: (.*)/, 'Aucun');
-  const language = extractFromConfig(content, /- \*\*Langue par défaut \*\*: (.*)/, 'Français');
+  const gitWorkflow = extractFromConfig(content, /- \*\*(?:Workflow Git|Git Workflow) \*?\*?: (.*)/, 'GitHub Flow');
+  const strictness = extractFromConfig(content, /- \*\*(?:Sévérité|Severity) \(Hard Limits\) \*?\*?: (.*)/, 'Standard / Enterprise');
+  const linter = extractFromConfig(content, /- \*\*Linter \/ Formatter \*?\*?: (.*)/, 'Aucun');
+  const language = extractFromConfig(content, /- \*\*(?:Langue par défaut|Default Language) \*?\*?: (.*)/, 'Français');
 
   console.log(chalk.blue(`\nLecture de la configuration actuelle du projet :`));
   console.log(`  - Sévérité : ${chalk.yellow(strictness)}`);
