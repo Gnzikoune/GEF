@@ -114,7 +114,20 @@ function copyAdditionalWorkflows(gefDir) {
   fs.mkdirSync(destDir, { recursive: true });
   if (fs.existsSync(srcDir)) {
     fs.readdirSync(srcDir).forEach(file => {
-      fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file));
+      const srcPath = path.join(srcDir, file);
+      const stat = fs.statSync(srcPath);
+      if (stat.isFile()) {
+        fs.copyFileSync(srcPath, path.join(destDir, file));
+      } else if (stat.isDirectory()) {
+        const nestedDestDir = path.join(destDir, file);
+        fs.mkdirSync(nestedDestDir, { recursive: true });
+        fs.readdirSync(srcPath).forEach(nestedFile => {
+          const nestedSrcPath = path.join(srcPath, nestedFile);
+          if (fs.statSync(nestedSrcPath).isFile()) {
+            fs.copyFileSync(nestedSrcPath, path.join(nestedDestDir, nestedFile));
+          }
+        });
+      }
     });
   }
 }
