@@ -1,196 +1,221 @@
-# 🛡️ GUARDIAN ENGINEERING FRAMEWORK (GEF) — COMPLETE AI RULES
-# Absolute Reference: ENGINEERING_PLAYBOOK.md
-# This file is natively read by Cursor, Windsurf, and GitHub Copilot.
-# Any AI operating on this project must read, internalize, and respect EACH of these rules.
-# It is NOT necessary to ask the user what the AI is supposed to do:
-# this file is the answer to all those questions.
+# 🛡️ GUARDIAN ENGINEERING FRAMEWORK (GEF) — RÈGLES COMPLÈTES POUR L'IA
+# Référence absolue : ENGINEERING_PLAYBOOK.md
+# Ce fichier est lu nativement par Cursor, Windsurf, et GitHub Copilot.
+# Toute IA opérant sur ce projet doit lire, intérioriser et respecter CHACUNE de ces règles.
+# Il n'est PAS nécessaire de demander à l'utilisateur ce que l'IA est censée faire :
+# ce fichier est la réponse à toutes ces questions.
 
 ---
 
-## § 0. BEFORE ANY ACTION — ENTRY PROTOCOL
+## § 0. AVANT TOUTE ACTION — PROTOCOLE D'ENTRÉE
 
-Before writing a single line of code, the AI MUST:
+Avant d'écrire une seule ligne de code, l'IA DOIT :
 
-1. **Identify the project phase**: (Idea → R&D → Contractual Dev → Release → Maintenance).
-   - If R&D: CI/CD rules are flexible, the code remains in an isolated `prototype` repository.
-   - If Contractual/Production: Testing, security, and CI/CD rules are NON-NEGOTIABLE from the first commit.
-2. **Confirm business intent**: Never guess the "Why". If the business objective is not explicit, ASK before coding.
-3. **Check the Git branch**: NEVER work on `main` or `master`. Create a branch (`git checkout -b feat/xxx` or `fix/xxx`) if not already done.
+0. **Relecture Obligatoire (Anti-Amnésie)** : Utiliser impérativement l'outil de lecture de fichier (`view_file` ou équivalent) pour lire et relire l'intégralité des fichiers suivants à CHAQUE interaction :
+   - `ENGINEERING_PLAYBOOK.md` (ou `PROJECT_CONFIG.md`)
+   - `CONTEXT.md` (mémoire externe du projet)
+   - `RESEARCH_LOG.md` (si applicable pour des bugs récents)
+   Cela permet de recharger en mémoire les Hard Limits, consignes de sécurité, et l'état actuel du projet, et ce **dès le TOUT PREMIER prompt de chaque interaction** et avant toute analyse ou action.
+
+1. **Identifier la phase du projet** : (Idée → R&D → Dev Contractuel → Release → Maintenance).
+   - Si R&D : les règles CI/CD sont souples, le code reste dans un dépôt `prototype` isolé.
+   - Si Contractuel/Production : les règles de tests, sécurité et CI/CD sont NON-NÉGOCIABLES dès le premier commit.
+2. **Confirmer l'intention métier** : Ne jamais deviner le "Pourquoi". Si l'objectif métier n'est pas explicite, DEMANDER avant de coder.
+3. **Vérifier la branche Git** : Ne JAMAIS travailler sur `main` ou `master`. Créer une branche (`git checkout -b feat/xxx` ou `fix/xxx`) si ce n'est pas déjà fait.
+4. **Vérification Systématique (Chain of Thought)** : Avant de proposer ou générer le moindre code, l'IA DOIT ouvrir un bloc XML `<gef_compliance_check>`. Dans ce bloc, elle affirme explicitement respecter les Hard Limits, les hooks et la doc (Ex: `<gef_compliance_check>Je respecte la limite de X lignes, j'ai bien mis à jour RESEARCH_LOG.md car c'est un fix, etc.</gef_compliance_check>`).
+
+### CHECKPOINTS OBLIGATOIRES AVANT ACTIONS CRITIQUES
+
+Avant d'exécuter les commandes suivantes, l'IA DOIT afficher un bloc `<gef_compliance_check>` spécifique :
+
+**Commandes Git :**
+- `git push` → Vérifier que la branche de destination n'est PAS main/master
+- `git merge` → Vérifier que ce n'est pas un merge direct sur main/master
+- `git commit` → Vérifier le message respecte Conventional Commits avec ID ticket
+
+**Commandes GitHub :**
+- `gh pr merge` → Vérifier que les checks CI sont verts et que l'utilisateur a validé
+- `gh api` → Vérifier que l'opération n'est pas une modification de protection de branche
+
+**Modifications de configuration :**
+- Fichiers dans `.github/` → Vérifier l'impact sur CI/CD
+- Fichiers dans `hooks/` → Vérifier que les règles ne sont pas contournées
+- `.cursorrules` ou `.windsurfrules` → Synchroniser l'autre fichier immédiatement
 
 ---
 
-## § 1. CRASH CLAUSE — ZERO SILENT WORKAROUNDS
+## § 1. CRASH CLAUSE — ZÉRO CONTOURNEMENT SILENCIEUX
 
-> This is the most important rule of the framework. It overrides all others.
+> C'est la règle la plus importante du framework. Elle prévaut sur toutes les autres.
 
-- **Faced with an error, an obstacle, or ambiguity**: STOP IMMEDIATELY and accurately report the problem to the user.
-- **NEVER improvise a silent workaround** to achieve the goal at all costs.
-- **If a command fails**: diagnose the root cause, document it, and wait for human validation before continuing.
-- **If an instruction is ambiguous**: ask the question rather than interpreting.
+- **Face à une erreur, un obstacle ou une ambiguïté** : ARRÊTER IMMÉDIATEMENT et signaler le problème à l'utilisateur avec précision.
+- **Ne JAMAIS improviser une solution de contournement (workaround) silencieuse** pour atteindre l'objectif coûte que coûte.
+- **Si une commande échoue** : diagnostiquer la cause racine, documenter, et attendre une validation humaine avant de continuer.
+- **Si une consigne est ambiguë** : poser la question plutôt que d'interpréter.
 
 ---
 
-## § 2. CLEAN CODE — ABSOLUTE HARD LIMITS
+## § 2. CLEAN CODE — HARD LIMITS ABSOLUS
 
-These limits are non-negotiable. The AI can NEVER generate code that violates them.
+Ces limites sont non-négociables. L'IA ne peut JAMAIS générer du code qui les viole.
 
-- **Functions / Methods**: `{{MAX_LINES}}` lines max.
-- **Parameters**: `{{MAX_PARAMS}}` arguments max. Beyond this, use a configuration object.
-- **Cyclomatic Complexity**: `{{MAX_COMPLEXITY}}` logical paths max per function.
-- **Nesting / Depth**: 3 levels max. Use **Guard Clauses (Early Return)** to reduce nesting.
-- **UI Components**: 150 to 200 lines max. Logic > 50 lines → extract into a Custom Hook.
-- **Files**: 300 to 400 lines max.
-- **Rule of 3**: 1st duplication = OK. 2nd = tolerated. 3rd = refactoring into abstraction MANDATORY.
+- **Fonctions / Méthodes** : `{{MAX_LINES}}` lignes max.
+- **Paramètres** : `{{MAX_PARAMS}}` arguments max. Au-delà, utiliser un objet de configuration.
+- **Complexité Cyclomatique** : `{{MAX_COMPLEXITY}}` chemins logiques max par fonction.
+- **Nesting / Profondeur** : 3 niveaux max. Utiliser les **Guard Clauses (Early Return)** pour réduire le nesting.
+- **Composants UI** : 150 à 200 lignes max. Logique > 50 lignes → extraire en Custom Hook.
+- **Fichiers** : 300 à 400 lignes max.
+- **Règle de 3** : 1ère duplication = OK. 2ème = toléré. 3ème = refactorisation en abstraction OBLIGATOIRE.
 
-### Naming Conventions
-- **Files / Folders**: `kebab-case` (e.g.: `user-profile.tsx`)
-- **Classes / Components**: `PascalCase` (e.g.: `UserProfile`)
-- **Variables / Functions**: `camelCase` (e.g.: `getUserData`)
-- **Global Constants**: `UPPER_SNAKE_CASE` (e.g.: `MAX_RETRY_COUNT`)
-- **Absolute Rule**: Zero ignored lint warnings without an explanatory comment.
+### Conventions de Nommage
+- **Fichiers / Dossiers** : `kebab-case` (ex: `user-profile.tsx`)
+- **Classes / Composants** : `PascalCase` (ex: `UserProfile`)
+- **Variables / Fonctions** : `camelCase` (ex: `getUserData`)
+- **Constantes Globales** : `UPPER_SNAKE_CASE` (ex: `MAX_RETRY_COUNT`)
+- **Règle absolue** : Zéro warning de lint ignoré sans commentaire explicatif.
 
 ---
 
 ## § 3. ARCHITECTURE — CLEAN ARCHITECTURE & SOLID
 
-- **Feature-Sliced Design (mandatory)**: Organize folders by business feature, NOT by technical layer.
-  - ❌ Forbidden: `/controllers`, `/models`, `/views`
-  - ✅ Correct: `/features/auth/api.ts`, `/features/auth/components/`, `/features/billing/model.ts`
-- **SRP (Single Responsibility Principle)**: A class/function does only one thing.
-- **DIP (Dependency Inversion)**: The domain depends on interfaces, never on concrete implementations.
+- **Feature-Sliced Design (obligatoire)** : Organiser les dossiers par fonctionnalité métier, PAS par couche technique.
+  - ❌ Interdit : `/controllers`, `/models`, `/views`
+  - ✅ Correct : `/features/auth/api.ts`, `/features/auth/components/`, `/features/billing/model.ts`
+- **SRP (Single Responsibility Principle)** : Une classe/fonction ne fait qu'une seule chose.
+- **DIP (Dependency Inversion)** : Le domaine dépend d'interfaces, jamais d'implémentations concrètes.
 
 ---
 
-## § 4. ERROR HANDLING — RESILIENCE
+## § 4. GESTION DES ERREURS — RESILIENCE
 
-- **Information Hiding**: NEVER expose stack traces or technical details to the end user. Return a generic error with a log ID.
-- **Error Typing**: Create typed exception classes (`DomainError`, `InfraError`, `ValidationError`).
-- **Result Pattern**: Replace massive `try/catch` blocks with `Result<Success, Failure>` to force explicit handling of every failure.
+- **Information Hiding** : Ne JAMAIS exposer de stack traces ou détails techniques à l'utilisateur final. Renvoyer une erreur générique avec un ID de log.
+- **Typage des Erreurs** : Créer des classes d'exceptions typées (`DomainError`, `InfraError`, `ValidationError`).
+- **Result Pattern** : Remplacer les blocs `try/catch` massifs par `Result<Success, Failure>` pour forcer la gestion explicite de chaque échec.
 
 ---
 
-## § 5. SECURITY — OWASP HARD LIMITS
+## § 5. SÉCURITÉ — OWASP HARD LIMITS
 
-*"Complexity is the enemy of security."*
+*"La complexité est l'ennemie de la sécurité."*
 
-- **Zero Trust**: Never trust user inputs. Strict validation at all boundaries (e.g.: `Zod`, `Joi`).
-- **Fail-Safe Defaults**: All access is DENIED by default. Permissions are explicitly granted.
-- **SQLi Protection**: Parameterized queries MANDATORY. No dynamic unparameterized SQL queries.
-- **XSS Protection**: Data encoding on output.
+- **Zero Trust** : Ne jamais faire confiance aux entrées utilisateur. Validation stricte à toutes les frontières (ex: `Zod`, `Joi`).
+- **Fail-Safe Defaults** : Tout accès est REFUSÉ par défaut. On accorde explicitement les permissions.
+- **Protection SQLi** : Requêtes paramétrées OBLIGATOIRES. Aucune requête SQL dynamique non-paramétrée.
+- **Protection XSS** : Encodage des données à la sortie.
 
-### Hard Limits
-| Parameter | Limit |
-|-----------|-------|
+### Limites Dures
+| Paramètre | Limite |
+|-----------|--------|
 | Access Token (JWT) | 15 minutes max |
-| Refresh Token | 7 days max (`HttpOnly` cookie) |
-| API Request Body (JSON) | `{{MAX_PAYLOAD}}` max |
-| Image/File Upload | 5 MB max |
-| Failed Login Attempts | Block for 15 min after 5 failures |
-| Global API Limit | 100 requests / minute / IP |
-| Secrets | Always via `.env`. NEVER hardcoded. |
+| Refresh Token | 7 jours max (cookie `HttpOnly`) |
+| Corps de requête API (JSON) | `{{MAX_PAYLOAD}}` max |
+| Upload d'image/fichier | 5 Mo max |
+| Tentatives de connexion échouées | Blocage 15 min après 5 échecs |
+| Limite globale API | 100 requêtes / minute / IP |
+| Secrets | Toujours via `.env`. JAMAIS hardcodés. |
 
 ---
 
-## § 6. GIT STRATEGY — GITHUB FLOW
+## § 6. STRATÉGIE GIT — GITHUB FLOW
 
-- **`main` branch = untouchable**: Direct pushes STRICTLY FORBIDDEN.
-- **Short-lived branches**: `feat/xxx`, `fix/xxx`, `docs/xxx`. Max lifespan: a few days.
-- **One action = One commit**: Never group the creation of a file and its modification in the same commit.
-- **Pull Requests (PR) mandatory**: All code goes through a PR. CI must be green before merging.
-- **Code Review**: Human approval is required. The AI prepares the PR but NEVER MERGES it itself.
-- **Conventional Commits (strict)**:
-  - Format: `type: short description (#kanban-ticket)`
-  - Types: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `style:`, `test:`
-  - Example: `feat: add OAuth authentication (#42)`
+- **Branche `main` = intouchable** : Pushes directs STRICTEMENT INTERDITS.
+- **Branches courtes** : `feat/xxx`, `fix/xxx`, `docs/xxx`. Durée de vie max : quelques jours.
+- **Une action = Un commit** : Ne jamais grouper la création d'un fichier et sa modification dans le même commit.
+- **Pull Requests (PR) obligatoires** : Tout code passe par une PR. La CI doit être verte avant merge.
+- **Revue de code** : Une approbation humaine est requise. L'IA prépare la PR mais NE MERGE JAMAIS elle-même.
+- **Conventional Commits (strict)** :
+  - Format : `type: description courte (#ticket-kanban)`
+  - Types : `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `style:`, `test:`
+  - Exemple : `feat: ajout de l'authentification OAuth (#42)`
 
 ---
 
 ## § 7. DOCUMENTATION — DIÁTAXIS & DOCS-AS-CODE
 
-- **Comment the WHY**: Comments explain the intent, not the implementation.
-- **Diátaxis Structure** (`docs/` folder):
-  - `docs/tutorials/` → Getting started
-  - `docs/how-to/` → Specific task guides
-  - `docs/reference/` → API, DB, schemas
+- **Commenter le POURQUOI** : Les commentaires expliquent l'intention, pas l'implémentation.
+- **Structure Diátaxis** (dossier `docs/`) :
+  - `docs/tutorials/` → Prise en main
+  - `docs/how-to/` → Guides de tâches spécifiques
+  - `docs/reference/` → API, DB, schémas
   - `docs/explanation/adr/` → Architecture Decision Records (ADR)
-- **ADR mandatory**: Any major architectural decision (change of DB, framework, cloud...) requires an ADR file in `docs/explanation/adr/ADR-XXX-title.md`.
-- **RESEARCH_LOG mandatory**: Any resolved critical bug must be documented in `docs/research/RESEARCH_LOG.md` with: Symptom / Root Cause / Resolution / Lesson Learned.
-- **C4 Model**: Architecture is visualized and versioned via Mermaid.js (Context, Containers, Components).
+- **ADR obligatoire** : Toute décision architecturale majeure (changement de DB, framework, cloud...) nécessite un fichier ADR dans `docs/explanation/adr/ADR-XXX-titre.md`.
+- **RESEARCH_LOG obligatoire** : Tout bug critique résolu doit être documenté dans `docs/research/RESEARCH_LOG.md` avec : Symptôme / Cause Racine / Résolution / Leçon apprise.
+- **Modèle C4** : L'architecture est visualisée et versionnée via Mermaid.js (Contexte, Conteneurs, Composants).
 
 ---
 
-## § 8. QUALITY ASSURANCE — TEST PYRAMID & SHIFT-LEFT
+## § 8. ASSURANCE QUALITÉ — TEST PYRAMID & SHIFT-LEFT
 
-- **Shift-Left**: Thinking about tests starts as soon as specifications are written, before coding.
-- **BDD mandatory**: Integration and E2E tests follow the `Given / When / Then` syntax.
-- **Test Pyramid**:
-  - 🟢 **80%** Unit Tests (fast, no DB, target business logic).
-  - 🟡 **15%** Integration Tests (validate DB / API).
-  - 🔴 **5%** E2E Playwright Tests (slow, fragile — do not overuse).
-- **TDD for features**: Write the E2E test describing the behavior BEFORE writing the business code.
-
----
-
-## § 9. STEP-BY-STEP METHODOLOGY — STEERING & AUTONOMY
-
-- **Workflow Cycle**: `Propose → Explain → Implement → Commit → Validate`. Never large blocks at once.
-- **Breakdown into Issues**: Use `gh issue create` to transform a large undertaking into trackable sub-tasks. **The AI MUST read and use the format defined in `.github/ISSUE_TEMPLATE/` (if it exists) and respect `CONTRIBUTING.md`.**
-- **PR Creation**: Use `gh pr create` with the mention `Closes #XYZ` and imperatively use `.github/PULL_REQUEST_TEMPLATE.md`.
-- **Zero Scraps**: Debug scripts, temporary files, and "commented out" comments are deleted BEFORE any push.
-- **R&D Separation**: Experiments without specifications live in a separate private repository. The official Git history remains clean.
+- **Shift-Left** : La réflexion sur les tests commence dès l'écriture des spécifications, avant le code.
+- **BDD obligatoire** : Les tests d'intégration et E2E suivent la syntaxe `Given / When / Then`.
+- **Pyramide des tests** :
+  - 🟢 **80%** de Tests Unitaires (rapides, sans DB, ciblent la logique métier).
+  - 🟡 **15%** de Tests d'Intégration (valident DB / API).
+  - 🔴 **5%** de Tests E2E Playwright (lents, fragiles — ne pas en abuser).
+- **TDD pour les features** : Écrire le test E2E décrivant le comportement AVANT d'écrire le code métier.
 
 ---
 
-## § 10. CONTEXTUAL WORKFLOWS — BEHAVIOR DEPENDING ON THE TASK
+## § 9. MÉTHODOLOGIE PAS-À-PAS — PILOTAGE & AUTONOMIE
 
-### Kickoff of a new project
-1. Ask: "Is this project R&D or Contractual/Production?"
-2. Help fill out `PROJECT_CONFIG.md`.
-3. Propose the Feature-Sliced Design structure.
-4. Create `docs/` with the 4 Diátaxis quadrants.
-5. Prepare the GitHub Actions workflow (Lint, Tests, Security) from day one.
-6. First commit: `chore: project initialization via GEF (structure, CI/CD, docs)`
-
-### Development of a Feature
-1. Create a ticket `gh issue create`.
-2. Create a branch `feat/xxx`.
-3. Write the BDD test BEFORE the code (TDD).
-4. Frequent micro-commits with `feat: ... (#ticket)`.
-5. Open a PR with `gh pr create` and ask the user to merge.
-
-### Bug Resolution
-1. **Reproduce** the bug in isolation. Do not modify anything before understanding the root cause.
-2. Evaluate the security impact as an absolute priority.
-3. Fix with a commit `fix: ... (#ticket)`.
-4. Write or update a test covering the scenario.
-5. Document in `RESEARCH_LOG.md` MANDATORY.
-
-### Code Review (checklist before any merge)
-- [ ] Hard Limits respected (lines, parameters, complexity, nesting)?
-- [ ] Feature-Sliced Design respected?
-- [ ] SRP respected (only one responsibility per class/function)?
-- [ ] Inputs validated (Zod/Joi)? No dynamic SQL? No hardcoded secrets?
-- [ ] Unit tests cover the new/modified logic?
-- [ ] Conventional Commits with ticket ID?
-- [ ] ADR created if major architectural decision?
-- [ ] Code commented on INTENT (the why), not the what?
-- **If a point fails → block the merge and propose the fix.**
-
-### Writing an ADR
-- File: `docs/explanation/adr/ADR-XXX-descriptive_title.md`
-- Structure: Context / Considered Options / Decision / Consequences / Mermaid Diagram (if applicable)
-- Dedicated commit: `docs(adr): creation ADR-XXX — [title] (#ticket)`
-- ⚠️ Do NOT record ADRs in the RESEARCH_LOG (reserved for bugs).
-
-### End of a task (Before concluding — MANDATORY AND AUTOMATIC)
-The AI MUST NOT wait for the user to ask these questions. It MUST check and execute them on its own initiative before concluding its response:
-
-- [ ] **Completed tasks**: Reread the `task.md` file (if it exists). Are all boxes checked? If not, finish the work or clearly report what remains.
-- [ ] **Documentation Check**: Do `README.md`, `CHANGELOG.md`, or Diátaxis docs need to be updated following these changes?
-- [ ] **Synchronization**: If `.cursorrules` was modified, synchronize `.windsurfrules` immediately (`cp .cursorrules .windsurfrules`).
-- [ ] **Clean commit**: No scraps (temporary file, debug `console.log`) in the final commit.
-- [ ] **PR opened**: Is the branch pushed and the PR created on GitHub?
+- **Cycle de travail** : `Propose → Explique → Implémente → Commite → Valide`. Jamais de larges blocs d'un coup.
+- **Découpage en Issues** : Utiliser `gh issue create` pour transformer un grand chantier en sous-tâches traçables. **L'IA DOIT lire et utiliser le format défini dans `.github/ISSUE_TEMPLATE/` (s'il existe) et respecter le `CONTRIBUTING.md`.**
+- **Création de PR** : Utiliser `gh pr create` avec la mention `Closes #XYZ` et utiliser impérativement le `.github/PULL_REQUEST_TEMPLATE.md`.
+- **Zéro Scories** : Scripts de debug, fichiers temporaires et commentaires "commentés" sont supprimés AVANT tout push.
+- **Séparation R&D** : Les expérimentations sans cahier des charges vivent dans un dépôt privé séparé. L'historique Git officiel reste propre.
 
 ---
 
-*This file is the fundamental law of GEF. It guarantees an "Elite" DORA engineering level on all projects.*
+## § 10. WORKFLOWS CONTEXTUELS — COMPORTEMENT SELON LA TÂCHE
+
+### Kickoff d'un nouveau projet
+1. Demander : "Ce projet est-il R&D ou Contractuel/Production ?"
+2. Aider à remplir `PROJECT_CONFIG.md`.
+3. Proposer la structure Feature-Sliced Design.
+4. Créer `docs/` avec les 4 quadrants Diátaxis.
+5. Préparer le workflow GitHub Actions (Lint, Tests, Sécurité) dès le premier jour.
+6. Premier commit : `chore: initialisation du projet via GEF (structure, CI/CD, docs)`
+
+### Développement d'une Feature
+1. Créer un ticket `gh issue create`.
+2. Créer une branche `feat/xxx`.
+3. Écrire le test BDD AVANT le code (TDD).
+4. Micro-commits fréquents avec `feat: ... (#ticket)`.
+5. Ouvrir une PR avec `gh pr create` et demander le merge à l'utilisateur.
+
+### Résolution d'un Bug
+1. **Reproduire** le bug de manière isolée. Ne rien modifier avant de comprendre la cause racine.
+2. Évaluer l'impact sécurité en priorité absolue.
+3. Corriger avec un commit `fix: ... (#ticket)`.
+4. Écrire ou mettre à jour un test couvrant le scénario.
+5. Documenter dans `RESEARCH_LOG.md` OBLIGATOIREMENT.
+
+### Revue de Code (checklist avant tout merge)
+- [ ] Hard Limits respectées (lignes, paramètres, complexité, nesting) ?
+- [ ] Feature-Sliced Design respecté ?
+- [ ] SRP respecté (une seule responsabilité par classe/fonction) ?
+- [ ] Entrées validées (Zod/Joi) ? Pas de SQL dynamique ? Pas de secrets hardcodés ?
+- [ ] Tests unitaires couvrent la logique nouvelle/modifiée ?
+- [ ] Conventional Commits avec ID ticket ?
+- [ ] ADR créé si décision architecturale majeure ?
+- [ ] Code commenté sur l'INTENTION (le pourquoi), pas le quoi ?
+- **Si un point échoue → bloquer le merge et proposer le correctif.**
+
+### Rédaction d'un ADR
+- Fichier : `docs/explanation/adr/ADR-XXX-titre_descriptif.md`
+- Structure : Contexte / Options Considérées / Décision / Conséquences / Diagramme Mermaid (si applicable)
+- Commit dédié : `docs(adr): création ADR-XXX — [titre] (#ticket)`
+- ⚠️ Ne PAS consigner les ADR dans le RESEARCH_LOG (réservé aux bugs).
+
+### Fin d'une tâche (Avant de conclure — OBLIGATOIRE ET AUTOMATIQUE)
+L'IA NE DOIT PAS attendre que l'utilisateur pose ces questions. Elle DOIT les vérifier et les exécuter de sa propre initiative avant de conclure sa réponse :
+
+- [ ] **Tâches achevées** : Relire le fichier `task.md` (si existant). Toutes les cases sont-elles cochées ? Sinon, finir le travail ou signaler clairement ce qui reste.
+- [ ] **Vérification Documentaire** : Le `README.md`, le `CHANGELOG.md` ou la doc Diátaxis ont-ils besoin d'être mis à jour suite à ces changements ?
+- [ ] **Synchronisation** : Si `.cursorrules` a été modifié, synchroniser `.windsurfrules` immédiatement (`cp .cursorrules .windsurfrules`).
+- [ ] **Commit propre** : Aucune scorie (fichier temporaire, `console.log` de debug) dans le commit final.
+- [ ] **PR ouverte** : La branche est-elle pushée et la PR créée sur GitHub ?
+
+---
+
+*Ce fichier est la loi fondamentale du GEF. Il garantit un niveau d'ingénierie DORA "Elite" sur tous les projets.*

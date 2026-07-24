@@ -15,22 +15,31 @@ function initGitRepo() {
 
 /**
  * Génère le script pre-push de manière dynamique selon le choix du workflow Git.
+ * Version améliorée avec vérification de la branche de destination.
  */
 function generatePrePush(gitWorkflow) {
   const isGitHubFlow = gitWorkflow.includes('GitHub Flow');
-  let script = '#!/bin/bash\n# Hook: pre-push\n\nCURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)\n\n';
+  let script = '#!/bin/bash\n# Hook: pre-push\n# Réf: ENGINEERING_PLAYBOOK.md §5 - Protection stricte de la branche principale\n\n';
 
-  if (isGitHubFlow) {
-    script += `# Sécurité GitHub Flow : Interdire les pushes directs sur main
-if [ "$CURRENT_BRANCH" = "main" ] || [ "$CURRENT_BRANCH" = "master" ]; then
-  echo -e "\\033[31mErreur: Push direct sur '$CURRENT_BRANCH' interdit.\\033[0m"
-  echo "Le projet utilise GitHub Flow. Utilisez des branches et des Pull Requests."
-  exit 1
-fi
-\n`;
-  } else {
+  script += `# Vérification de la branche de destination
+while read local_ref local_sha remote_ref remote_sha
+do
+  # Extraire le nom de la branche distante (ex: refs/heads/main -> main)
+  remote_branch=$(echo "$remote_ref" | sed 's|refs/heads/||')
+  
+  if [ "$remote_branch" = "main" ] || [ "$remote_branch" = "master" ]; then
+    echo -e "\\033[31mErreur: Push direct sur '$remote_branch' strictement interdit (Playbook §5).\\033[0m"
+    echo "L'IA ou le développeur humain doit créer une branche et passer par une Pull Request."
+    echo "Commande suggérée : git checkout -b feat/nom-feature ou fix/nom-fix"
+    exit 1
+  fi
+done
+
+`;
+
+  if (!isGitHubFlow) {
     script += `# Sécurité TBD : Pushes sur main autorisés.
-echo -e "\\033[34mInfo: Mode TBD, push sur $CURRENT_BRANCH autorisé.\\033[0m"\n\n`;
+echo -e "\\033[34mInfo: Mode TBD, push sur main autorisé.\\033[0m"\n\n`;
   }
 
   script += `if [ -f "package.json" ] && grep -q '"test"' package.json; then

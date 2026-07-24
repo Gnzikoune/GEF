@@ -158,6 +158,132 @@ function createResearchLog(language) {
   );
 }
 
+function createContextFile(projectName, language) {
+  const isEn = language === 'English';
+  const dest = 'CONTEXT.md';
+  if (fs.existsSync(dest)) return;
+  
+  const content = isEn
+    ? `# GEF Context Memory
+# External memory file for the AI
+# Read systematically at each interaction to avoid contextual amnesia
+
+---
+
+## Current Project State
+
+**Project:** ${projectName}
+**Phase:** Development
+**Main branch:** main
+
+---
+
+## Critical Rules (Anti-Bypass)
+
+### 1. Git Workflow - STRICTLY FORBIDDEN
+- ❌ NEVER do \`git push origin main\` or \`git push origin master\`
+- ❌ NEVER commit directly on main/master
+- ✅ ALWAYS create a branch: \`git checkout -b feat/xxx\` or \`fix/xxx\`
+- ✅ ALWAYS go through a Pull Request
+- ✅ ALWAYS wait for human validation before merge
+
+### 2. Critical Actions Requiring Checkpoint
+Before executing these commands, the AI MUST display \`<gef_compliance_check>\`:
+- \`git push\` (any branch)
+- \`git merge\`
+- \`gh pr merge\`
+- \`gh api\` (especially for admin operations)
+- Configuration file modifications (.github/, hooks/, .cursorrules)
+
+### 3. Mandatory Documentation
+- For \`fix/*\` branches: RESEARCH_LOG.md is MANDATORY
+- For package.json modifications: ADR in docs/explanation/adr/ is MANDATORY
+- For major architectural decisions: ADR is MANDATORY
+
+---
+
+## Checklist Before Any Action
+
+\`\`\`
+<gef_compliance_check>
+1. I am on a feature/fix branch, NOT on main/master
+2. I have read ENGINEERING_PLAYBOOK.md recently
+3. I have verified that this action does not violate Hard Limits
+4. If it's a fix, I have updated RESEARCH_LOG.md
+5. If it's a git push, I have verified the destination branch
+</gef_compliance_check>
+\`\`\`
+
+---
+
+## Recent Modifications
+
+- Initial project setup via GEF framework
+- Anti-amnesia mechanisms enabled
+- Context memory system active
+`
+    : `# Mémoire Contextuelle GEF
+# Fichier de mémoire externe pour l'IA
+# Relu systématiquement à chaque interaction pour éviter l'amnésie contextuelle
+
+---
+
+## État Actuel du Projet
+
+**Projet :** ${projectName}
+**Phase :** Développement
+**Branche principale :** main
+
+---
+
+## Règles Critiques (Anti-Contournement)
+
+### 1. Git Workflow - STRICTEMENT INTERDIT
+- ❌ JAMAIS de \`git push origin main\` ou \`git push origin master\`
+- ❌ JAMAIS de commits directs sur main/master
+- ✅ TOUJOURS créer une branche : \`git checkout -b feat/xxx\` ou \`fix/xxx\`
+- ✅ TOUJOURS passer par une Pull Request
+- ✅ TOUJOURS attendre validation humaine avant merge
+
+### 2. Actions Critiques Requérant Checkpoint
+Avant d'exécuter ces commandes, l'IA DOIT afficher \`<gef_compliance_check>\` :
+- \`git push\` (quelle que soit la branche)
+- \`git merge\`
+- \`gh pr merge\`
+- \`gh api\` (surtout pour les opérations d'administration)
+- Modifications de fichiers de configuration (.github/, hooks/, .cursorrules)
+
+### 3. Documentation Obligatoire
+- Pour les branches \`fix/*\` : RESEARCH_LOG.md est OBLIGATOIRE
+- Pour les modifications de package.json : ADR dans docs/explanation/adr/ est OBLIGATOIRE
+- Pour les décisions architecturales majeures : ADR est OBLIGATOIRE
+
+---
+
+## Checklist Avant Toute Action
+
+\`\`\`
+<gef_compliance_check>
+1. Je suis sur une branche feature/fix, PAS sur main/master
+2. J'ai lu ENGINEERING_PLAYBOOK.md récemment
+3. J'ai vérifié que cette action ne viole pas les Hard Limits
+4. Si c'est un fix, j'ai mis à jour RESEARCH_LOG.md
+5. Si c'est un git push, j'ai vérifié la branche de destination
+</gef_compliance_check>
+\`\`\`
+
+---
+
+## Dernières Modifications
+
+- Configuration initiale du projet via GEF
+- Mécanismes anti-amnésie activés
+- Système de mémoire contextuelle actif
+`;
+  
+  fs.writeFileSync(dest, content);
+}
+
 function createProjectConfig(answers, gefDir) {
   const localeDir = resolveLocaleDir(gefDir, answers.language);
   const templatePath = fs.existsSync(path.join(localeDir, 'PROJECT_CONFIG.template.md'))
@@ -215,6 +341,7 @@ export function scaffoldGef(answers, gefDir) {
   copyIssueTemplates(gefDir, answers.language);
   if (answers.includeCI) copyAdditionalWorkflows(gefDir);
   createResearchLog(answers.language);
+  createContextFile(answers.projectName, answers.language);
   createProjectConfig(answers, gefDir);
   createReadme(answers);
   createGitignore(answers.stack);
