@@ -47,6 +47,7 @@ function configureEslint(stack, strictness) {
  */
 function configureBiome(strictness) {
   console.log(chalk.yellow('⚡ Configuration de Biome avec Hard Limits...'));
+  console.log(chalk.yellow('⚠️  Note: Les limites de lignes et paramètres ne sont pas supportées nativement par Biome dans cette configuration. Seule la complexité est vérifiée.'));
   const limits = getLimits(strictness);
   const biomeConfig = {
     $schema: "https://biomejs.dev/schemas/1.8.3/schema.json",
@@ -86,6 +87,7 @@ function configureBiome(strictness) {
  */
 function configureRuff(strictness) {
   console.log(chalk.yellow('🐍 Configuration de Ruff avec Hard Limits...'));
+  console.log(chalk.yellow('⚠️  Note: Les limites de lignes et paramètres ne sont pas supportées nativement par Ruff dans cette configuration. Seule la complexité est vérifiée.'));
   const limits = getLimits(strictness);
   const ruffToml = `[lint]
 select = ["E", "F", "I", "C90"]

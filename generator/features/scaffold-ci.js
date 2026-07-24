@@ -93,8 +93,12 @@ function buildLintBlock(isNode, isPython, linter) {
     return `      - name: Lint\n        run: ${cmd}`;
   }
   if (isPython) {
-    const cmd = linter?.includes('Ruff') ? 'ruff check .' : 'flake8 src/ --max-line-length=120 || true';
+    const cmd = linter?.includes('Ruff') ? 'ruff check .' : 'flake8 src/ --max-line-length=120';
     return `      - name: Lint\n        run: |\n          pip install ${linter?.includes('Ruff') ? 'ruff' : 'flake8'}\n          ${cmd}`;
+  }
+  if (linter === 'Aucun') {
+    return `      - name: Linter Warning
+        run: echo "::warning::Aucun linter configuré. La qualité du code n'est pas vérifiée mécaniquement."`;
   }
   return '';
 }
@@ -155,7 +159,12 @@ function buildTestBlock(isNode, isPython, database) {
 // BLOC : Scan de sécurité (Gitleaks + Trivy FS)
 // ─────────────────────────────────────────────
 function buildSecurityScanBlock() {
-  return `      - name: Scan secrets (Gitleaks)
+  return `      - name: Scan SAST (Semgrep)
+        run: |
+          pip install semgrep
+          semgrep scan --config="p/owasp-top-ten" --error
+
+      - name: Scan secrets (Gitleaks)
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}

@@ -29,7 +29,16 @@ if [ -n "$DEBUG_FILES" ]; then
   exit 1
 fi
 
-# 3. Lint / Format (Dégradation progressive acceptable)
+# 3. Synchronisation IA (Cursor / Windsurf)
+if [ -f ".cursorrules" ] && [ -f ".windsurfrules" ]; then
+  if ! cmp -s .cursorrules .windsurfrules; then
+    echo -e "\033[31mErreur: .cursorrules et .windsurfrules sont désynchronisés.\033[0m"
+    echo "Copiez le contenu de l'un dans l'autre pour maintenir la cohérence de l'IA (Playbook)."
+    exit 1
+  fi
+fi
+
+# 4. Lint / Format (Dégradation progressive acceptable)
 # On tente de trouver une commande de lint dans les scripts standards, sinon on avertit.
 if [ -f "package.json" ] && grep -q '"lint"' package.json; then
   echo "Exécution du linter npm..."
@@ -41,7 +50,7 @@ else
   echo -e "\033[33mAvertissement: Aucun linter standard détecté (npm run lint, make lint). Configurez-en un dans PROJECT_CONFIG.md.\033[0m"
 fi
 
-# 4. Taille des fichiers modifiés
+# 5. Taille des fichiers modifiés
 for file in $(git diff --cached --name-only); do
   if [ -f "$file" ]; then
     LINES=$(wc -l < "$file")
