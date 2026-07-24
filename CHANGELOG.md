@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0](https://github.com/Gnzikoune/GEF/compare/v1.8.0...v1.9.0) (2026-07-24)
+
+
+### Features
+
+* apply anti-amnesia rules to all generated projects ([#48](https://github.com/Gnzikoune/GEF/issues/48)) ([#47](https://github.com/Gnzikoune/GEF/issues/47)) ([49e82a0](https://github.com/Gnzikoune/GEF/commit/49e82a0a6cd48aa6df5447ad69d519c5dff5e41d))
+
+
+### Bug Fixes
+
+* forbid IA from executing gh pr merge ([#48](https://github.com/Gnzikoune/GEF/issues/48)) ([#49](https://github.com/Gnzikoune/GEF/issues/49)) ([cb95ef0](https://github.com/Gnzikoune/GEF/commit/cb95ef0c0f63c80ade91ac01f3f6ca97fbd834a5))
+
 ## [1.8.0](https://github.com/Gnzikoune/GEF/compare/v1.7.0...v1.8.0) (2026-07-24)
 
 
