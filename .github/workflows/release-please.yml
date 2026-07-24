@@ -6,6 +6,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 name: release-please
 
@@ -17,6 +18,17 @@ jobs:
         id: release
         with:
           release-type: node
+          package-name: create-gef
+          changelog-types: |
+            chore: { skip: false }
+            docs: { skip: false }
+            feat: { skip: false }
+            fix: { skip: false }
+            refactor: { skip: false }
+            style: { skip: false }
+            test: { skip: false }
+            ci: { skip: true }
+            build: { skip: true }
 
       # Les étapes ci-dessous ne s'exécutent QUE si Release Please a effectivement créé une nouvelle release (après le merge de la PR)
       - uses: actions/checkout@v4
