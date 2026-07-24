@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/Gnzikoune/GEF/compare/v1.5.0...v1.5.1) (2026-07-24)
+
+
+### Bug Fixes
+
+* création et rétro-documentation du RESEARCH_LOG.md ([#46](https://github.com/Gnzikoune/GEF/issues/46)) ([02fe610](https://github.com/Gnzikoune/GEF/commit/02fe610aeb1e643b861acb6d3402f9ada2769944))
+* restauration et mise à jour du RESEARCH_LOG.md ([#46](https://github.com/Gnzikoune/GEF/issues/46)) ([5fbd669](https://github.com/Gnzikoune/GEF/commit/5fbd669b764446f396000a94f8b85dc64d22d1bb))
+
 ## [1.5.0](https://github.com/Gnzikoune/GEF/compare/v1.4.0...v1.5.0) (2026-07-24)
 
 
