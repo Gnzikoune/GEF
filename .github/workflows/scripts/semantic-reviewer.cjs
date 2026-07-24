@@ -1,6 +1,6 @@
-import fs from 'fs';
-import https from 'https';
-import { execSync } from 'child_process';
+const fs = require('fs');
+const https = require('https');
+const { execSync } = require('child_process');
 
 // Configuration
 const apiKey = process.env.GEF_LLM_API_KEY;

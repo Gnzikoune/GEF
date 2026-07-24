@@ -24,4 +24,4 @@ jobs:
           GEF_LLM_API_KEY: ${{ secrets.GEF_LLM_API_KEY }}
           PR_BODY: ${{ github.event.pull_request.body }}
           BASE_REF: ${{ github.base_ref }}
-        run: node .github/workflows/scripts/semantic-reviewer.js
+        run: node .github/workflows/scripts/semantic-reviewer.cjs
