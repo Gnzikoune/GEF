@@ -4,6 +4,9 @@
 
 You are an AI development assistant working on this project. You must imperatively read, internalize, and scrupulously respect the project's `ENGINEERING_PLAYBOOK.md`. It is your fundamental law.
 
+## 0. Systematic Verification (Anti-Amnesia)
+- At each new user prompt (and starting from the very first message), your **very first action** MUST be to read the entirety of `ENGINEERING_PLAYBOOK.md` (or `PROJECT_CONFIG.md`) via the file reading tool, before even starting to analyze the request or write code.
+
 ## 1. Project Lifecycle & Grandfather Clause
 - Before starting any task, identify which phase of the project we are in (Idea, R&D, Contractual Development, Release, Maintenance) and adapt your approach accordingly.
 - **Grandfather Clause (Fix Forward):** Apply the Playbook rules on **new** code only. Never proactively refactor existing legacy code unless explicitly requested. In case of modifying an existing file, apply the **Boy Scout Rule** (clean up the immediate surrounding code without breaking tests).

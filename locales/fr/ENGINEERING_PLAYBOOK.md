@@ -39,7 +39,8 @@ L'écriture du code doit suivre les **Google Engineering Practices** : la clart�
 - **Classes / Composants :** `PascalCase` (ex: `UserProfile`).
 - **Variables / Fonctions :** `camelCase` (ex: `getUserData`).
 - **Constantes Globales :** `UPPER_SNAKE_CASE` (ex: `MAX_RETRY_COUNT`).
-- **Rigueur :** Lint obligatoire, typage strict (TypeScript/mypy), zéro warning ignoré sans commentaire explicite.
+- **Rigueur :** Lint obligatoire (la CI doit échouer en cas d'erreur de linting, interdiction d'utiliser `|| true`), typage strict (TypeScript/mypy), zéro warning ignoré sans commentaire explicite.
+  - *Note : Certains linters modernes (Biome, Ruff) n'imposent pas strictement les Hard Limits du GEF par défaut. Le développeur doit s'assurer de leur configuration ou se fier aux avertissements du pre-commit.*
 
 ---
 
@@ -80,6 +81,7 @@ Le code doit séparer le "métier" (règles de l'application) de "l'infrastructu
   - Bloquer un compte/IP pendant 15 minutes après **5 tentatives de connexion échouées**.
   - Limite globale par IP : **100 requêtes API / minute**.
 - **Gestion des secrets :** Toujours via variables d'environnement (`.env`). Jamais hardcodés.
+- **Analyse SAST (Static Application Security Testing) :** Le scan du code via `Semgrep` (règles OWASP Top 10) est **obligatoire** et bloquant dans la CI.
 
 ---
 
@@ -124,11 +126,14 @@ La qualité s'injecte avant le code, pas après.
 ## 8. Pilotage Kanban et Autonomie de l'IA
 
 L'IA agit comme un Tech Lead autonome, mais sous le contrôle strict de l'intention métier.
-- **Le "Pourquoi" avant tout :** Chaque Issue, PR ou tâche doit obligatoirement commencer par expliciter le but ultime (l'intention métier). L'IA ne doit pas deviner le but, elle doit le suivre.
+- **Processus de Vérification Systématique (Anti-Amnésie) :** À chaque nouveau prompt de l'utilisateur, la TOUTE PREMIÈRE action de l'IA doit être de lire et relire le fichier `ENGINEERING_PLAYBOOK.md` (ou `PROJECT_CONFIG.md`) pour se recharger avec les règles dures, avant même de commencer à analyser la demande ou d'écrire du code.
+- **Le "Pourquoi" avant tout :** Chaque Issue, PR/MR ou tâche doit obligatoirement commencer par expliciter le but ultime (l'intention métier). L'IA ne doit pas deviner le but, elle doit le suivre.
+  - *Mécanique CI :* L'intention déclarée dans une PR doit faire au minimum **30 caractères**, sous peine de rejet par la CI anti-contournement.
 - **Découpage en Issues :** Utiliser la CLI GitHub (`gh issue create`) pour découper un grand chantier en sous-tâches.
 - **Création de Pull Requests (PR) :** Si des branches temporaires sont requises pour une revue par l'utilisateur, utiliser `gh pr create`.
-- **Validation Humaine Obligatoire :** L'IA ne merge **JAMAIS** de Pull Request elle-même. Elle prépare tout et demande à l'utilisateur de cliquer sur le bouton de Merge.
+- **Validation Humaine Obligatoire :** L'IA ne merge **JAMAIS** de Pull/Merge Request elle-même. Elle prépare tout et demande à l'utilisateur de cliquer sur le bouton de Merge.
 - **Crash Clause Anti-Contournement :** Face à un mur (erreur technique, consigne ambiguë, outil manquant), l'IA doit échouer bruyamment (Fail Fast) et s'arrêter pour demander de l'aide à l'utilisateur, plutôt que d'improviser une solution toxique ou de masquer l'erreur en silence.
+- **Synchronisation IA :** L'IA doit s'assurer que ses règles de comportement sont universelles. Les fichiers `.cursorrules` et `.windsurfrules` doivent être gardés parfaitement identiques (vérifié via pre-commit).
 
 ---
 

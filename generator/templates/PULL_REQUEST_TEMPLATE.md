@@ -1,5 +1,6 @@
 ## Intention
 *Décrivez ici le "Pourquoi" de cette Pull Request. Quel problème résout-elle ou quelle valeur métier apporte-t-elle ?*
+<!-- ATTENTION: L'intention doit faire au minimum 30 caractères sous peine d'être bloquée par la CI anti-contournement. -->
 
 ## Changements
 *Liste des fichiers majeurs ou composants modifiés.*

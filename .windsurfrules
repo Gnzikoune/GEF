@@ -11,6 +11,8 @@
 
 Avant d'écrire une seule ligne de code, l'IA DOIT :
 
+0. **Relecture Obligatoire (Anti-Amnésie)** : Utiliser impérativement l'outil de lecture de fichier (`view_file` ou équivalent) pour lire et relire l'intégralité du fichier `ENGINEERING_PLAYBOOK.md` (ou `PROJECT_CONFIG.md`) afin de recharger en mémoire les Hard Limits et consignes de sécurité, et ce **dès le TOUT PREMIER prompt de chaque interaction** et avant toute analyse ou action.
+
 1. **Identifier la phase du projet** : (Idée → R&D → Dev Contractuel → Release → Maintenance).
    - Si R&D : les règles CI/CD sont souples, le code reste dans un dépôt `prototype` isolé.
    - Si Contractuel/Production : les règles de tests, sécurité et CI/CD sont NON-NÉGOCIABLES dès le premier commit.
