@@ -1,6 +1,6 @@
 const fs = require('fs');
 const https = require('https');
-const child_process = require('child_process');
+const { execSync } = require('child_process');
 
 // Configuration
 const apiKey = process.env.GEF_LLM_API_KEY;
@@ -24,7 +24,7 @@ function runHeuristicMode() {
 
   // 2. Vérification des ADRs (si package.json modifié)
   try {
-    const diffFiles = child_process.execSync(`git diff --name-only origin/${baseRef} HEAD`).toString();
+    const diffFiles = execSync(`git diff --name-only origin/${baseRef} HEAD`).toString();
     if (diffFiles.includes('package.json')) {
       const adrRegex = /docs\/explanation\/adr\//;
       if (!adrRegex.test(diffFiles)) {
@@ -56,7 +56,7 @@ async function runLLMMode() {
   console.log("🤖 Clé LLM détectée. Exécution de la validation sémantique par l'IA...");
   
   try {
-    const diff = child_process.execSync(`git diff origin/${baseRef} HEAD`).toString().slice(0, 10000); // Truncate for token limits
+    const diff = execSync(`git diff origin/${baseRef} HEAD`).toString().slice(0, 10000); // Truncate for token limits
     
     // Extrait l'intention
     const intentionMatch = prBody.match(/(?:intention|pourquoi).*?\n([\s\S]*?)(?:\n##|$)/i);

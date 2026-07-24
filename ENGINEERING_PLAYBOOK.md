@@ -110,6 +110,8 @@ Une équipe structurée avec des responsabilités claires évite les conflits et
 - **Owner** : Gestion du projet, configuration initiale, invitation des membres, définition des priorités, validation des merges majeurs.
 - **Tech Lead (IA)** : Pilotage Kanban, Crash Clause, autonomie dans l'exécution technique, toujours sous contrôle de l'intention métier.
 
+**Exception Solo Developer** : Pour les projets avec un seul développeur, l'Owner peut approuver ses propres PRs. La règle de revue de code obligatoire par un tiers s'applique uniquement lorsqu'il y a plusieurs contributeurs actifs sur le projet.
+
 ### 5.7. Pipeline CI/CD (Étapes)
 
 Le pipeline CI/CD doit suivre ces étapes séquentielles pour garantir la qualité :
