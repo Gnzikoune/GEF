@@ -146,4 +146,14 @@ The AI acts as an autonomous Tech Lead, but under strict control of the business
 
 ---
 
-*This evolving document guarantees an engineering level of excellence (DORA "Elite" Standard) across all our projects.*
+## 10. Mechanical Lockdown (Ultimate Lockdown)
+
+The GEF does not rely solely on human discipline or AI obedience; it enforces its rules in a **mechanical and unavoidable** way:
+- **Mandatory Documentation (Git Hooks):** Any bugfix (`fix/`) without updating the `RESEARCH_LOG.md` will be rejected at commit. Any added dependency without a new `ADR` will be blocked.
+- **Hard Limits:** File size warnings (> 400 lines) or linter bypasses (`@ts-ignore`) are no longer simple warnings, but fatal errors (`exit 1`) in both local pre-commit hooks AND in the CI.
+- **Issue Forms (YAML):** Ticket creation is strict. `Issue Forms` formally require the Business Intent and manual validation of GEF commitments via blocking Checklists.
+- **AI Chain of Thought:** Any AI operating on the project is forbidden to generate code without first verifying and validating its compliance in an XML `<gef_compliance_check>` block.
+
+---
+
+*This living document guarantees a standard of engineering excellence (DORA "Elite" Standard) across all our projects.*

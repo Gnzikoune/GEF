@@ -146,4 +146,14 @@ L'IA agit comme un Tech Lead autonome, mais sous le contrôle strict de l'intent
 
 ---
 
+## 10. Verrouillage Mécanique (Ultimate Lockdown)
+
+Le GEF ne repose pas uniquement sur la discipline humaine ou l'obéissance de l'IA, il impose ses règles de manière **mécanique et incontournable** :
+- **Documentation Forcée (Git Hooks) :** Tout correctif (`fix/`) sans mise à jour du `RESEARCH_LOG.md` sera rejeté au commit. Tout ajout de dépendance sans nouvel `ADR` sera bloqué.
+- **Limites dures (Hard Limits) :** Les avertissements de taille de fichier (> 400 lignes) ou de contournement de linter (`@ts-ignore`) ne sont plus de simples warnings, mais des erreurs fatales (`exit 1`) dans les hooks de pre-commit locaux ET dans la CI.
+- **Issue Forms (YAML) :** La création de ticket est stricte. Les `Issue Forms` exigent formellement le renseignement de l'Intention Métier et la validation manuelle des engagements GEF via des Checklists bloquantes.
+- **Chain of Thought IA :** Toute IA opérant sur le projet a pour interdiction de générer du code sans avoir préalablement vérifié et validé sa conformité dans un bloc XML `<gef_compliance_check>`.
+
+---
+
 *Ce document évolutif garantit un niveau d'ingénierie d'excellence (Standard DORA "Elite") sur l'ensemble de nos projets.*

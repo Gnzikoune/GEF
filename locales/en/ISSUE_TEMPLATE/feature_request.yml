@@ -1,0 +1,38 @@
+name: Feature Request (Evolution)
+description: Propose an idea or improvement for the project
+title: "feat: [short description]"
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: intention
+    attributes:
+      label: Business Intent (The Why)
+      description: Explain the ultimate goal of this evolution. What real problem does this solve for the user or the architecture?
+      placeholder: "This evolution solves the problem of..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Implementation (The What)
+      description: How do you plan to implement this evolution mechanically?
+      placeholder: "I propose adding a component..."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Considered Alternatives
+      description: What other options have you considered?
+    validations:
+      required: false
+  - type: checkboxes
+    id: compliance
+    attributes:
+      label: GEF Compliance
+      description: The GEF architecture requires absolute rigor. Check these boxes to confirm your commitment.
+      options:
+        - label: I have read the ENGINEERING_PLAYBOOK.md and this evolution complies with it.
+          required: true
+        - label: I have verified that a similar issue does not already exist.
+          required: true

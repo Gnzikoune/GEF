@@ -18,6 +18,7 @@ Avant d'écrire une seule ligne de code, l'IA DOIT :
    - Si Contractuel/Production : les règles de tests, sécurité et CI/CD sont NON-NÉGOCIABLES dès le premier commit.
 2. **Confirmer l'intention métier** : Ne jamais deviner le "Pourquoi". Si l'objectif métier n'est pas explicite, DEMANDER avant de coder.
 3. **Vérifier la branche Git** : Ne JAMAIS travailler sur `main` ou `master`. Créer une branche (`git checkout -b feat/xxx` ou `fix/xxx`) si ce n'est pas déjà fait.
+4. **Vérification Systématique (Chain of Thought)** : Avant de proposer ou générer le moindre code, l'IA DOIT ouvrir un bloc XML `<gef_compliance_check>`. Dans ce bloc, elle affirme explicitement respecter les Hard Limits, les hooks et la doc (Ex: `<gef_compliance_check>Je respecte la limite de X lignes, j'ai bien mis à jour RESEARCH_LOG.md car c'est un fix, etc.</gef_compliance_check>`).
 
 ---
 

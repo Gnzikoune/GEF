@@ -109,14 +109,22 @@ function createPRTemplate(gefDir, language) {
 }
 
 function copyAdditionalWorkflows(gefDir) {
-  const src = path.join(gefDir, 'ci-templates', 'pr-intention-check.yml');
+  const srcDir = path.join(gefDir, 'ci-templates');
   const destDir = '.github/workflows';
   fs.mkdirSync(destDir, { recursive: true });
-  if (fs.existsSync(src)) fs.copyFileSync(src, path.join(destDir, 'pr-intention-check.yml'));
+  if (fs.existsSync(srcDir)) {
+    fs.readdirSync(srcDir).forEach(file => {
+      fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file));
+    });
+  }
 }
 
-function copyIssueTemplates(gefDir) {
-  const srcDir = path.join(gefDir, '.github', 'ISSUE_TEMPLATE');
+function copyIssueTemplates(gefDir, language) {
+  const localeDir = resolveLocaleDir(gefDir, language);
+  const localeSrcDir = path.join(localeDir, 'ISSUE_TEMPLATE');
+  const fallbackSrcDir = path.join(gefDir, '.github', 'ISSUE_TEMPLATE');
+  const srcDir = fs.existsSync(localeSrcDir) ? localeSrcDir : fallbackSrcDir;
+
   if (!fs.existsSync(srcDir)) return;
   const destDir = '.github/ISSUE_TEMPLATE';
   fs.mkdirSync(destDir, { recursive: true });
@@ -191,7 +199,7 @@ export function scaffoldGef(answers, gefDir) {
   copyAndTemplateGefAssets(gefDir, answers.strictness, answers.language);
   createAdrTemplate(gefDir);
   createPRTemplate(gefDir, answers.language);
-  copyIssueTemplates(gefDir);
+  copyIssueTemplates(gefDir, answers.language);
   if (answers.includeCI) copyAdditionalWorkflows(gefDir);
   createResearchLog(answers.language);
   createProjectConfig(answers, gefDir);
