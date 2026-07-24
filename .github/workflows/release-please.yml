@@ -30,6 +30,17 @@ jobs:
             ci: { skip: true }
             build: { skip: true }
 
+      # Ajouter automatiquement la certification humaine pour les PRs de release
+      - name: Add certification to release PR
+        if: ${{ steps.release.outputs.pr_number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.release.outputs.pr_number }}
+        run: |
+          CURRENT_BODY=$(gh pr view $PR_NUMBER --json body --jq '.body')
+          CERTIFICATION=$'\n\n- [x] Je certifie sur l''honneur que l''intention déclarée correspond au code'
+          gh pr edit $PR_NUMBER --body "$CURRENT_BODY$CERTIFICATION"
+
       # Les étapes ci-dessous ne s'exécutent QUE si Release Please a effectivement créé une nouvelle release (après le merge de la PR)
       - uses: actions/checkout@v4
         if: ${{ steps.release.outputs.release_created }}
