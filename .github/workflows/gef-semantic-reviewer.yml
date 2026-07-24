@@ -9,8 +9,6 @@ jobs:
   semantic-review:
     name: LLM or Heuristic Semantic Check
     runs-on: ubuntu-latest
-    # Skip for release-please PRs
-    if: ${{ !contains(github.event.pull_request.head.ref, 'release-please') }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -27,4 +25,10 @@ jobs:
           GEF_LLM_API_KEY: ${{ secrets.GEF_LLM_API_KEY }}
           PR_BODY: ${{ github.event.pull_request.body }}
           BASE_REF: ${{ github.base_ref }}
-        run: node .github/workflows/scripts/semantic-reviewer.cjs
+          SKIP_CHECK: ${{ contains(github.event.pull_request.head.ref, 'release-please') && 'true' || 'false' }}
+        run: |
+          if [ "$SKIP_CHECK" = "true" ]; then
+            echo "Skipping semantic review for release-please PR"
+            exit 0
+          fi
+          node .github/workflows/scripts/semantic-reviewer.cjs
