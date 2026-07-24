@@ -3,6 +3,7 @@ name: GEF Semantic Reviewer
 on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
+  workflow_dispatch:
 
 jobs:
   semantic-review:
