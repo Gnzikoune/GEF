@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0](https://github.com/Gnzikoune/GEF/compare/v1.4.0...v1.5.0) (2026-07-24)
+
+
+### Features
+
+* juge sémantique hybride (IA/Heuristique) pour la validation des PRs ([#44](https://github.com/Gnzikoune/GEF/issues/44)) ([b8434f0](https://github.com/Gnzikoune/GEF/commit/b8434f086164a2945488828d80a37b83d553e31e))
+* juge sémantique hybride (IA/Heuristique) pour la validation des PRs ([#44](https://github.com/Gnzikoune/GEF/issues/44)) ([c3d442e](https://github.com/Gnzikoune/GEF/commit/c3d442ec8f8985503d066a9c148c5b5987ce94f5))
+
 ## [1.4.0](https://github.com/Gnzikoune/GEF/compare/v1.3.1...v1.4.0) (2026-07-24)
 
 
