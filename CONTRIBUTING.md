@@ -74,7 +74,7 @@ Exemples valides :
 
 ---
 
-## ✅ Exigences pour les Pull Requests
+### 4. Validation et Intégration (Forks & Sécurité)
 
 Une fois votre développement terminé :
 
@@ -82,8 +82,9 @@ Une fois votre développement terminé :
 2. Ouvrez une Pull Request ciblant la branche `main`.
 3. **Le Template de Pull Request** apparaîtra automatiquement : vous devez le remplir et cocher toutes les cases applicables.
 4. **La Validation CI (Garantie Anti-Contournement)** s'exécutera sur GitHub :
-   - Votre PR passera obligatoirement par notre Workflow "PR Intention Check" (qui s'assure de la pertinence métier de votre PR).
-   - Le linting et les éventuels tests seront exécutés.
+   - Votre PR passera obligatoirement par notre Workflow "PR Intention Check" (Juge Sémantique).
+   - *Note pour les Forks externes :* Pour des raisons de sécurité, les secrets du dépôt principal (clés API) ne sont pas partagés aux Forks. La CI basculera donc automatiquement en **Mode Heuristique Dégradé** (sans LLM) pour valider votre intention.
+5. **Approbation Finale Obligatoire** : Conformément au fichier `CODEOWNERS`, le propriétaire du projet (@Gnzikoune) est le **seul validateur autorisé**. Toute tentative de merger (fusionner) via des méthodes de contournement sera bloquée par les règles de protection strictes de la branche `main`.
 
 ### Code de Conduite
 Ce projet suit les standards professionnels de l'industrie. Les revues de code doivent être constructives, bienveillantes, et axées sur la qualité technique et le respect absolu de l'architecture.
