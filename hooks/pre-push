@@ -1,0 +1,19 @@
+#!/bin/bash
+# Hook: pre-push
+# Réf: ENGINEERING_PLAYBOOK.md §5 - Protection stricte de la branche principale
+
+# Vérification de la branche de destination
+while read local_ref local_sha remote_ref remote_sha
+do
+  # Extraire le nom de la branche distante (ex: refs/heads/main -> main)
+  remote_branch=$(echo "$remote_ref" | sed 's|refs/heads/||')
+  
+  if [ "$remote_branch" = "main" ] || [ "$remote_branch" = "master" ]; then
+    echo -e "\033[31mErreur: Push direct sur '$remote_branch' strictement interdit (Playbook §5).\033[0m"
+    echo "L'IA ou le développeur humain doit créer une branche et passer par une Pull Request."
+    echo "Commande suggérée : git checkout -b feat/nom-feature ou fix/nom-fix"
+    exit 1
+  fi
+done
+
+exit 0
