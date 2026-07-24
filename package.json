@@ -1,6 +1,6 @@
 {
   "name": "create-gef",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Générateur interactif de projets respectant le Guardian Engineering Framework",
   "type": "module",
   "bin": {

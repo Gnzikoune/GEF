@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/Gnzikoune/GEF/compare/v1.3.0...v1.3.1) (2026-07-24)
+
+
+### Bug Fixes
+
+* implementation des correctifs de l'audit ([#42](https://github.com/Gnzikoune/GEF/issues/42)) ([62fc02c](https://github.com/Gnzikoune/GEF/commit/62fc02c305a713efc675c0d94ebc23642c19448c))
+* resolution des vulnerabilites de l'audit ([#42](https://github.com/Gnzikoune/GEF/issues/42)) ([300371f](https://github.com/Gnzikoune/GEF/commit/300371f978282965188765b789f001d1715e8a07))
+
 ## [1.3.0](https://github.com/Gnzikoune/GEF/compare/v1.2.0...v1.3.0) (2026-07-21)
 
 
