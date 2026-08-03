@@ -1,6 +1,6 @@
 {
   "name": "create-gef",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "Interactive project generator enforcing the Guardian Engineering Framework - Clean Code, Security, CI/CD, and AI-proof development standards",
   "type": "module",
   "bin": {
@@ -10,8 +10,7 @@
     "start": "node generator/index.js",
     "test": "node generator/index.js --help",
     "prepublishOnly": "npm run test",
-    "version": "node scripts/version-bump.js",
-    "postversion": "git push --follow-tags"
+    "version-bump": "node scripts/version-bump.js"
   },
   "keywords": [
     "generator",
