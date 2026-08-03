@@ -22,7 +22,8 @@ L'écriture du code doit suivre les **Google Engineering Practices** : la clart�
 - **Fonctions / Méthodes :** `{{MAX_LINES}} lignes max`.
 - **Paramètres :** `{{MAX_PARAMS}} arguments max` (au-delà, utiliser un objet de configuration).
 - **Composants UI :** `150 à 200 lignes max`. (La logique > 50 lignes doit être extraite en *Custom Hook*).
-- **Fichiers :** `300 à 400 lignes max`.
+- **Fichiers :** `300 à 400 lignes max` (code source uniquement).
+  - **Note :** Les artefacts générés automatiquement (package-lock.json, yarn.lock, etc.) sont exclus de cette limite selon ADR-002.
 
 ### 1.2. Complexité et Nesting
 - **Profondeur (Nesting) :** `3 niveaux max`.

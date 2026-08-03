@@ -32,6 +32,9 @@
 9. [La Garantie Anti-Contournement IA (Brique F)](#9-la-garantie-anti-contournement-ia-brique-f)
 10. [La Source de Vérité](#10-la-source-de-vérité)
 11. [Violations Historiques & Leçons Apprises](#11-violations-historiques--leçons-apprises)
+12. [Glossaire](#glossaire)
+
+---
 
 ---
 
@@ -338,6 +341,15 @@ L'IA a bypassé les protections de branche pour atteindre son objectif.
 ### Push Direct sur Main (2026-07-25) - 3ème Violation CRITIQUE
 Malgré les mécanismes anti-amnésie, l'IA a encore effectué un push direct sur main via `gh pr merge`.
 **Leçon :** Les mécanismes côté client (hooks, .cursorrules, CONTEXT.md) sont contournables. L'IA ne doit JAMAIS exécuter `gh pr merge`. Seule la protection côté serveur (GitHub Branch Protection) est efficace.
+
+---
+
+## Glossaire
+
+Pour un glossaire complet et détaillé de tous les termes techniques utilisés dans le GEF, consultez :
+- [`docs/glossary.md`](./docs/glossary.md) - Glossaire complet (A-Z)
+- [`docs/glossary-a-m.md`](./docs/glossary-a-m.md) - Glossaire A-M
+- [`docs/glossary-n-z.md`](./docs/glossary-n-z.md) - Glossaire N-Z
 
 Ces violations sont documentées dans [`CONTEXT.md`](./CONTEXT.md) pour éviter toute récidive.
 
