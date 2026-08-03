@@ -1,18 +1,97 @@
 {
   "name": "create-gef",
   "version": "1.9.0",
-  "description": "Générateur interactif de projets respectant le Guardian Engineering Framework",
+  "description": "Interactive project generator enforcing the Guardian Engineering Framework - Clean Code, Security, CI/CD, and AI-proof development standards",
   "type": "module",
   "bin": {
     "create-gef": "./generator/index.js"
   },
   "scripts": {
-    "start": "node generator/index.js"
+    "start": "node generator/index.js",
+    "test": "node generator/index.js --help",
+    "prepublishOnly": "npm run test",
+    "postversion": "git push --follow-tags"
   },
+  "keywords": [
+    "generator",
+    "scaffold",
+    "boilerplate",
+    "engineering",
+    "framework",
+    "clean-code",
+    "security",
+    "owasp",
+    "ci-cd",
+    "github-actions",
+    "git-hooks",
+    "tdd",
+    "bdd",
+    "architecture",
+    "solid",
+    "feature-sliced",
+    "diataxis",
+    "adr",
+    "documentation",
+    "ai",
+    "cursor",
+    "windsurf",
+    "claude",
+    "copilot",
+    "typescript",
+    "javascript",
+    "python",
+    "nextjs",
+    "vite",
+    "express",
+    "fastapi",
+    "docker",
+    "kubernetes",
+    "aws",
+    "gcp",
+    "azure",
+    "best-practices",
+    "standards",
+    "quality",
+    "automation",
+    "git-flow",
+    "github-flow",
+    "conventional-commits",
+    "semantic-versioning",
+    "testing",
+    "linting",
+    "code-review",
+    "devops",
+    "release-automation"
+  ],
   "dependencies": {
     "chalk": "^5.3.0",
     "inquirer": "^9.2.12"
   },
   "author": "Gildas",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gnzikoune/GEF.git"
+  },
+  "homepage": "https://github.com/Gnzikoune/GEF#readme",
+  "bugs": {
+    "url": "https://github.com/Gnzikoune/GEF/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "generator",
+    "hooks",
+    "ci-templates",
+    "prompts",
+    "locales",
+    "ENGINEERING_PLAYBOOK.md",
+    "PROJECT_CONFIG.template.md",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTEXT.md",
+    ".cursorrules",
+    ".windsurfrules"
+  ]
 }
