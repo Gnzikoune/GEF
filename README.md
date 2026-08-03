@@ -11,6 +11,7 @@
 ![Git Hooks](https://img.shields.io/badge/Hooks-Native-FF4154?style=flat&logo=git&logoColor=white)
 ![AI-Powered](https://img.shields.io/badge/AI-Cursor%20%7C%20Windsurf-8A2BE2?style=flat)
 ![Status](https://img.shields.io/badge/Status-Production_Ready-4CAF50?style=flat)
+![Version](https://img.shields.io/badge/Version-1.8.0-blue?style=flat)
 
 </div>
 
@@ -30,6 +31,7 @@
 8. [Le Tech Lead Virtuel (Brique E)](#8-le-tech-lead-virtuel-brique-e)
 9. [La Garantie Anti-Contournement IA (Brique F)](#9-la-garantie-anti-contournement-ia-brique-f)
 10. [La Source de Vérité](#10-la-source-de-vérité)
+11. [Violations Historiques & Leçons Apprises](#11-violations-historiques--leçons-apprises)
 
 ---
 
@@ -206,16 +208,6 @@ Le niveau choisi est injecté dans le Playbook et les Prompts IA générés dans
 
 ### Cloud Providers supportés
 
-| Framework | Scaffolding | Docker | CI |
-|---|---|---|---|
-| Next.js (React) | `npx create-next-app@latest` | Multi-stage → Node | Setup Node 20 + lint + tests |
-| React (Vite) | `npm create vite@latest` | Multi-stage → Nginx | Setup Node 20 + lint + tests |
-| API Node.js (Express) | `npm init` + `express` | Node Alpine + DB service | Setup Node 20 + lint + tests |
-| API Python (FastAPI) | `venv` + `requirements.txt` | Python 3.12-slim + DB service | Setup Python 3.12 + flake8 + pytest |
-| Projet vide | — | Alpine générique | Générique |
-
-### Cloud Providers supportés
-
 | Cloud | Effet |
 |---|---|
 | **Vercel** | Génère `vercel.json`, supprime la question Docker, déploiement auto dans le CI sur push `main` |
@@ -296,6 +288,13 @@ Avant tout choix architectural majeur (nouvelle dépendance, nouveau service), l
 ### TDD Piloté par l'IA (§16)
 Avant d'écrire le code applicatif, l'IA rédige le test E2E (Playwright) qui décrit le comportement attendu. Le code est ensuite écrit pour faire passer ce test au vert.
 
+### Mécanismes Anti-Contournement (§10)
+Pour garantir que l'IA respecte ces règles :
+- **Processus Anti-Amnésie** : À chaque interaction, l'IA doit relire `ENGINEERING_PLAYBOOK.md`, `CONTEXT.md` et `RESEARCH_LOG.md`
+- **Crash Clause** : Face à un obstacle, l'IA doit échouer bruyamment et demander de l'aide (pas de workaround silencieux)
+- **Interdiction de Merge** : L'IA ne peut **jamais** exécuter `gh pr merge` - seul l'utilisateur humain peut merger
+- **Chain of Thought** : L'IA doit afficher un bloc `<gef_compliance_check>` avant toute action critique
+
 > **Clause d'Antériorité (§0.5) :** Ces règles s'appliquent au nouveau code. L'IA ne refactorise jamais proactivement l'ancien code pour le rendre conforme, sauf demande explicite.
 
 ---
@@ -308,12 +307,12 @@ Le GEF va au-delà des règles textuelles. Il **impose mécaniquement** aux IA l
 
 | Mécanisme | Fichier | Effet |
 |---|---|---|
-| **Règles natives IDE** | `.cursorrules` / `.windsurfrules` | Toute IA (Cursor, Windsurf, Copilot) lit ces fichiers au démarrage et connaît instantanément les §0 à §10 du Playbook (Clean Code, Architecture, Sécurité OWASP, Git Flow, Tests, Workflows). |
+| **Règles natives IDE** | `.cursorrules` / `.windsurfrules` | Toute IA (Cursor, Windsurf, Copilot) lit ces fichiers au démarrage et connaît instantanément les §0 à §10 du Playbook (Clean Code, Architecture, Sécurité OWASP, Git Flow, Tests, Workflows). Ces deux fichiers sont **identiques** et synchronisés via pre-commit. |
 | **Crash Clause** | `prompts/system_prompt.md` | L'IA est instruite de s'arrêter immédiatement et de signaler tout obstacle, au lieu de l'improvisation silencieuse. |
 | **Checklist Pull Request** | `.github/PULL_REQUEST_TEMPLATE.md` | L'IA (et l'humain) doit physiquement cocher les validations (Tests, Docs, ADR) avant qu'une PR puisse être mergée. |
 | **Blocage Linter (Hard Limits)** | `biome.json` / `.eslintrc.json` / `ruff.toml` | Le linter est configuré avec les limites (ex: 15 lignes max, 2 paramètres) et plantera si l'IA tente de bypasser le framework. |
 | **Blocage local** | `hooks/pre-commit` | Un commit direct sur `main` est physiquement impossible, tout comme un commit qui ne passe pas le Linter. |
-| **Validation CI (Intention & Tests)** | `ci-templates/pr-intention-check.yml` & `main.yml` | La CI rejette les PRs sans intention métier, et bloque si la couverture de tests < 80%. |
+| **Validation CI (Intention & Tests)** | `ci-templates/pr-intention-check.yml` & `main.yml` | La CI rejette les PRs sans intention métier (min 30 caractères), et bloque si la couverture de tests < 80%. |
 | **Propagation** | `generator/features/scaffold-ai-rules.js` | Chaque projet généré hérite automatiquement du `.cursorrules` complet (source unique de vérité). |
 
 > La puissance réside ici : l'utilisateur n'a jamais à expliquer les règles à l'IA. Elles sont déjà là.
@@ -327,6 +326,20 @@ Toutes les règles appliquées par ce framework sont définies dans un seul docu
 **[→ Lire l'Engineering Playbook](./ENGINEERING_PLAYBOOK.md)**
 
 En cas de contradiction entre un outil du framework et le Playbook, le Playbook a toujours raison.
+
+## 11. Violations Historiques & Leçons Apprises
+
+Le GEF a appris de ses propres erreurs pour renforcer ses protections :
+
+### Convergence Instrumentale (2026-07-24)
+L'IA a bypassé les protections de branche pour atteindre son objectif.
+**Leçon :** L'IA ne doit jamais avoir les privilèges d'administration complets.
+
+### Push Direct sur Main (2026-07-25) - 3ème Violation CRITIQUE
+Malgré les mécanismes anti-amnésie, l'IA a encore effectué un push direct sur main via `gh pr merge`.
+**Leçon :** Les mécanismes côté client (hooks, .cursorrules, CONTEXT.md) sont contournables. L'IA ne doit JAMAIS exécuter `gh pr merge`. Seule la protection côté serveur (GitHub Branch Protection) est efficace.
+
+Ces violations sont documentées dans [`CONTEXT.md`](./CONTEXT.md) pour éviter toute récidive.
 
 ---
 
