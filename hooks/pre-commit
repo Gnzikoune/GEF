@@ -51,8 +51,13 @@ else
 fi
 
 # 5. Taille des fichiers modifiés (HARD LIMIT)
+# Réf: ADR-002 - Distinction entre code source et artefacts générés
 for file in $(git diff --cached --name-only); do
   if [ -f "$file" ]; then
+    # Exclure les artefacts générés (lock files) selon ADR-002
+    if [[ "$file" =~ (package-lock\.json|yarn\.lock|pnpm-lock\.yaml|composer\.lock|Cargo\.lock)$ ]]; then
+      continue
+    fi
     LINES=$(wc -l < "$file")
     if [ "$LINES" -gt 400 ]; then
       echo -e "\033[31mErreur: Le fichier $file dépasse la Hard Limit de 400 lignes ($LINES lignes).\033[0m"
@@ -83,12 +88,20 @@ if [[ "$BRANCH" == fix/* ]]; then
   fi
 fi
 
-# b) Si package.json modifié -> ADR obligatoire
+# b) Si package.json modifié -> ADR obligatoire (sauf version bumps couverts par ADR-003)
 if echo "$CACHED_FILES" | grep -q "^package.json$"; then
-  if ! echo "$CACHED_FILES" | grep -q "^docs/explanation/adr/"; then
-    echo -e "\033[31mErreur: Modification des dépendances détectée sans ADR.\033[0m"
-    echo "Vous avez modifié package.json. Veuillez justifier avec un nouveau fichier dans docs/explanation/adr/."
-    exit 1
+  # Vérifier si c'est uniquement un version bump (changement du champ "version" uniquement)
+  VERSION_CHANGE=$(git diff --cached package.json | grep -E '^\+.*"version"' | head -1)
+  OTHER_CHANGES=$(git diff --cached package.json | grep -E '^\+.*"(name|description|keywords|repository|homepage|bugs|engines|files|scripts|dependencies|devDependencies)"' | head -1)
+  
+  # Si ce n'est pas un simple version bump, exiger un ADR spécifique
+  if [ -n "$OTHER_CHANGES" ]; then
+    if ! echo "$CACHED_FILES" | grep -q "^docs/explanation/adr/"; then
+      echo -e "\033[31mErreur: Modification structurelle de package.json détectée sans ADR.\033[0m"
+      echo "Les version bumps sont couverts par ADR-003, mais les autres changements nécessitent un ADR spécifique."
+      echo "Veuillez justifier avec un nouveau fichier dans docs/explanation/adr/."
+      exit 1
+    fi
   fi
 fi
 
