@@ -53,6 +53,10 @@ fi
 # 5. Taille des fichiers modifiés (HARD LIMIT)
 for file in $(git diff --cached --name-only); do
   if [ -f "$file" ]; then
+    # Exclure les fichiers générés automatiquement (package-lock.json, yarn.lock, etc.)
+    if [[ "$file" =~ (package-lock\.json|yarn\.lock|pnpm-lock\.yaml|composer\.lock|Cargo\.lock)$ ]]; then
+      continue
+    fi
     LINES=$(wc -l < "$file")
     if [ "$LINES" -gt 400 ]; then
       echo -e "\033[31mErreur: Le fichier $file dépasse la Hard Limit de 400 lignes ($LINES lignes).\033[0m"
