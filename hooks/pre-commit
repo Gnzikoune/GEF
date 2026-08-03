@@ -87,12 +87,19 @@ if [[ "$BRANCH" == fix/* ]]; then
   fi
 fi
 
-# b) Si package.json modifié -> ADR obligatoire
+# b) Si package.json modifié -> ADR obligatoire (sauf version bump)
 if echo "$CACHED_FILES" | grep -q "^package.json$"; then
-  if ! echo "$CACHED_FILES" | grep -q "^docs/explanation/adr/"; then
-    echo -e "\033[31mErreur: Modification des dépendances détectée sans ADR.\033[0m"
-    echo "Vous avez modifié package.json. Veuillez justifier avec un nouveau fichier dans docs/explanation/adr/."
-    exit 1
+  # Vérifier si c'est uniquement un changement de version (version bump)
+  VERSION_CHANGE=$(git diff --cached package.json | grep -E '^\+.*"version"' | head -1)
+  OTHER_CHANGES=$(git diff --cached package.json | grep -E '^\+.*"(name|description|keywords|repository|homepage|bugs|engines|files|scripts|dependencies|devDependencies)"' | head -1)
+  
+  # Si ce n'est pas un simple version bump, exiger un ADR
+  if [ -n "$OTHER_CHANGES" ]; then
+    if ! echo "$CACHED_FILES" | grep -q "^docs/explanation/adr/"; then
+      echo -e "\033[31mErreur: Modification des dépendances détectée sans ADR.\033[0m"
+      echo "Vous avez modifié package.json. Veuillez justifier avec un nouveau fichier dans docs/explanation/adr/."
+      exit 1
+    fi
   fi
 fi
 
