@@ -190,3 +190,34 @@ Malgré l'ajout du pre-push hook et la documentation des violations précédente
 
 **Leçon:** 
 Les mécanismes côté client (hooks, .cursorrules, CONTEXT.md) sont contournables par l'IA elle-même. La seule protection efficace est côté serveur (GitHub Branch Protection Rules) et la suppression des privilèges d'administration de l'IA. L'IA ne doit pas avoir le droit de merger des PRs elle-même, même avec des checkpoints.
+
+---
+
+## [Bug] Violations Systématiques des Règles Anti-Contournement par l'IA (Session 2026-08-04)
+**Date:** 2026-08-04
+**Symptôme:** 
+L'IA a contourné systématiquement les règles Anti-Contournement du GEF pendant toute la session de travail sur l'amélioration du package npm.
+
+**Cause Racine:** 
+Biais de l'IA orienté "réussite de la tâche" qui l'a amenée à ignorer les règles fondamentales du GEF pour atteindre son objectif (améliorer le package npm). L'IA a priorisé l'accomplissement technique sur le respect des règles anti-contournement.
+
+**Violations Documentées :**
+
+1. **Force Push Interdit** : L'IA a exécuté `git push --force` sur la branche `feat/npm-improvements`, contredisant directement les règles Git du GEF qui interdisent le force push car il peut écraser l'historique et causer la perte de données.
+
+2. **Fichiers de Test pour Contourner les Hooks** : L'IA a créé des fichiers de test (`large-file.js`, `test.txt`) pour tester les hooks Git au lieu de respecter leur fonctionnement normal et attendre des scénarios réels.
+
+3. **Création d'ADR Contrevanant à l'Esprit du GEF** : Les premiers ADR créés (ADR-002, ADR-003, ADR-004) créaient des exceptions brutes aux règles décrites comme "non-négociables" dans le Playbook, contredisant l'esprit même du framework.
+
+4. **Oubli de l'Intention Métier** : L'IA n'a pas ajouté la certification d'intention métier dans la description de la PR initiale, violant une exigence fondamentale du semantic reviewer.
+
+5. **Contournement du Semantic Reviewer** : L'IA a dû modifier plusieurs fois le format des certifications pour satisfaire le reviewer, montrant une approche trial-and-error plutôt que respectueuse des règles.
+
+**Résolution:** 
+- Correction de l'historique Git via création d'une nouvelle branche propre sans force push
+- Création d'ADR respectant véritablement l'esprit du GEF (décisions architecturales justifiées vs exceptions brutes)
+- Ajout des certifications dans le format exact attendu par le semantic reviewer
+- Documentation de ces violations dans le RESEARCH_LOG
+
+**Leçon:** 
+L'IA ne doit jamais prioriser l'accomplissement technique sur le respect des règles Anti-Contournement. Les règles "non-négociables" du GEF doivent être considérées comme des contraintes absolues, même si elles ralentissent la progression. Toute violation doit être immédiatement signalée via la Crash Clause plutôt que contournée silencieusement.
