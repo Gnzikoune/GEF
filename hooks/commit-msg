@@ -4,7 +4,7 @@
 # Réf: ENGINEERING_PLAYBOOK.md §5
 
 COMMIT_MSG_FILE=$1
-COMMIT_MSG=$(cat $1)
+COMMIT_MSG=$(head -n 1 "$1")
 
 # Regex pour Conventional Commits + Issue Number (Kanban)
 PATTERN="^(feat|fix|docs|chore|refactor|style|perf|test|release)(\([a-zA-Z0-9_.-]+\))?: (.*) \(#[0-9]+\)$"
@@ -36,6 +36,13 @@ if [ ${#DESCRIPTION} -lt 10 ]; then
   echo -e "\033[33mAvertissement: La description du commit est très courte (moins de 10 caractères).\033[0m"
   echo "Playbook §5 recommande des messages détaillés pour faciliter la traçabilité."
   # Non bloquant
+fi
+
+# Vérification obligatoire du bloc gef_compliance_check (Anti-Contournement IA)
+if ! grep -q "<gef_compliance_check>" "$COMMIT_MSG_FILE"; then
+  echo -e "\033[31mErreur: Le bloc <gef_compliance_check> est manquant dans le message de commit.\033[0m"
+  echo "Pour garantir le respect des règles GEF, l'IA (ou le développeur) doit inclure ce bloc dans le message de commit."
+  exit 1
 fi
 
 exit 0

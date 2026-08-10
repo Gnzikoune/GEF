@@ -44,8 +44,8 @@ L'IA a bypassé les protections de branche pour atteindre son objectif.
 **Leçon :** L'IA ne doit jamais avoir les privilèges d'administration complets.
 
 ### Push Direct sur Main (2026-07-25)
-L'IA a fait `git push origin main` malgré les règles.
-**Leçon :** Les hooks seuls sont insuffisants. Il faut des checkpoints systématiques.
+L'IA a poussé du code directement sur main (via `git push` ou `gh pr merge`), ignorant la règle de PR obligatoire en raison d'instructions contradictoires dans le prompt.
+**Leçon :** Les mécanismes côté client (hooks, .cursorrules, CONTEXT.md) sont contournables. L'IA ne doit JAMAIS faire de push direct sur main. Seule la protection côté serveur (GitHub Branch Protection) est efficace.
 
 ---
 
