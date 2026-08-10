@@ -145,40 +145,25 @@ npm link
 
 ## 4. The Project Generator (Block A)
 
-### What the Generator Does
+### What the Generator Installs (PURE Agentic Layer)
 
-The assistant asks **11 questions**, then automatically executes:
+GEF does **not generate application code** (no React, Node, or Python). It installs on top of any existing tech stack (or in an empty folder) to bring engineering rigor:
 
 | Step | Action |
 |---|---|
-| **1. Scaffolding** | Installs the chosen framework (`npx create-next-app`, `npm create vite`, etc.) |
-| **2. GEF File Structure** | Creates the Diatáxis structure: `docs/tutorials/`, `docs/how-to/`, `docs/reference/`, `docs/explanation/adr/` |
-| **3. ADR Template** | Creates `docs/explanation/adr/0000-template.md` ready to use |
-| **4. Configuration** | Generates `PROJECT_CONFIG.md` pre-filled with all choices (stack, cloud, DB, git, lint, severity, language) |
-| **5. Documentation** | Generates `README.md` and `docs/research/RESEARCH_LOG.md` |
-| **6. Linter** | Generates `biome.json`, `.eslintrc.json`, or `ruff.toml` based on the choice |
-| **7. Docker** | Generates `docker/Dockerfile` and `docker/docker-compose.yml`. If PostgreSQL: creates `database/init.sql` mounted in the container |
-| **8. Playbook & AI Prompts** | Copies Playbook and Prompts to `.gef/` **injecting the Hard Limits adapted** to the chosen severity level |
-| **9. Git Hooks** | Generates dynamic hooks (`pre-push` blocks `main` if GitHub Flow, runs tests if TBD) |
-| **10. CI/CD** | Generates `.github/workflows/main.yml` adapted to the stack and cloud provider |
-| **11. Release Please** | Generates `.github/workflows/release-please.yml` to automate tags and releases |
-
-### Supported Stacks
-
-| Framework | Scaffolding | Docker | CI |
-|---|---|---|---|
-| Next.js (React) | `npx create-next-app@latest` | Multi-stage → Node | Setup Node 20 + lint + tests |
-| React (Vite) | `npm create vite@latest` | Multi-stage → Nginx | Setup Node 20 + lint + tests |
-| API Node.js (Express) | `npm init` + `express` | Node Alpine + DB service | Setup Node 20 + lint + tests |
-| API Python (FastAPI) | `venv` + `requirements.txt` | Python 3.12-slim + DB service | Setup Python 3.12 + flake8 + pytest |
-| Empty project | — | Generic Alpine | Generic |
+| **1. Configuration** | Generates `PROJECT_CONFIG.md` pre-filled with your choices (git, severity, language) |
+| **2. Diátaxis File Structure** | Creates the structure: `docs/tutorials/`, `docs/how-to/`, `docs/reference/`, `docs/explanation/adr/` |
+| **3. Playbook & AI Prompts** | Copies Playbook and Prompts to `.gef/` **injecting the Hard Limits adapted** to the chosen severity level |
+| **4. Git Hooks** | Generates dynamic local hooks (`pre-push`, `pre-commit`, `commit-msg`) |
+| **5. CI/CD** | Generates `.github/workflows/main.yml` (Strict validation of GEF rules) |
+| **6. Release Please** | Generates `.github/workflows/release-please.yml` to automate tags and releases |
 
 ### Supported Git Strategies
 
 | Strategy | `pre-push` hook behavior |
 |---|---|
 | **GitHub Flow** *(Recommended)* | Blocks any `git push` attempt to `main`. Forces branch and Pull Request usage. |
-| **Trunk-Based Development** | Allows pushes to `main`, but runs local tests before validating. |
+| **Trunk-Based Development** | Allows pushes to `main`. |
 
 ### Severity Levels (Hard Limits)
 
@@ -190,32 +175,6 @@ The chosen level is injected into the Playbook and AI Prompts generated in `.gef
 | **Standard / Enterprise** *(Recommended)* | 30 lines | 3 | 10 | 1 MB |
 | **Mission Critical** | 15 lines | 2 | 5 | 100 KB |
 
-### Supported Linters
-
-| Linter | Generated file | Commands added in `package.json` |
-|---|---|---|
-| **Biome** | `biome.json` | `npm run lint`, `npm run lint:fix` |
-| **ESLint + Prettier** | `.eslintrc.json` + `.prettierrc` | `npm run lint`, `npm run lint:fix` |
-| **Ruff** *(Python)* | `ruff.toml` | — |
-| **None** | — | — |
-
-### Supported Cloud Providers
-
-| Cloud | Effect |
-|---|---|
-| **Vercel** | Generates `vercel.json`, removes Docker question, auto-deployment in CI on push `main` |
-| **AWS** | AWS deployment job in CI on tag `v*.*.*` |
-| **GCP / Azure** | Automatic GitHub Release on tag `v*.*.*` |
-| **None** | Automatic GitHub Release on tag `v*.*.*` |
-
-### Supported Databases
-
-| DB | Effect |
-|---|---|
-| **PostgreSQL** | PostgreSQL `db` service in `docker-compose.yml` |
-| **MongoDB** | MongoDB `db` service in `docker-compose.yml` |
-| **Supabase** | Generates `supabase/config.toml` + `supabase/migrations/` + `supabase/seed.sql` |
-| **None** | No DB configuration |
 
 ---
 

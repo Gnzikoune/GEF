@@ -5,7 +5,7 @@ export const PROJECT_QUESTIONS = [
   {
     type: 'input',
     name: 'projectName',
-    message: 'Quel est le nom de votre nouveau projet ?',
+    message: 'Nom du dossier projet (utilisez "." pour initialiser dans le dossier courant) :',
     validate: (input) => (input ? true : 'Le nom du projet est requis.'),
   },
   {
@@ -14,56 +14,6 @@ export const PROJECT_QUESTIONS = [
     message: 'Dans quelle phase se situe ce projet ?',
     choices: ['Prototype (R&D)', 'Développement contractuel / Production'],
   },
-  {
-    type: 'list',
-    name: 'stack',
-    message: 'Quel Framework principal voulez-vous installer ?',
-    choices: [
-      'Next.js (React)',
-      'React (Vite)',
-      'API Node.js (Express)',
-      'API Python (FastAPI)',
-      'Projet vide',
-    ],
-  },
-  {
-    type: 'list',
-    name: 'database',
-    message: 'Quelle Base de données principale ?',
-    choices: ['PostgreSQL', 'MongoDB', 'Supabase', 'Aucune'],
-  },
-  {
-    type: 'list',
-    name: 'cloud',
-    message: 'Quel Cloud Provider principal ?',
-    choices: ['AWS', 'GCP', 'Azure', 'Vercel', 'Aucun'],
-  },
-  {
-    type: 'confirm',
-    name: 'includeDocker',
-    message: 'Voulez-vous préparer un dossier Docker ?',
-    default: true,
-    when: (ans) => ans.cloud !== 'Vercel',
-  },
-  {
-    type: 'confirm',
-    name: 'includeCI',
-    message: 'Voulez-vous inclure le template de CI/CD GEF ?',
-    default: true,
-  },
-  {
-    type: 'list',
-    name: 'containerRegistry',
-    message: 'Vers quel Container Registry voulez-vous pousser vos images Docker ?',
-    choices: [
-      'Docker Hub',
-      'GitHub Container Registry (GHCR)',
-      'AWS ECR',
-      'Aucun (pas de push d\'image)',
-    ],
-    when: (ans) => ans.includeDocker && ans.includeCI && ans.cloud !== 'Vercel',
-  },
-  // NOUVELLES QUESTIONS DYNAMIQUES
   {
     type: 'list',
     name: 'gitWorkflow',
@@ -85,14 +35,14 @@ export const PROJECT_QUESTIONS = [
   },
   {
     type: 'list',
-    name: 'linter',
-    message: 'Quel outil de Linting / Formatage ?',
-    choices: ['ESLint + Prettier', 'Biome', 'Ruff (Python)', 'Aucun'],
-  },
-  {
-    type: 'list',
     name: 'language',
     message: 'Langue de la documentation et des prompts IA ?',
     choices: ['Français', 'English'],
   },
+  {
+    type: 'confirm',
+    name: 'includeCI',
+    message: 'Voulez-vous inclure le template de CI/CD GEF (Validation du Playbook) ?',
+    default: true,
+  }
 ];

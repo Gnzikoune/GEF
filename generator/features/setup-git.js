@@ -1,4 +1,4 @@
-// features/scaffold-git.js — Initialisation Git et installation des hooks dynamiques
+// features/setup-git.js — Initialisation Git et installation des hooks dynamiques
 // Réf. Playbook : TBD ou GitHub Flow
 
 import fs from 'fs';
@@ -53,7 +53,7 @@ fi\n\nexit 0\n`;
 /**
  * Génère le script pre-commit de manière dynamique.
  */
-function generatePreCommit(linter, strictness) {
+function generatePreCommit(strictness) {
   let fileLimit = 400;
   let payloadLimitKb = 1000; // 1 Mo par défaut
   if (strictness.includes('Startup')) {
@@ -64,11 +64,6 @@ function generatePreCommit(linter, strictness) {
     fileLimit = 200;
     payloadLimitKb = 100; // 100 Ko
   }
-
-  let linterCmd = '';
-  if (linter.includes('ESLint')) linterCmd = 'npm run lint || { echo "Erreur Lint"; exit 1; }';
-  else if (linter.includes('Biome')) linterCmd = 'npx biome check . || { echo "Erreur Lint"; exit 1; }';
-  else if (linter.includes('Ruff')) linterCmd = 'ruff check . || { echo "Erreur Lint"; exit 1; }';
 
   return `#!/bin/bash
 # Hook: pre-commit
@@ -84,8 +79,6 @@ if [ -n "$DEBUG_FILES" ]; then
   echo "Erreur: Fichier de debug détecté hors de tests/."
   exit 1
 fi
-
-${linterCmd ? `echo "Exécution du linter..."\n${linterCmd}` : ''}
 
 for file in $(git diff --cached --name-only); do
   if [ -f "$file" ]; then
@@ -110,7 +103,7 @@ exit 0
 /**
  * Génère et installe les hooks dynamiques dans le projet.
  */
-function installDynamicHooks(gitWorkflow, linter, strictness) {
+function installDynamicHooks(gitWorkflow, strictness) {
   fs.mkdirSync('.git/hooks', { recursive: true });
 
   const commitMsgScript = `#!/bin/bash
@@ -125,7 +118,7 @@ exit 0
 
   fs.writeFileSync('.git/hooks/commit-msg', commitMsgScript);
   fs.writeFileSync('.git/hooks/pre-push', generatePrePush(gitWorkflow));
-  fs.writeFileSync('.git/hooks/pre-commit', generatePreCommit(linter, strictness));
+  fs.writeFileSync('.git/hooks/pre-commit', generatePreCommit(strictness));
 
   try {
     execSync('chmod +x .git/hooks/commit-msg .git/hooks/pre-commit .git/hooks/pre-push', { stdio: 'ignore' });
@@ -135,11 +128,11 @@ exit 0
 /**
  * Orchestre l'initialisation Git et l'installation des hooks.
  */
-export function scaffoldGit(gefDir, gitWorkflow, linter, strictness) {
+export function setupGit(gefDir, gitWorkflow, strictness) {
   console.log(chalk.yellow('🔗 Initialisation Git et installation des hooks...'));
   try {
     initGitRepo();
-    installDynamicHooks(gitWorkflow, linter, strictness);
+    installDynamicHooks(gitWorkflow, strictness);
     console.log(chalk.green('✅ Git initialisé et Hooks dynamiques générés.'));
   } catch (_) {
     console.log(chalk.red("Erreur lors de l'installation des hooks Git."));
