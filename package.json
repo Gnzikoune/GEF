@@ -73,7 +73,6 @@
   "files": [
     "generator",
     "hooks",
-    "ci-templates",
     "prompts",
     "locales",
     ".agents",
