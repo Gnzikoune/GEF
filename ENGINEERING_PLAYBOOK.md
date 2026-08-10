@@ -23,7 +23,7 @@ L'écriture du code doit suivre les **Google Engineering Practices** : la clart�
 - **Paramètres :** `{{MAX_PARAMS}} arguments max` (au-delà, utiliser un objet de configuration).
 - **Composants UI :** `150 à 200 lignes max`. (La logique > 50 lignes doit être extraite en *Custom Hook*).
 - **Fichiers :** `300 à 400 lignes max` (code source uniquement).
-  - **Note :** Les artefacts générés automatiquement (package-lock.json, yarn.lock, etc.) sont exclus de cette limite selon ADR-002.
+  - **Note :** Les artefacts générés automatiquement (package-lock.json, yarn.lock, etc.) et les glossaires (`docs/glossary.md`) sont exclus de cette limite selon ADR-002.
 
 ### 1.2. Complexité et Nesting
 - **Profondeur (Nesting) :** `3 niveaux max`.
@@ -62,6 +62,10 @@ Le code doit séparer le "métier" (règles de l'application) de "l'infrastructu
 - **Typage des Erreurs :** Créer des classes d'exceptions (ex: `DomainError`, `InfraError`, `ValidationError`).
 - **Result Pattern :** Remplacer les blocs `try/catch` massifs par des retours prévisibles de type `Result<Success, Failure>` pour obliger la gestion explicite de l'échec.
 
+### 3.1. Base de données & Migrations
+- **Stratégie de Migration :** Toute modification de schéma de base de données DOIT être scriptée de manière réversible (Up / Down) via un outil de migration (Prisma, Alembic, Flyway, etc.).
+- **Rollback :** Le Playbook impose de tester la migration `Down` localement avant toute PR impliquant un changement de schéma, afin de garantir un rollback de la DB en production si nécessaire.
+
 ---
 
 ## 4. Sécurité : OWASP Secure-by-Design & Hard Limits
@@ -73,16 +77,18 @@ Le code doit séparer le "métier" (règles de l'application) de "l'infrastructu
 
 ### 4.1. Hard Limits de Sécurité (Standard OWASP)
 - **Authentification & Sessions :** 
-  - Durée de vie d'un **Access Token (JWT) : 15 minutes max**.
+  - Durée de vie d'un **Access Token (JWT) : {{JWT_EXPIRATION}} max** (défini dans PROJECT_CONFIG.md).
   - Durée de vie d'un **Refresh Token : 7 jours max** (en `HttpOnly`).
 - **Limites de Charge (Payload Limits) :**
   - Corps de requête API (JSON) : **{{MAX_PAYLOAD}} max** (Protection DoS).
   - Upload d'image : **5 Mo max**.
 - **Anti-Brute Force (Rate Limiting) :**
-  - Bloquer un compte/IP pendant 15 minutes après **5 tentatives de connexion échouées**.
+  - Bloquer un compte/IP après **{{RATE_LIMIT_MAX_ATTEMPTS}} tentatives échouées** pendant **{{RATE_LIMIT_WINDOW}} minutes** (défini dans PROJECT_CONFIG.md).
   - Limite globale par IP : **100 requêtes API / minute**.
 - **Gestion des secrets :** Toujours via variables d'environnement (`.env`). Jamais hardcodés.
-- **Analyse SAST (Static Application Security Testing) :** Le scan du code via `Semgrep` (règles OWASP Top 10) est **obligatoire** et bloquant dans la CI.
+- **Analyse SCA et SAST (Obligatoire) :** 
+  - L'analyse SCA (Software Composition Analysis via Dependabot, Snyk, ou Trivy) pour détecter les dépendances vulnérables est **obligatoire**.
+  - Le scan SAST du code via `Semgrep` (règles OWASP Top 10) est **obligatoire** et bloquant dans la CI.
 
 ---
 
@@ -117,10 +123,10 @@ Une équipe structurée avec des responsabilités claires évite les conflits et
 
 Le pipeline CI/CD doit suivre ces étapes séquentielles pour garantir la qualité :
 1. **Build Test** : Compilation du projet, vérification que le code compile sans erreur.
-2. **Quality Test** : Linting (ESLint, Pylint, etc.), analyse statique de code, vérification des conventions de nommage.
-3. **Performance Test** : Benchmarks, tests de charge, vérification des temps de réponse.
-4. **Integration Test** : Tests d'intégration (DB, API externes), validation de la communication entre composants.
-5. **Functional Test** : Tests E2E (Playwright, Cypress), validation des scénarios métier complets. *Note : Ces tests peuvent être manuels initialement mais doivent être automatisés progressivement.*
+2. **Quality Test** : Linting (ESLint, Pylint, etc.), analyse statique de code (SAST/SCA), vérification des conventions de nommage.
+3. **Integration Test** : Tests d'intégration (DB, API externes), validation de la communication entre composants.
+4. **Functional Test** : Tests E2E (Playwright, Cypress), validation des scénarios métier complets. *Note : Ces tests peuvent être manuels initialement mais doivent être automatisés progressivement.*
+5. **Performance Test** : Benchmarks, tests de charge, vérification des temps de réponse. *Note : Cette étape est modulée selon la phase du projet déclarée dans PROJECT_CONFIG. Elle est non-bloquante ou désactivée en phase Idée/R&D pour privilégier la vélocité.*
 
 ### 5.8. Stratégies de Merge
 
@@ -195,6 +201,17 @@ Le GEF ne repose pas uniquement sur la discipline humaine ou l'obéissance de l'
 - **Limites dures (Hard Limits) :** Les avertissements de taille de fichier (> 400 lignes) ou de contournement de linter (`@ts-ignore`) ne sont plus de simples warnings, mais des erreurs fatales (`exit 1`) dans les hooks de pre-commit locaux ET dans la CI.
 - **Issue Forms (YAML) :** La création de ticket est stricte. Les `Issue Forms` exigent formellement le renseignement de l'Intention Métier et la validation manuelle des engagements GEF via des Checklists bloquantes.
 - **Chain of Thought IA :** Toute IA opérant sur le projet a pour interdiction de générer du code sans avoir préalablement vérifié et validé sa conformité dans un bloc XML `<gef_compliance_check>`.
+
+---
+
+## 11. Opérations & Run (Day 2) — Pratiques Avancées
+
+Conscient que le succès d'un logiciel se joue autant après le déploiement qu'avant, le GEF vise à intégrer progressivement les standards de l'industrie (Big Tech) pour la phase de Run, dès que la maturité du projet le permet :
+
+- **Observabilité (Logging Structuré) :** Remplacer les simples `console.log` par des logs structurés (JSON) incluant le contexte d'exécution (Trace ID, User ID) pour permettre un debugging asynchrone efficace sur Datadog/ELK.
+- **Feature Flags :** Protéger le développement collaboratif en encapsulant tout code inachevé ou risqué derrière des Feature Flags, permettant de merger du code continuellement sans impacter les utilisateurs.
+- **Rollout Progressif :** Préférer les déploiements Canary (ex: 5% des utilisateurs d'abord) ou Blue/Green, couplés à un rollback automatisé en cas de pic d'erreurs (SLO Breach).
+- **Post-Mortem Blameless :** Tout incident de production doit donner lieu à un document structuré (Cause racine, Impact, 5 Whys, Action Items) orienté sur la défaillance systémique et non sur l'erreur humaine.
 
 ---
 

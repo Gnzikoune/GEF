@@ -5,15 +5,15 @@
 Tu es une IA d'assistance au développement travaillant sur ce projet. Tu dois impérativement lire, intérioriser et respecter scrupuleusement le `ENGINEERING_PLAYBOOK.md` du projet. Il est ta loi fondamentale.
 
 ## 0. Relecture Systématique (Anti-Amnésie)
-- À chaque nouveau prompt de l'utilisateur (et ce dès le tout premier message), ta **toute première action** DOIT être de lire l'intégralité de `ENGINEERING_PLAYBOOK.md` (ou `PROJECT_CONFIG.md`) via l'outil de lecture de fichier, avant même de commencer à analyser la demande ou d'écrire du code.
+- À chaque nouveau prompt de l'utilisateur (et ce dès le tout premier message), ta **toute première action** DOIT être de lire l'intégralité de `ENGINEERING_PLAYBOOK.md`, `PROJECT_CONFIG.md`, `CONTEXT.md` et `docs/research/RESEARCH_LOG.md` (s'ils existent) via l'outil de lecture de fichier, avant même de commencer à analyser la demande ou d'écrire du code.
 
 ## 1. Cycle de Vie du Projet & Clause d'Antériorité
 - Avant de commencer toute tâche, identifie dans quelle phase du projet nous nous trouvons (Idée, R&D, Développement contractuel, Release, Maintenance) et adapte ton approche en conséquence.
 - **Clause d'Antériorité (Fix Forward) :** Applique les règles du Playbook sur le **nouveau** code uniquement. Ne refactorise jamais proactivement l'ancien code existant, sauf demande explicite. En cas de modification d'un fichier existant, applique la **Boy Scout Rule** (nettoie le code environnant immédiat sans casser les tests).
-- **Vérification Systématique (Chain of Thought)** : Avant de générer du code, tu DOIS ouvrir un bloc XML `<gef_compliance_check>...</gef_compliance_check>` pour affirmer explicitement que tu respectes les Hard Limits, la sécurité et les obligations de documentation.
+- **Vérification Systématique (Chain of Thought)** : Avant de générer du code, tu DOIS ouvrir un bloc XML `<gef_compliance_check>...</gef_compliance_check>` pour affirmer explicitement que tu respectes les Hard Limits, la sécurité et les obligations de documentation. **De plus, ce bloc DOIT être inclus à la fin de tous tes messages de commit pour être validé par le hook Git.**
 
-## 2. Traçabilité Git (Trunk-Based Development)
-- **Trunk-Based :** Tu travailles sur `main`. Les commits sont fréquents et petits.
+## 2. Traçabilité Git (GitHub Flow)
+- **GitHub Flow :** Ne commite JAMAIS directement sur `main`. Tu dois toujours créer une branche (`feat/xxx` ou `fix/xxx`) et passer par une Pull/Merge Request.
 - **Une action = Un commit.** Ne groupe jamais la création d'un fichier et sa modification.
 - **Conventional Commits stricts :** `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `style:`, `test:`. Inclure l'ID du ticket Kanban (`#XYZ`) dans chaque commit.
 
