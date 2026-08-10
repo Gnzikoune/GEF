@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/Gnzikoune/GEF/compare/v1.9.0...v1.9.1) (2026-08-03)
+
+
+### Bug Fixes
+
+* corriger les hooks Git pour respecter l'esprit du GEF ([#59](https://github.com/Gnzikoune/GEF/issues/59)) ([4c13dc4](https://github.com/Gnzikoune/GEF/commit/4c13dc4121209603cbf2d87e2c472b9ac3b9d893))
+
 ## [1.9.0](https://github.com/Gnzikoune/GEF/compare/v1.8.0...v1.9.0) (2026-07-24)
 
 

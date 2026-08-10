@@ -355,6 +355,15 @@ Cette protection DOIT être configurée avec :
 Pour un glossaire complet et détaillé de tous les termes techniques utilisés dans le GEF, consultez :
 - [`docs/glossary.md`](./docs/glossary.md) - Glossaire complet (A-Z)
 
+---
+
+## Glossaire
+
+Pour un glossaire complet et détaillé de tous les termes techniques utilisés dans le GEF, consultez :
+- [`docs/glossary.md`](./docs/glossary.md) - Glossaire complet (A-Z)
+- [`docs/glossary-a-m.md`](./docs/glossary-a-m.md) - Glossaire A-M
+- [`docs/glossary-n-z.md`](./docs/glossary-n-z.md) - Glossaire N-Z
+
 Ces violations sont documentées dans [`CONTEXT.md`](./CONTEXT.md) pour éviter toute récidive.
 
 ---
