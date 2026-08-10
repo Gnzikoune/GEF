@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/Gnzikoune/GEF/compare/v1.9.1...v1.10.0) (2026-08-10)
+
+
+### Features
+
+* alignement avec les standards Big Tech et renforcement de l'anti-contournement ([#61](https://github.com/Gnzikoune/GEF/issues/61)) ([845cca9](https://github.com/Gnzikoune/GEF/commit/845cca9c1cd9878d2e9d8e604575686a042c5852))
+
 ## [1.9.1](https://github.com/Gnzikoune/GEF/compare/v1.9.0...v1.9.1) (2026-08-03)
 
 
