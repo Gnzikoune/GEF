@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/Gnzikoune/GEF/compare/v1.14.0...v1.14.1) (2026-08-11)
+
+
+### Bug Fixes
+
+* bump version to 1.15.0 pour débloquer la publication CI ([#76](https://github.com/Gnzikoune/GEF/issues/76)) ([#79](https://github.com/Gnzikoune/GEF/issues/79)) ([e005cf3](https://github.com/Gnzikoune/GEF/commit/e005cf3b3cc713e31ac3f146ea2bb83c2a7648f4))
+
 ## [1.14.0](https://github.com/Gnzikoune/GEF/compare/v1.13.0...v1.14.0) (2026-08-11)
 
 
