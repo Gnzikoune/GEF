@@ -78,6 +78,7 @@
     "prompts",
     "locales",
     "scripts",
+    "tests",
     ".agents",
     "ENGINEERING_PLAYBOOK.md",
     "PROJECT_CONFIG.template.md",
