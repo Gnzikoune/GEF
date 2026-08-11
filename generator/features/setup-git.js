@@ -107,10 +107,21 @@ function installDynamicHooks(gitWorkflow, strictness) {
   fs.mkdirSync('.git/hooks', { recursive: true });
 
   const commitMsgScript = `#!/bin/bash
-COMMIT_MSG=$(cat $1)
+# Hook: commit-msg (généré par create-gef)
+# Réf: ENGINEERING_PLAYBOOK.md §5 — Conventional Commits + Body obligatoire
+COMMIT_MSG=$(head -n 1 "$1")
 PATTERN="^(feat|fix|docs|chore|refactor|style|perf|test|release)(\\([a-zA-Z0-9_.-]+\\))?: (.*) \\(#[0-9]+\\)$"
 if [[ ! $COMMIT_MSG =~ $PATTERN ]]; then
   echo "Erreur: Le message doit suivre Conventional Commits et inclure (#Ticket)."
+  echo "Exemple: feat: ajout du bouton login (#42)"
+  exit 1
+fi
+
+# Body obligatoire — le Squash and Merge GitHub utilise le body comme description de PR
+BODY=$(tail -n +3 "$1" | grep -v '^#' | sed '/^[[:space:]]*$/d')
+if [ -z "$BODY" ]; then
+  echo "Erreur: Le body du commit est vide (Playbook §5)."
+  echo "Ajoutez une explication après la ligne de titre (une ligne vide, puis le contexte)."
   exit 1
 fi
 exit 0

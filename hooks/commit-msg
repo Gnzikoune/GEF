@@ -1,7 +1,6 @@
 #!/bin/bash
 # Hook: commit-msg
-# Hook: commit-msg
-# Réf: ENGINEERING_PLAYBOOK.md §5
+# Réf: ENGINEERING_PLAYBOOK.md §5 — Conventional Commits + Body obligatoire
 
 COMMIT_MSG_FILE=$1
 COMMIT_MSG=$(head -n 1 "$1")
@@ -36,6 +35,25 @@ if [ ${#DESCRIPTION} -lt 10 ]; then
   echo -e "\033[33mAvertissement: La description du commit est très courte (moins de 10 caractères).\033[0m"
   echo "Playbook §5 recommande des messages détaillés pour faciliter la traçabilité."
   # Non bloquant
+fi
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Vérification du BODY obligatoire
+# Le body (lignes après la 1ère, hors commentaires Git #) doit être non-vide.
+# Pourquoi : Le "Squash and Merge" GitHub utilise le body du commit comme
+# description de la PR. Sans body, l'historique perd tout son contexte.
+# ─────────────────────────────────────────────────────────────────────────────
+BODY=$(tail -n +3 "$COMMIT_MSG_FILE" | grep -v '^#' | sed '/^[[:space:]]*$/d')
+
+if [ -z "$BODY" ]; then
+  echo -e "\033[31mErreur: Le body du commit est vide (Playbook §5).\033[0m"
+  echo "Chaque commit doit inclure un corps explicatif (au moins une ligne après la ligne de titre)."
+  echo "Exemple :"
+  echo "  feat: ajout du bouton login (#42)"
+  echo ""
+  echo "  Pourquoi : L'écran de connexion ne permettait pas l'authentification OAuth."
+  echo "  Cette modification ajoute le composant LoginButton intégré au provider Auth0."
+  exit 1
 fi
 
 exit 0

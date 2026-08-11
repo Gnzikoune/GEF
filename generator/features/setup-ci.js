@@ -8,11 +8,15 @@ export function setupCI(projectName, options = {}) {
   console.log(chalk.yellow('🤖 Génération de la CI/CD Agentique...'));
   fs.mkdirSync('.github/workflows', { recursive: true });
 
-  const { gitWorkflow = 'GitHub Flow' } = options;
+  const { gitWorkflow = 'GitHub Flow', linter = '' } = options;
 
   const branchFilter = gitWorkflow.includes('Trunk')
     ? `    branches:\n      - main`
     : `    branches:\n      - main\n      - 'feat/**'\n      - 'fix/**'`;
+
+  const linterWarning = !linter || linter === 'Aucun'
+    ? `      - name: "⚠️ Avertissement — Aucun linter configuré"\n        run: |\n          echo "::warning::Aucun linter n'est configuré dans ce projet. Les Hard Limits du Playbook §2 ne sont pas vérifiées mécaniquement. Configurez ESLint, Biome ou Ruff."`
+    : '';
 
   const ciContent = `name: GEF Validation — \${projectName}
 
@@ -51,7 +55,26 @@ jobs:
             fi
           done
           
-          echo "✅ Code 100% conforme au GEF."
+          echo "✅ Code conforme aux Hard Limits GEF."
+
+      - name: SAST — Semgrep OWASP Top 10
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/owasp-top-ten
+        continue-on-error: false
+
+      - name: Vérification synchronisation cursorrules/windsurfrules
+        run: |
+          if [ -f ".cursorrules" ] && [ -f ".windsurfrules" ]; then
+            if ! diff -q .cursorrules .windsurfrules > /dev/null 2>&1; then
+              echo "::error::.cursorrules et .windsurfrules sont désynchronisés."
+              echo "Correction : cp .cursorrules .windsurfrules"
+              exit 1
+            fi
+            echo "✅ cursorrules et windsurfrules synchronisés."
+          fi
+
+\${linterWarning}
 `;
 
   const RELEASE_PLEASE_YML = `on:
