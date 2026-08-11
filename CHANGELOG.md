@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.15.0](https://github.com/Gnzikoune/GEF/compare/v1.12.0...v1.15.0) (2026-08-11)
+
+### Features
+
+* **sdd:** transformer GEF en infrastructure Agentic SDD — pivot vers l'Agentic Software Engineering avec dossier `specs/`, workflow SDD obligatoire (Intent → Spec → Plan → Validation humaine → Code), assouplissement du TDD (Unit/Integration > E2E), et correction du hook `commit-msg` (suppression du bloc `gef_compliance_check` des commits Git) ([#70](https://github.com/Gnzikoune/GEF/issues/70))
+
 ## [1.12.0](https://github.com/Gnzikoune/GEF/compare/v1.11.0...v1.12.0) (2026-08-11)
 
 
