@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.13.0](https://github.com/Gnzikoune/GEF/compare/v1.12.0...v1.13.0) (2026-08-11)
+
+
+### Features
+
+* audit continu verify-self, SAST Semgrep, commit body obligatoire ([#73](https://github.com/Gnzikoune/GEF/issues/73)) ([#73](https://github.com/Gnzikoune/GEF/issues/73)) ([0872d43](https://github.com/Gnzikoune/GEF/commit/0872d43f548fcab3a09939c2529cc8376bdbf9b8))
+
+
+### Bug Fixes
+
+* corrections critiques du générateur et traduction (Audit Phase 1) ([#72](https://github.com/Gnzikoune/GEF/issues/72)) ([#72](https://github.com/Gnzikoune/GEF/issues/72)) ([d945e66](https://github.com/Gnzikoune/GEF/commit/d945e6604eb52ddae51cd7ac53561a0c56341849))
+
 ## [1.15.0](https://github.com/Gnzikoune/GEF/compare/v1.12.0...v1.15.0) (2026-08-11)
 
 ### Features
