@@ -4,8 +4,8 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-import { copyAndTemplateGefAssets } from './scaffold-gef.js';
-import { scaffoldGit } from './scaffold-git.js';
+import { copyAndTemplateGefAssets } from './setup-gef.js';
+import { setupGit } from './setup-git.js';
 
 /**
  * Lit le fichier de configuration pour en extraire une valeur avec Regex.
@@ -55,7 +55,7 @@ export function runUpdate(gefDir) {
   console.log(chalk.yellow('🔄 Mise à jour dynamique des ressources GEF...'));
   
   copyAndTemplateGefAssets(gefDir, strictness, language);
-  scaffoldGit(gefDir, gitWorkflow, linter, strictness);
+  setupGit(gefDir, gitWorkflow, strictness);
 
   console.log(chalk.green.bold('\n🎉 Projet GEF mis à jour avec succès !'));
 }

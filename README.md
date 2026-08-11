@@ -24,7 +24,7 @@
 1. [Philosophie](#1-philosophie)
 2. [Structure du dépôt](#2-structure-du-dépôt)
 3. [Installation et Utilisation](#3-installation-et-utilisation)
-4. [Le Générateur de Projet (Brique A)](#4-le-générateur-de-projet-brique-a)
+4. [Le CLI GEF (Brique A)](#4-le-cli-gef-brique-a)
 5. [Les Hooks Git (Brique B)](#5-les-hooks-git-brique-b)
 6. [Le Pipeline CI/CD (Brique C)](#6-le-pipeline-cicd-brique-c)
 7. [Les Prompts IA (Brique D)](#7-les-prompts-ia-brique-d)
@@ -43,7 +43,7 @@
 Le GEF repose sur un principe unique : **les règles d'ingénierie ne doivent pas être relues — elles doivent être imposées mécaniquement.**
 
 - Le [`ENGINEERING_PLAYBOOK.md`](./ENGINEERING_PLAYBOOK.md) est la source de vérité absolue. Il définit les règles universelles (traçabilité Git, documentation, architecture, sécurité, TDD, ADR, Kanban). Il ne contient jamais d'informations propres à un projet.
-- Le [`PROJECT_CONFIG.template.md`](./PROJECT_CONFIG.template.md) est le complément spécifique à chaque projet (cloud, base de données, jalons). Il est généré automatiquement par le générateur et doit être complété par le porteur.
+- Le [`PROJECT_CONFIG.template.md`](./PROJECT_CONFIG.template.md) est le complément spécifique à chaque projet (jalons, contexte). Il est généré automatiquement par le CLI et doit être complété par le porteur.
 - **Rien dans ce dépôt n'est spécifique à un projet.** Le GEF est universel et agnostique.
 
 ---
@@ -60,20 +60,17 @@ GEF/
 ├── .cursorrules                  ← Brique F : Toutes les règles GEF pour les IDEs IA (Cursor, Windsurf)
 ├── .windsurfrules                ← Brique F : Alias .cursorrules pour Windsurf
 │
-├── generator/                    ← Brique A : CLI de génération de projet
-│   ├── index.js                  ← Point d'entrée (routage des commandes : help, version, update, interactif)
+├── generator/                    ← Brique A : CLI d'initialisation
+│   ├── index.js                  ← Point d'entrée
 │   ├── cli/
-│   │   ├── questions.js          ← 11 questions Inquirer (stack, DB, cloud, git, lint, sévérité, langue...)
-│   │   └── help.js               ← Affichage de l'aide et de la version
-│   ├── features/
-│   │   ├── scaffold-stack.js     ← Scaffolding du framework cible (Next, Vite, Express, FastAPI)
-│   │   ├── scaffold-gef.js       ← Moteur de templates (Playbook, Prompts IA, Diataxis)
-│   │   ├── scaffold-git.js       ← Génération dynamique des hooks Git
-│   │   ├── scaffold-linter.js    ← Génération des configs Biome, ESLint, Ruff
-│   │   ├── scaffold-docker.js    ← Dockerfile, docker-compose, init.sql
-│   │   ├── scaffold-ci.js        ← Workflows GitHub Actions (CI/CD, release-please)
-│   │   ├── scaffold-ai-rules.js  ← Brique F : Copie .cursorrules dans chaque projet généré
-│   │   └── update.js             ← Mise à jour d'un projet existant
+│   │   ├── questions.js          ← Questions interactives Inquirer.js
+│   │   └── help.js               ← Textes d'aide
+│   └── features/                 ← Logique de configuration
+│       ├── setup-gef.js          ← Moteur de templates (Playbook, Prompts IA, Diataxis)
+│       ├── setup-git.js          ← Génération dynamique des hooks Git
+│       ├── setup-ci.js           ← Workflows GitHub Actions (CI/CD, release-please)
+│       ├── setup-ai-rules.js     ← Brique F : Copie .cursorrules, .windsurfrules, Copilot et .agents/AGENTS.md (Antigravity)
+│       └── update.js             ← Mise à jour d'un projet existant
 │   └── templates/
 │       └── adr-template.md       ← Template d'ADR prêt à l'emploi
 │
@@ -109,7 +106,7 @@ Le GEF est conçu pour être utilisé directement sans avoir besoin de cloner le
 
 | Commande | Description |
 |---|---|
-| `npx create-gef` | Lance le générateur interactif et crée un nouveau projet |
+| `npx create-gef` | Lance le CLI interactif et configure le projet courant ou en crée un nouveau |
 | `npx create-gef update` | Met à jour le Playbook, les Prompts et les Hooks dans un projet existant |
 | `npx create-gef --help` | Affiche l'aide et toutes les commandes disponibles |
 | `npx create-gef --version` | Affiche la version actuelle du framework |
@@ -153,42 +150,27 @@ npm link
 
 ---
 
-## 4. Le Générateur de Projet (Brique A)
+## 4. Le CLI GEF (Brique A)
 
-### Ce que le générateur fait
+### Ce que le CLI installe (Couche Agentique PURE)
 
-L'assistant pose **11 questions**, puis exécute automatiquement :
+Le GEF ne génère **aucun code applicatif** (ni React, ni Node, ni Python). Il s'installe par-dessus n'importe quelle stack technique existante (ou dans un dossier vide) pour y apporter la rigueur d'ingénierie :
 
 | Étape | Action |
 |---|---|
-| **1. Scaffolding** | Installe le framework choisi (`npx create-next-app`, `npm create vite`, etc.) |
-| **2. Arborescence GEF** | Crée la structure Diatáxis : `docs/tutorials/`, `docs/how-to/`, `docs/reference/`, `docs/explanation/adr/` |
-| **3. Template ADR** | Crée `docs/explanation/adr/0000-template.md` prêt à l'emploi |
-| **4. Configuration** | Génère `PROJECT_CONFIG.md` pré-rempli avec tous les choix (stack, cloud, DB, git, lint, sévérité, langue) |
-| **5. Documentation** | Génère `README.md` et `docs/research/RESEARCH_LOG.md` |
-| **6. Linter** | Génère `biome.json`, `.eslintrc.json`, ou `ruff.toml` selon le choix |
-| **7. Docker** | Génère `docker/Dockerfile` et `docker/docker-compose.yml`. Si PostgreSQL : crée `database/init.sql` monté dans le container |
-| **8. Playbook & Prompts IA** | Copie le Playbook et les Prompts dans `.gef/` **en injectant les Hard Limits adaptées** au niveau de sévérité choisi |
-| **9. Hooks Git** | Génère les hooks dynamiques (`pre-push` bloque `main` si GitHub Flow, lance les tests si TBD) |
-| **10. CI/CD** | Génère `.github/workflows/main.yml` adapté à la stack et au cloud provider |
-| **11. Release Please** | Génère `.github/workflows/release-please.yml` pour automatiser les tags et releases |
-
-### Stacks supportées
-
-| Framework | Scaffolding | Docker | CI |
-|---|---|---|---|
-| Next.js (React) | `npx create-next-app@latest` | Multi-stage → Node | Setup Node 20 + lint + tests |
-| React (Vite) | `npm create vite@latest` | Multi-stage → Nginx | Setup Node 20 + lint + tests |
-| API Node.js (Express) | `npm init` + `express` | Node Alpine + DB service | Setup Node 20 + lint + tests |
-| API Python (FastAPI) | `venv` + `requirements.txt` | Python 3.12-slim + DB service | Setup Python 3.12 + flake8 + pytest |
-| Projet vide | — | Alpine générique | Générique |
+| **1. Configuration** | Génère `PROJECT_CONFIG.md` pré-rempli avec vos choix (git, sévérité, langue) |
+| **2. Arborescence Diátaxis** | Crée la structure : `docs/tutorials/`, `docs/how-to/`, `docs/reference/`, `docs/explanation/adr/` |
+| **3. Playbook & Prompts IA** | Copie le Playbook et les Prompts dans `.gef/` **en injectant les Hard Limits adaptées** au niveau de sévérité choisi |
+| **4. Hooks Git** | Génère les hooks dynamiques locaux (`pre-push`, `pre-commit`, `commit-msg`) |
+| **5. CI/CD** | Génère `.github/workflows/main.yml` (Validation stricte des règles GEF) |
+| **6. Release Please** | Génère `.github/workflows/release-please.yml` pour automatiser les tags et releases |
 
 ### Stratégies Git supportées
 
 | Stratégie | Comportement du hook `pre-push` |
 |---|---|
 | **GitHub Flow** *(Recommandé)* | Bloque toute tentative de `git push` sur `main`. Force l'usage de branches et Pull Requests. |
-| **Trunk-Based Development** | Autorise les pushes sur `main`, mais exécute les tests locaux avant de valider. |
+| **Trunk-Based Development** | Autorise les pushes sur `main`. |
 
 ### Niveaux de sévérité (Hard Limits)
 
@@ -200,46 +182,19 @@ Le niveau choisi est injecté dans le Playbook et les Prompts IA générés dans
 | **Standard / Enterprise** *(Recommandé)* | 30 lignes | 3 | 10 | 1 Mo |
 | **Mission Critical** | 15 lignes | 2 | 5 | 100 Ko |
 
-### Linters supportés
-
-| Linter | Fichier généré | Commandes ajoutées dans `package.json` |
-|---|---|---|
-| **Biome** | `biome.json` | `npm run lint`, `npm run lint:fix` |
-| **ESLint + Prettier** | `.eslintrc.json` + `.prettierrc` | `npm run lint`, `npm run lint:fix` |
-| **Ruff** *(Python)* | `ruff.toml` | — |
-| **Aucun** | — | — |
-
-### Cloud Providers supportés
-
-| Cloud | Effet |
-|---|---|
-| **Vercel** | Génère `vercel.json`, supprime la question Docker, déploiement auto dans le CI sur push `main` |
-| **AWS** | Job de déploiement AWS dans le CI sur tag `v*.*.*` |
-| **GCP / Azure** | Release GitHub automatique sur tag `v*.*.*` |
-| **Aucun** | Release GitHub automatique sur tag `v*.*.*` |
-
-### Bases de données supportées
-
-| DB | Effet |
-|---|---|
-| **PostgreSQL** | Service `db` PostgreSQL dans `docker-compose.yml` |
-| **MongoDB** | Service `db` MongoDB dans `docker-compose.yml` |
-| **Supabase** | Génère `supabase/config.toml` + `supabase/migrations/` + `supabase/seed.sql` |
-| **Aucune** | Aucune configuration DB |
-
 ---
 
 ## 5. Les Hooks Git (Brique B)
 
-Installés automatiquement par le générateur dans `.git/hooks/` de chaque projet.
+Installés automatiquement par le CLI dans `.git/hooks/` de chaque projet.
 
 | Hook | Règle appliquée |
 |---|---|
 | **`commit-msg`** | Bloque tout commit dont le message ne respecte pas le format `Conventional Commits + référence Kanban`. Format : `feat: description (#42)`. |
-| **`pre-commit`** | Détecte les secrets en clair (clés API, tokens). Vérifie le formatage (linter). Analyse la taille des fichiers selon la sévérité choisie. **Bloque tout commit direct sur `main` ou `master`.** |
+| **`pre-commit`** | Détecte les secrets en clair (clés API, tokens). Analyse la taille du Payload et la limite de lignes selon la sévérité choisie. |
 | **`pre-push`** | **Dynamique** : Bloque tout push direct sur `main` si le projet est en GitHub Flow. Exécute les tests locaux si en Trunk-Based Development. |
 
-Ces hooks sont générés à la volée par le générateur en fonction des choix de l'équipe, et installablés dans `.git/hooks/` du projet.
+Ces hooks sont configurés à la volée par le CLI en fonction des choix de l'équipe, et installés dans `.git/hooks/` du projet.
 
 Pour mettre à jour les hooks dans un projet existant :
 
@@ -251,11 +206,11 @@ npx create-gef update
 
 ## 6. Le Pipeline CI/CD (Brique C)
 
-Le générateur crée deux fichiers dans `.github/workflows/` :
+Le CLI crée deux fichiers dans `.github/workflows/` :
 
-**`main.yml` — Contrôle Qualité & Déploiement**
-- Adapté à votre stack et cloud. Déclenché sur push `main`, `feat/**`, `fix/**`, tags `v*.*.*`, et pull requests.
-- **Jobs :** setup runtime → install → lint → tests → analyse sécurité → déploiement (Vercel/AWS) ou release GitHub.
+**`main.yml` — Conformité GEF (Compliance Check)**
+- Déclenché sur push `main`, `feat/**`, `fix/**` et pull requests.
+- **Job :** Vérifie l'intégrité du framework (vérification ultime des Hard Limits, bloque si un fichier dépasse 400 lignes). Ne fait aucune supposition sur votre stack applicative.
 
 **`release-please.yml` — Automatisation des Releases**
 - À chaque push sur `main`, génère automatiquement une Pull Request de Release avec le bon numéro de version (calculé depuis vos commits `feat:` et `fix:`) et le `CHANGELOG.md`.
@@ -310,13 +265,11 @@ Le GEF va au-delà des règles textuelles. Il **impose mécaniquement** aux IA l
 
 | Mécanisme | Fichier | Effet |
 |---|---|---|
-| **Règles natives IDE** | `.cursorrules` / `.windsurfrules` | Toute IA (Cursor, Windsurf, Copilot) lit ces fichiers au démarrage et connaît instantanément les §0 à §10 du Playbook (Clean Code, Architecture, Sécurité OWASP, Git Flow, Tests, Workflows). Ces deux fichiers sont **identiques** et synchronisés via pre-commit. |
+| **Règles natives IDE** | `.cursorrules` / `.windsurfrules` / `AGENTS.md` | Toute IA (Cursor, Windsurf, Copilot, Antigravity) lit ces fichiers au démarrage et connaît instantanément les §0 à §10 du Playbook (Architecture, Sécurité, Git Flow). |
 | **Crash Clause** | `prompts/system_prompt.md` | L'IA est instruite de s'arrêter immédiatement et de signaler tout obstacle, au lieu de l'improvisation silencieuse. |
 | **Checklist Pull Request** | `.github/PULL_REQUEST_TEMPLATE.md` | L'IA (et l'humain) doit physiquement cocher les validations (Tests, Docs, ADR) avant qu'une PR puisse être mergée. |
-| **Blocage Linter (Hard Limits)** | `biome.json` / `.eslintrc.json` / `ruff.toml` | Le linter est configuré avec les limites (ex: 15 lignes max, 2 paramètres) et plantera si l'IA tente de bypasser le framework. |
-| **Blocage local** | `hooks/pre-commit` | Un commit direct sur `main` est physiquement impossible, tout comme un commit qui ne passe pas le Linter. |
-| **Validation CI (Intention & Tests)** | `ci-templates/pr-intention-check.yml` & `main.yml` | La CI rejette les PRs sans intention métier (min 30 caractères), et bloque si la couverture de tests < 80%. |
-| **Propagation** | `generator/features/scaffold-ai-rules.js` | Chaque projet généré hérite automatiquement du `.cursorrules` complet (source unique de vérité). |
+| **Blocage local** | `hooks/pre-commit` | Un fichier dépassant la limite de taille (Payload) ne peut pas être commité. |
+| **Propagation** | `generator/features/setup-ai-rules.js` | Chaque projet configuré hérite automatiquement de toutes ces règles pour tous les assistants IA du marché. |
 
 > La puissance réside ici : l'utilisateur n'a jamais à expliquer les règles à l'IA. Elles sont déjà là.
 
@@ -347,13 +300,6 @@ Cette protection DOIT être configurée avec :
 - Exigence d'au moins 1 validateur humain (Review obligatoire).
 - Interdiction stricte de force-push.
 - Statuts CI requis avant de pouvoir merger.
-
----
-
-## Glossaire
-
-Pour un glossaire complet et détaillé de tous les termes techniques utilisés dans le GEF, consultez :
-- [`docs/glossary.md`](./docs/glossary.md) - Glossaire complet (A-Z)
 
 ---
 

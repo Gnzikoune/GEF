@@ -2,8 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 
-export function scaffoldAiRules(gefDir, projectPath) {
-  console.log(chalk.blue('Configuration des barrières de sécurité IA (.cursorrules)...'));
+export function setupAiRules(gefDir, projectPath) {
+  console.log(chalk.blue('Configuration des barrières de sécurité IA (.cursorrules, .agents)...'));
 
   // Source unique de vérité : le .cursorrules du framework GEF lui-même
   const sourceRulesPath = path.join(gefDir, '.cursorrules');
@@ -25,5 +25,12 @@ export function scaffoldAiRules(gefDir, projectPath) {
     fs.mkdirSync(githubPath, { recursive: true });
   }
   fs.writeFileSync(path.join(githubPath, 'copilot-instructions.md'), aiRulesContent);
+
+  // Écriture pour Antigravity (.agents/AGENTS.md)
+  const agentsPath = path.join(projectPath, '.agents');
+  if (!fs.existsSync(agentsPath)) {
+    fs.mkdirSync(agentsPath, { recursive: true });
+  }
+  fs.writeFileSync(path.join(agentsPath, 'AGENTS.md'), aiRulesContent);
 }
 

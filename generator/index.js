@@ -8,13 +8,10 @@ import { fileURLToPath } from 'url';
 import { PROJECT_QUESTIONS } from './cli/questions.js';
 import { printHelp, printVersion } from './cli/help.js';
 import { runUpdate } from './features/update.js';
-import { scaffoldStack } from './features/scaffold-stack.js';
-import { scaffoldDocker } from './features/scaffold-docker.js';
-import { scaffoldCI } from './features/scaffold-ci.js';
-import { scaffoldGit } from './features/scaffold-git.js';
-import { scaffoldGef } from './features/scaffold-gef.js';
-import { scaffoldLinter } from './features/scaffold-linter.js';
-import { scaffoldAiRules } from './features/scaffold-ai-rules.js';
+import { setupCI } from './features/setup-ci.js';
+import { setupGit } from './features/setup-git.js';
+import { setupGef } from './features/setup-gef.js';
+import { setupAiRules } from './features/setup-ai-rules.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const GEF_DIR = path.resolve(path.dirname(__filename), '..');
@@ -28,38 +25,44 @@ async function run() {
   if (arg === 'update') return runUpdate(GEF_DIR);
 
   // Mode interactif par défaut
-  console.log(chalk.cyan.bold('\n🚀 Bienvenue dans le générateur GEF Intelligent\n'));
-  console.log(chalk.dim('  Tapez `npx create-gef --help` pour voir toutes les commandes.\n'));
+  console.log(chalk.cyan.bold('\n🚀 Bienvenue dans le GEF (Guardian Engineering Framework)\n'));
+  console.log(chalk.dim('  Installation de la couche Agentique (Règles, Hooks, Docs, CI)...\n'));
 
   const answers = await inquirer.prompt(PROJECT_QUESTIONS);
-  const projectPath = path.resolve(process.cwd(), answers.projectName);
+  
+  const isCurrentDir = answers.projectName === '.' || answers.projectName === './';
+  const projectPath = isCurrentDir ? process.cwd() : path.resolve(process.cwd(), answers.projectName);
 
-  if (fs.existsSync(projectPath)) {
-    console.log(chalk.red(`\nErreur: Le dossier "${answers.projectName}" existe déjà.`));
-    process.exit(1);
+  if (!isCurrentDir) {
+    if (fs.existsSync(projectPath)) {
+      console.log(chalk.red(`\nErreur: Le dossier "${answers.projectName}" existe déjà.`));
+      process.exit(1);
+    }
+    console.log(chalk.blue(`\nCréation du dossier projet : ${projectPath}`));
+    fs.mkdirSync(projectPath, { recursive: true });
+    process.chdir(projectPath);
+  } else {
+    console.log(chalk.blue(`\nInitialisation de GEF dans le dossier courant : ${projectPath}`));
   }
 
-  console.log(chalk.blue(`\nCréation du dossier projet : ${projectPath}`));
-  fs.mkdirSync(projectPath, { recursive: true });
-  process.chdir(projectPath);
+  setupGef(answers, GEF_DIR);
+  setupAiRules(GEF_DIR, projectPath);
+  
+  if (answers.includeCI) {
+    setupCI(answers.projectName, {
+      strictness: answers.strictness,
+      gitWorkflow: answers.gitWorkflow,
+    });
+  }
+  
+  setupGit(GEF_DIR, answers.gitWorkflow, answers.strictness);
 
-  scaffoldStack(answers, projectPath);
-  scaffoldLinter(answers.linter, answers.stack, answers.strictness);
-  scaffoldGef(answers, GEF_DIR);
-  scaffoldAiRules(GEF_DIR, projectPath);
-  if (answers.includeDocker) scaffoldDocker(answers.stack, answers.database, answers.projectName);
-  if (answers.includeCI) scaffoldCI(answers.stack, answers.cloud, answers.projectName, {
-    database: answers.database,
-    strictness: answers.strictness,
-    linter: answers.linter,
-    gitWorkflow: answers.gitWorkflow,
-    containerRegistry: answers.containerRegistry,
-    includeDocker: answers.includeDocker,
-  });
-  scaffoldGit(GEF_DIR, answers.gitWorkflow, answers.linter, answers.strictness);
-
-  console.log(chalk.green.bold(`\n✅ Projet "${answers.projectName}" scaffoldé avec succès !`));
-  console.log(chalk.dim(`\n  cd ${answers.projectName} && git status\n`));
+  console.log(chalk.green.bold(`\n✅ Framework GEF installé avec succès !`));
+  if (!isCurrentDir) {
+    console.log(chalk.dim(`\n  cd ${answers.projectName} && git status\n`));
+  } else {
+    console.log(chalk.dim(`\n  Vérifiez les fichiers créés avec "git status"\n`));
+  }
 }
 
 if (!process.env._GEF_RUNNING) {
