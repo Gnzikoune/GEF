@@ -50,8 +50,10 @@ GEF/
 ├── README.md                     ← This file (French)
 ├── README.en.md                  ← This file (English)
 ├── package.json                  ← NPM Package (makes GEF executable via npx)
-├── .cursorrules                  ← Block F: All GEF rules for AI IDEs (Cursor, Windsurf)
-├── .windsurfrules                ← Block F: .cursorrules alias for Windsurf
+├── .cursorrules                  ← Block F: Native GEF rules for Cursor
+├── .windsurfrules                ← Block F: Native GEF rules for Windsurf
+├── .agents/                      
+│   └── AGENTS.md                 ← Block F: Native GEF rules for Antigravity
 │
 ├── locales/                      ← Bilingual templates (FR & EN)
 │   ├── fr/                       ← French versions of Playbook, Prompts, Templates
@@ -63,32 +65,22 @@ GEF/
 │   │   ├── questions.js          ← Inquirer.js interactive questions
 │   │   └── help.js               ← Help texts
 │   └── features/                 ← Configuration logic
-│       ├── setup-gef.js          ← Template engine (Playbook, AI Prompts, Diataxis)
+│       ├── setup-gef.js          ← Template engine (Playbook, Diataxis)
 │       ├── setup-git.js          ← Dynamic Git hooks generation
 │       ├── setup-ci.js           ← GitHub Actions Workflows (CI/CD, release-please)
-│       ├── setup-ai-rules.js     ← Block F: Copies .cursorrules, .windsurfrules, Copilot and .agents/AGENTS.md (Antigravity)
+│       ├── setup-ai-rules.js     ← Block F: AI rulesets deployment
 │       └── update.js             ← Update an existing project
-│   └── templates/
-│       └── adr-template.md       ← Ready-to-use ADR template
 │
 ├── hooks/                        ← Block B: Git Hooks (installed in the GEF repo itself)
-│   ├── commit-msg                ← Conventional Commits + mandatory Kanban reference (#XYZ)
+│   ├── commit-msg                ← Conventional Commits + mandatory body + Kanban reference
 │   └── pre-commit                ← Secret detection, lint, block commit on main/master
 │
-├── ci-templates/                 ← Block C: CI/CD base templates
-│   ├── main.yml                  ← (the generator produces a CI adapted to the stack)
-│   └── pr-intention-check.yml    ← Block F: Blocks PRs without declared business intent
+├── scripts/                      ← Audit and maintenance utilities
+│   ├── verify-self.js            ← Continuous audit of GEF internal consistency
+│   └── version-bump.js           ← Version management tool
 │
-├── .github/workflows/
-│   └── release-please.yml        ← Release automation for GEF itself
-│
-└── prompts/                      ← Block D: Prompts for AI assistants
-    ├── system_prompt.md          ← Base prompt (with template variables {{MAX_LINES}} etc.)
-    ├── feature_development.md    ← For feature development
-    ├── code_review.md            ← For code review
-    ├── bugfix.md                 ← For bug fixing
-    ├── adr_writing.md            ← For ADR writing
-    └── new_project_kickoff.md    ← For new project kickoff
+└── .github/workflows/
+    └── release-please.yml        ← Release automation for GEF itself
 ```
 
 ---

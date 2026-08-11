@@ -64,8 +64,10 @@ GEF/
 ├── PROJECT_CONFIG.template.md    ← Template de configuration projet
 ├── README.md                     ← Ce fichier
 ├── package.json                  ← Package NPM (rend le GEF exécutable via npx)
-├── .cursorrules                  ← Brique F : Toutes les règles GEF pour les IDEs IA (Cursor, Windsurf)
-├── .windsurfrules                ← Brique F : Alias .cursorrules pour Windsurf
+├── .cursorrules                  ← Brique F : Règles GEF natives pour Cursor
+├── .windsurfrules                ← Brique F : Règles GEF natives pour Windsurf
+├── .agents/                      
+│   └── AGENTS.md                 ← Brique F : Règles GEF natives pour Antigravity
 │
 ├── generator/                    ← Brique A : CLI d'initialisation
 │   ├── index.js                  ← Point d'entrée
@@ -73,32 +75,26 @@ GEF/
 │   │   ├── questions.js          ← Questions interactives Inquirer.js
 │   │   └── help.js               ← Textes d'aide
 │   └── features/                 ← Logique de configuration
-│       ├── setup-gef.js          ← Moteur de templates (Playbook, Prompts IA, Diataxis)
+│       ├── setup-gef.js          ← Moteur de templates (Playbook, Diataxis)
 │       ├── setup-git.js          ← Génération dynamique des hooks Git
 │       ├── setup-ci.js           ← Workflows GitHub Actions (CI/CD, release-please)
-│       ├── setup-ai-rules.js     ← Brique F : Copie .cursorrules, .windsurfrules, Copilot et .agents/AGENTS.md (Antigravity)
+│       ├── setup-ai-rules.js     ← Brique F : Déploiement des rulesets IA
 │       └── update.js             ← Mise à jour d'un projet existant
-│   └── templates/
-│       └── adr-template.md       ← Template d'ADR prêt à l'emploi
 │
 ├── hooks/                        ← Brique B : Hooks Git (installés dans le dépôt GEF lui-même)
-│   ├── commit-msg                ← Conventional Commits + référence Kanban obligatoire (#XYZ)
+│   ├── commit-msg                ← Conventional Commits + body obligatoire + référence Kanban
 │   └── pre-commit                ← Détection secrets, lint, blocage commit sur main/master
 │
-├── ci-templates/                 ← Brique C : Templates de base CI/CD
-│   ├── main.yml                  ← (le générateur produit un CI adapté à la stack)
-│   └── pr-intention-check.yml   ← Brique F : Bloque les PRs sans intention métier déclarée
+├── locales/                      ← Modèles multilingues (FR/EN)
+│   ├── fr/                       ← Templates en français
+│   └── en/                       ← Templates en anglais
 │
-├── .github/workflows/
-│   └── release-please.yml        ← Automatisation des releases du GEF lui-même
+├── scripts/                      ← Utilitaires d'audit et maintenance
+│   ├── verify-self.js            ← Audit continu de la cohérence interne du GEF
+│   └── version-bump.js           ← Gestion des versions
 │
-└── prompts/                      ← Brique D : Prompts pour assistants IA
-    ├── system_prompt.md          ← Prompt de base (avec variables de template {{MAX_LINES}} etc.)
-    ├── feature_development.md    ← Pour le développement d'une fonctionnalité
-    ├── code_review.md            ← Pour une revue de code
-    ├── bugfix.md                 ← Pour une correction de bug
-    ├── adr_writing.md            ← Pour la rédaction d'un ADR
-    └── new_project_kickoff.md    ← Pour le démarrage d'un nouveau projet
+└── .github/workflows/
+    └── release-please.yml        ← Automatisation des releases du GEF lui-même
 ```
 
 ---

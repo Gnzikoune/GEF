@@ -1,4 +1,4 @@
-# 🛡️ GUARDIAN ENGINEERING FRAMEWORK (GEF) — COMPLETE AI RULES
+# ­ƒøí´©Å GUARDIAN ENGINEERING FRAMEWORK (GEF) ÔÇö COMPLETE AI RULES
 # Absolute Reference: ENGINEERING_PLAYBOOK.md
 # This file is natively read by Cursor, Windsurf, and GitHub Copilot.
 # Any AI operating on this project must read, internalize, and respect EACH of these rules.
@@ -7,7 +7,7 @@
 
 ---
 
-## § 0. BEFORE ANY ACTION — ENTRY PROTOCOL
+## ┬º 0. BEFORE ANY ACTION ÔÇö ENTRY PROTOCOL
 
 Before writing a single line of code, the AI MUST:
 
@@ -17,7 +17,7 @@ Before writing a single line of code, the AI MUST:
    - `RESEARCH_LOG.md` (if applicable for recent bugs)
    This allows reloading the Hard Limits, security instructions, and current project state into memory, **from the VERY FIRST prompt of each interaction** and before any analysis or action.
 
-1. **Identify the project phase**: (Idea → R&D → Contractual Dev → Release → Maintenance).
+1. **Identify the project phase**: (Idea ÔåÆ R&D ÔåÆ Contractual Dev ÔåÆ Release ÔåÆ Maintenance).
    - If R&D: CI/CD rules are flexible, code remains in an isolated `prototype` repository.
    - If Contractual/Production: testing, security, and CI/CD rules are NON-NEGOTIABLE from the first commit.
 2. **Confirm business intent**: Never guess the "Why". If the business objective is not explicit, ASK before coding.
@@ -29,22 +29,22 @@ Before writing a single line of code, the AI MUST:
 Before executing the following commands, the AI MUST display a specific `<gef_compliance_check>` block:
 
 **Git Commands:**
-- `git push` → Verify destination branch is NOT main/master
-- `git merge` → Verify it is not a direct merge on main/master
-- `git commit` → Verify message respects Conventional Commits with ticket ID
+- `git push` ÔåÆ Verify destination branch is NOT main/master
+- `git merge` ÔåÆ Verify it is not a direct merge on main/master
+- `git commit` ÔåÆ Verify message respects Conventional Commits with ticket ID
 
 **GitHub Commands:**
-- `gh pr merge` → **FORBIDDEN TO AI**: The AI must NEVER execute this command. Only the human user can merge PRs. The AI can create PRs but must never merge them itself.
-- `gh api` → Verify the operation is not modifying branch protection
+- `gh pr merge` ÔåÆ **FORBIDDEN TO AI**: The AI must NEVER execute this command. Only the human user can merge PRs. The AI can create PRs but must never merge them itself.
+- `gh api` ÔåÆ Verify the operation is not modifying branch protection
 
 **Configuration modifications:**
-- Files in `.github/` → Verify impact on CI/CD
-- Files in `hooks/` → Verify rules are not bypassed
-- `.cursorrules` or `.windsurfrules` → Synchronize the other file immediately
+- Files in `.github/` ÔåÆ Verify impact on CI/CD
+- Files in `hooks/` ÔåÆ Verify rules are not bypassed
+- `.cursorrules` or `.windsurfrules` ÔåÆ Synchronize the other file immediately
 
 ---
 
-## § 1. CRASH CLAUSE — ZERO SILENT BYPASS
+## ┬º 1. CRASH CLAUSE ÔÇö ZERO SILENT BYPASS
 
 > This is the most important rule of the framework. It overrides all others.
 
@@ -55,7 +55,7 @@ Before executing the following commands, the AI MUST display a specific `<gef_co
 
 ---
 
-## § 2. CLEAN CODE — ABSOLUTE HARD LIMITS
+## ┬º 2. CLEAN CODE ÔÇö ABSOLUTE HARD LIMITS
 
 These limits are non-negotiable. The AI can NEVER generate code that violates them.
 
@@ -63,7 +63,7 @@ These limits are non-negotiable. The AI can NEVER generate code that violates th
 - **Parameters**: `{{MAX_PARAMS}}` arguments max. Beyond that, use a configuration object.
 - **Cyclomatic Complexity**: `{{MAX_COMPLEXITY}}` logical paths max per function.
 - **Nesting / Depth**: 3 levels max. Use **Guard Clauses (Early Return)** to reduce nesting.
-- **UI Components**: 150 to 200 lines max. Logic > 50 lines → extract to Custom Hook.
+- **UI Components**: 150 to 200 lines max. Logic > 50 lines ÔåÆ extract to Custom Hook.
 - **Files**: 300 to 400 lines max.
 - **Rule of 3**: 1st duplication = OK. 2nd = tolerated. 3rd = refactoring into abstraction MANDATORY.
 
@@ -76,17 +76,17 @@ These limits are non-negotiable. The AI can NEVER generate code that violates th
 
 ---
 
-## § 3. ARCHITECTURE — CLEAN ARCHITECTURE & SOLID
+## ┬º 3. ARCHITECTURE ÔÇö CLEAN ARCHITECTURE & SOLID
 
 - **Feature-Sliced Design (mandatory)**: Organize folders by business feature, NOT by technical layer.
-  - ❌ Forbidden: `/controllers`, `/models`, `/views`
-  - ✅ Correct: `/features/auth/api.ts`, `/features/auth/components/`, `/features/billing/model.ts`
+  - ÔØî Forbidden: `/controllers`, `/models`, `/views`
+  - Ô£à Correct: `/features/auth/api.ts`, `/features/auth/components/`, `/features/billing/model.ts`
 - **SRP (Single Responsibility Principle)**: A class/function does only one thing.
 - **DIP (Dependency Inversion)**: The domain depends on interfaces, never on concrete implementations.
 
 ---
 
-## § 4. ERROR HANDLING — RESILIENCE
+## ┬º 4. ERROR HANDLING ÔÇö RESILIENCE
 
 - **Information Hiding**: NEVER expose stack traces or technical details to the end user. Return a generic error with a log ID.
 - **Error Typing**: Create typed exception classes (`DomainError`, `InfraError`, `ValidationError`).
@@ -94,7 +94,7 @@ These limits are non-negotiable. The AI can NEVER generate code that violates th
 
 ---
 
-## § 5. SECURITY — OWASP HARD LIMITS
+## ┬º 5. SECURITY ÔÇö OWASP HARD LIMITS
 
 *"Complexity is the enemy of security."*
 
@@ -116,7 +116,7 @@ These limits are non-negotiable. The AI can NEVER generate code that violates th
 
 ---
 
-## § 6. GIT STRATEGY — GITHUB FLOW
+## ┬º 6. GIT STRATEGY ÔÇö GITHUB FLOW
 
 - **`main` branch = untouchable**: Direct pushes STRICTLY FORBIDDEN.
 - **Short-lived branches**: `feat/xxx`, `fix/xxx`, `docs/xxx`. Max lifespan: a few days.
@@ -130,35 +130,35 @@ These limits are non-negotiable. The AI can NEVER generate code that violates th
 
 ---
 
-## § 7. DOCUMENTATION — DIÁTAXIS & DOCS-AS-CODE
+## ┬º 7. DOCUMENTATION ÔÇö DI├üTAXIS & DOCS-AS-CODE
 
 - **Comment the WHY**: Comments explain the intent, not the implementation.
-- **Diátaxis Structure** (`docs/` folder):
-  - `docs/tutorials/` → Onboarding
-  - `docs/how-to/` → Specific task guides
-  - `docs/reference/` → API, DB, schemas
-  - `docs/explanation/adr/` → Architecture Decision Records (ADR)
+- **Di├ítaxis Structure** (`docs/` folder):
+  - `docs/tutorials/` ÔåÆ Onboarding
+  - `docs/how-to/` ÔåÆ Specific task guides
+  - `docs/reference/` ÔåÆ API, DB, schemas
+  - `docs/explanation/adr/` ÔåÆ Architecture Decision Records (ADR)
 - **Mandatory ADR**: Any major architectural decision (changing DB, framework, cloud...) requires an ADR file in `docs/explanation/adr/ADR-XXX-title.md`.
 - **Mandatory RESEARCH_LOG**: Any resolved critical bug must be documented in `docs/research/RESEARCH_LOG.md` with: Symptom / Root Cause / Resolution / Lesson learned.
 - **C4 Model**: Architecture is visualized and versioned via Mermaid.js (Context, Containers, Components).
 
 ---
 
-## § 8. QUALITY ASSURANCE — TEST PYRAMID & SHIFT-LEFT
+## ┬º 8. QUALITY ASSURANCE ÔÇö TEST PYRAMID & SHIFT-LEFT
 
 - **Shift-Left**: Thinking about tests starts when writing specifications, before code.
 - **Mandatory BDD**: Integration tests follow the `Given / When / Then` syntax.
 - **Test Pyramid**:
-  - 🟢 **80%** Unit Tests (fast, target business logic, deterministic for AI).
-  - 🟡 **15%** Integration Tests (validate DB / API).
-  - 🔴 **5%** E2E Playwright Tests (slow, fragile — written after stable implementation).
+  - ­ƒƒó **80%** Unit Tests (fast, target business logic, deterministic for AI).
+  - ­ƒƒí **15%** Integration Tests (validate DB / API).
+  - ­ƒö┤ **5%** E2E Playwright Tests (slow, fragile ÔÇö written after stable implementation).
 - **TDD / SDD**: Write Unit/Integration Tests validating the Spec BEFORE business code.
 
 ---
 
-## § 9. STEP-BY-STEP METHODOLOGY — PILOTING & AUTONOMY
+## ┬º 9. STEP-BY-STEP METHODOLOGY ÔÇö PILOTING & AUTONOMY
 
-- **Work Cycle**: `Propose → Explain → Implement → Commit → Validate`. Never large blocks at once.
+- **Work Cycle**: `Propose ÔåÆ Explain ÔåÆ Implement ÔåÆ Commit ÔåÆ Validate`. Never large blocks at once.
 - **Breakdown into Issues**: Use `gh issue create` to transform a large undertaking into traceable sub-tasks. **The AI MUST read and use the format defined in `.github/ISSUE_TEMPLATE/` (if it exists) and respect `CONTRIBUTING.md`.**
 - **PR Creation**: Use `gh pr create` with the mention `Closes #XYZ` and imperatively use `.github/PULL_REQUEST_TEMPLATE.md`.
 - **Zero Scraps**: Debug scripts, temporary files, and "commented out" comments are removed BEFORE any push.
@@ -166,27 +166,27 @@ These limits are non-negotiable. The AI can NEVER generate code that violates th
 
 ---
 
-## § 10. CONTEXTUAL WORKFLOWS — BEHAVIOR DEPENDING ON THE TASK
+## ┬º 10. CONTEXTUAL WORKFLOWS ÔÇö BEHAVIOR DEPENDING ON THE TASK
 
 These workflows replace the manual loading of old prompt files. The AI MUST activate them automatically as soon as it detects the context.
 
-### 🐛 Bugfix Mode (if the user talks about a bug, error, or crash)
+### ­ƒÉø Bugfix Mode (if the user talks about a bug, error, or crash)
 1. **Reproduce** the bug in isolation. Do not modify anything before understanding the root cause.
 2. Evaluate the security impact as an absolute priority.
 3. Fix with a commit `fix: ... (#ticket)`.
 4. Write or update a test covering the scenario.
 5. Document in `RESEARCH_LOG.md` MANDATORY.
 
-### 🚀 Feature Mode (Agentic SDD — New Feature)
+### ­ƒÜÇ Feature Mode (Agentic SDD ÔÇö New Feature)
 1. Create a ticket `gh issue create` and a branch `feat/xxx`.
 2. **[AI STOP]** Write `specs/spec.md` (Intent, Requirements, Acceptance Criteria) and `specs/plan.md` (Design, Tasks).
 3. **MANDATORY Wait for human validation** of the spec and plan.
 4. Write Tests (Unit/Integration) validating the acceptance criteria (TDD).
 5. Execute tasks, with frequent micro-commits `feat: ... (#ticket)`.
-6. If architectural novelty → create an ADR.
+6. If architectural novelty ÔåÆ create an ADR.
 7. Open a PR with `gh pr create` and ask the user to merge.
 
-### 🔍 Code Review Mode (if the user requests a code review, checklist before merge)
+### ­ƒöì Code Review Mode (if the user requests a code review, checklist before merge)
 - [ ] Hard Limits respected (lines, parameters, complexity, nesting)?
 - [ ] Feature-Sliced Design respected?
 - [ ] SRP respected (only one responsibility per class/function)?
@@ -195,31 +195,31 @@ These workflows replace the manual loading of old prompt files. The AI MUST acti
 - [ ] Conventional Commits with ticket ID?
 - [ ] ADR created if major architectural decision?
 - [ ] Code commented on INTENT (the why), not the what?
-- **If a point fails → block the merge and propose the fix.**
+- **If a point fails ÔåÆ block the merge and propose the fix.**
 
-### 📐 ADR Mode (if the user must make an architectural decision)
+### ­ƒôÉ ADR Mode (if the user must make an architectural decision)
 - File: `docs/explanation/adr/ADR-XXX-descriptive_title.md`
 - Structure: Context / Considered Options / Decision / Consequences / Mermaid Diagram (if applicable)
-- Dedicated commit: `docs(adr): creation ADR-XXX — [title] (#ticket)`
-- ⚠️ Do NOT record ADRs in the RESEARCH_LOG (reserved for bugs).
+- Dedicated commit: `docs(adr): creation ADR-XXX ÔÇö [title] (#ticket)`
+- ÔÜá´©Å Do NOT record ADRs in the RESEARCH_LOG (reserved for bugs).
 
-### 🏁 Kickoff Mode (if the user starts a new project)
+### ­ƒÅü Kickoff Mode (if the user starts a new project)
 1. Ask: "Is this project R&D or Contractual/Production?"
 2. Help fill out `PROJECT_CONFIG.md`.
 3. Propose the Feature-Sliced Design structure.
-4. Create `docs/` with the 4 Diátaxis quadrants.
+4. Create `docs/` with the 4 Di├ítaxis quadrants.
 5. Prepare the GitHub Actions workflow (Lint, Tests, Security) from day one.
 6. First commit: `chore: project initialization via GEF (structure, CI/CD, docs)`
 
-### End of a task (Before concluding — MANDATORY AND AUTOMATIC)
+### End of a task (Before concluding ÔÇö MANDATORY AND AUTOMATIC)
 The AI MUST NOT wait for the user to ask these questions. It MUST check and execute them on its own initiative before concluding its response:
 
 - [ ] **Completed tasks**: Reread the `task.md` file (if it exists). Are all boxes checked? If not, finish the work or clearly report what remains.
-- [ ] **Documentation Check**: Do `README.md`, `CHANGELOG.md`, or Diátaxis docs need to be updated following these changes?
+- [ ] **Documentation Check**: Do `README.md`, `CHANGELOG.md`, or Di├ítaxis docs need to be updated following these changes?
 - [ ] **Synchronization**: If `.cursorrules` was modified, synchronize `.windsurfrules` immediately (`cp .cursorrules .windsurfrules`).
 - [ ] **Clean commit**: No scraps (temporary file, debug `console.log`) in the final commit.
 - [ ] **PR opened**: Is the branch pushed and the PR created on GitHub?
 
 ---
 
-*This file is the fundamental law of GEF. It guarantees an "Elite" DORA engineering level on all projects.*
+*This file is the fundamental law of GEF. It guarantees an excellent engineering level on all projects by mechanically enforcing these constraints.*

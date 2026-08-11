@@ -222,4 +222,4 @@ L'IA NE DOIT PAS attendre que l'utilisateur pose ces questions. Elle DOIT les v�
 
 ---
 
-*Ce fichier est la loi fondamentale du GEF. Il garantit un niveau d'ingénierie DORA "Elite" sur tous les projets.*
+*Ce fichier est la loi fondamentale du GEF. Il garantit un niveau d'ingénierie d'excellence sur tous les projets en imposant ces contraintes mécaniquement.*
