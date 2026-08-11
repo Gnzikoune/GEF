@@ -4,6 +4,8 @@
 >
 > Les spécificités techniques d'un projet donné (services cloud utilisés, base de données, etc.) ne figurent **jamais** ici : elles vivent dans un fichier `PROJECT_CONFIG.md` à la racine de chaque dépôt. Ce Playbook reste universel.
 
+> **Méthodologie :** Ce Playbook orchestre la boucle **AI SDD** (*AI Spec-Driven Development*). Dans ce cycle, l'humain **Définit** les spécifications et **Vérifie** les livrables. L'IA **Analyse/Conçoit** (§2 à §4) puis **Implémente/Teste** (§8) — toujours sous les contraintes mécaniques ci-dessous.
+
 ---
 
 ## 0. Cycle de Vie du Projet & Clause d'Antériorité
