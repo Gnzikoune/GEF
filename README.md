@@ -225,16 +225,18 @@ Le CLI crée deux fichiers dans `.github/workflows/` :
 
 ## 7. Les Prompts IA (Brique D)
 
-Des directives à charger dans votre assistant IA selon le contexte de travail. Ils sont copiés dans `.gef/prompts/` de chaque projet généré.
+> **✨ Nouveauté (Framework Agentique Pur) :** Les règles spécifiques de ces prompts (Bugfix, Feature, etc.) sont désormais **automatiquement intégrées et détectées** par `.cursorrules` et `AGENTS.md` (via la section *Workflows Contextuels*). L'IA active le bon mode toute seule en fonction de ce que vous lui demandez.
 
-| Fichier | Quand l'utiliser |
+Les fichiers sources ci-dessous sont copiés dans `.gef/prompts/` de chaque projet généré **à titre documentaire** (pour que les humains comprennent les règles de la machine), mais vous n'avez plus besoin de les charger manuellement.
+
+| Fichier | Ce que l'IA fait automatiquement |
 |---|---|
-| [`system_prompt.md`](./prompts/system_prompt.md) | **Toujours** — à charger en début de chaque session de travail |
-| [`feature_development.md`](./prompts/feature_development.md) | Lors du développement d'une nouvelle fonctionnalité |
-| [`code_review.md`](./prompts/code_review.md) | Lors d'une revue de code |
-| [`bugfix.md`](./prompts/bugfix.md) | Lors de la correction d'un bug |
-| [`adr_writing.md`](./prompts/adr_writing.md) | Lors d'une décision architecturale importante |
-| [`new_project_kickoff.md`](./prompts/new_project_kickoff.md) | Au tout démarrage d'un nouveau projet |
+| [`system_prompt.md`](./prompts/system_prompt.md) | **Toujours actif** — Injecte la Crash Clause et le rôle d'Ingénieur IA |
+| [`feature_development.md`](./prompts/feature_development.md) | S'active lors de la demande d'une nouvelle fonctionnalité |
+| [`code_review.md`](./prompts/code_review.md) | S'active lors d'une demande de revue de code |
+| [`bugfix.md`](./prompts/bugfix.md) | S'active lors de la correction d'un bug ou crash |
+| [`adr_writing.md`](./prompts/adr_writing.md) | S'active lors d'une décision architecturale importante |
+| [`new_project_kickoff.md`](./prompts/new_project_kickoff.md) | S'active au tout démarrage d'un nouveau projet |
 
 ---
 

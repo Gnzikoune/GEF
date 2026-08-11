@@ -216,16 +216,18 @@ The CLI creates two files in `.github/workflows/`:
 
 ## 7. AI Prompts (Block D)
 
-Directives to load into your AI assistant based on the work context. They are copied to `.gef/prompts/` of each generated project.
+> **✨ New (Pure Agentic Framework):** The specific rules from these prompts (Bugfix, Feature, etc.) are now **automatically integrated and detected** by `.cursorrules` and `AGENTS.md` (via the *Contextual Workflows* section). The AI activates the correct mode on its own based on what you ask it.
 
-| File | When to use |
+The source files below are copied into `.gef/prompts/` of each generated project **for documentation purposes** (so humans can understand the machine's rules), but you no longer need to load them manually.
+
+| File | What the AI does automatically |
 |---|---|
-| [`system_prompt.md`](./prompts/system_prompt.md) | **Always** — load at the beginning of each work session |
-| [`feature_development.md`](./prompts/feature_development.md) | When developing a new feature |
-| [`code_review.md`](./prompts/code_review.md) | During a code review |
-| [`bugfix.md`](./prompts/bugfix.md) | When fixing a bug |
-| [`adr_writing.md`](./prompts/adr_writing.md) | When making an important architectural decision |
-| [`new_project_kickoff.md`](./prompts/new_project_kickoff.md) | At the very start of a new project |
+| [`system_prompt.md`](./prompts/system_prompt.md) | **Always active** — Injects the Crash Clause and the AI Engineer role |
+| [`feature_development.md`](./prompts/feature_development.md) | Activates when you ask for a new feature |
+| [`code_review.md`](./prompts/code_review.md) | Activates during a code review request |
+| [`bugfix.md`](./prompts/bugfix.md) | Activates when fixing a bug or crash |
+| [`adr_writing.md`](./prompts/adr_writing.md) | Activates when making an important architectural decision |
+| [`new_project_kickoff.md`](./prompts/new_project_kickoff.md) | Activates at the very start of a new project |
 
 ---
 
