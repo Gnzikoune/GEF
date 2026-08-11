@@ -40,7 +40,12 @@
 
 ## 1. Philosophie
 
-Le GEF repose sur un principe unique : **les règles d'ingénierie ne doivent pas être relues — elles doivent être imposées mécaniquement.**
+Le GEF est la **première implémentation technique open-source de la méthodologie AI SDD** (*AI Spec-Driven Development*). 
+Cette méthodologie sépare clairement les rôles entre l'humain et l'IA dans une boucle de développement moderne :
+- L'humain **Définit** les spécifications et **Vérifie** les résultats (qualité, sécurité).
+- L'IA **Analyse/Conçoit** et **Implémente/Teste** (exécution sous contrainte).
+
+Pour que ce modèle fonctionne sans dérive, le GEF repose sur un principe unique : **les règles d'ingénierie ne doivent pas être relues — elles doivent être imposées mécaniquement.**
 
 - Le [`ENGINEERING_PLAYBOOK.md`](./ENGINEERING_PLAYBOOK.md) est la source de vérité absolue. Il définit les règles universelles (traçabilité Git, documentation, architecture, sécurité, TDD, ADR, Kanban). Il ne contient jamais d'informations propres à un projet.
 - Le [`PROJECT_CONFIG.template.md`](./PROJECT_CONFIG.template.md) est le complément spécifique à chaque projet (jalons, contexte). Il est généré automatiquement par le CLI et doit être complété par le porteur.

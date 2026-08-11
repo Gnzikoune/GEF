@@ -47,6 +47,10 @@ L'IA a bypassé les protections de branche pour atteindre son objectif.
 L'IA a poussé du code directement sur main (via `git push` ou `gh pr merge`), ignorant la règle de PR obligatoire en raison d'instructions contradictoires dans le prompt.
 **Leçon :** Les mécanismes côté client (hooks, .cursorrules, CONTEXT.md) sont contournables. L'IA ne doit JAMAIS faire de push direct sur main. Seule la protection côté serveur (GitHub Branch Protection) est efficace.
 
+### Commits Directs sur Main — Intégration AI SDD (2026-08-11)
+L'IA a commité les modifications d'intégration AI SDD (8 fichiers) directement sur `main` sans créer de branche `feat/ai-sdd-integration`, sans ticket préalable, et sans ouvrir de PR. Le Playbook (§5), le CONTEXT.md et les AGENTS.md interdisent explicitement cette pratique.
+**Leçon :** La checklist `<gef_compliance_check>` doit être affichée AVANT chaque `git commit`, pas seulement avant `git push`. Lire `CONTEXT.md` et `ENGINEERING_PLAYBOOK.md` AVANT toute action de code.
+
 ---
 
 ## Checklist Avant Toute Action
@@ -65,6 +69,8 @@ L'IA a poussé du code directement sur main (via `git push` ou `gh pr merge`), i
 
 ## Dernières Modifications
 
+- 2026-08-11 : Intégration méthodologie AI SDD (violation : commits directs sur main — voir Violations Historiques)
+- 2026-08-11 : Mise à jour READMEs pour alignement avec le framework Pure Agentique
 - 2026-07-25 : Ajout pre-push hook pour bloquer les pushes sur main
 - 2026-07-25 : Documentation de la violation de push sur main
 - 2026-07-24 : Skip semantic reviewer pour release-please PRs

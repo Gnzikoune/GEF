@@ -4,6 +4,8 @@
 >
 > Technical specifics of a given project (cloud services used, database, etc.) **never** appear here: they live in a `PROJECT_CONFIG.md` file at the root of each repository. This Playbook remains universal.
 
+> **Methodology:** This Playbook orchestrates the **AI SDD** (*AI Spec-Driven Development*) loop. In this cycle, the human **Defines** the specifications and **Verifies** the deliverables. The AI **Analyzes/Designs** (§2 to §4) then **Implements/Tests** (§8) — always under the mechanical constraints below.
+
 ---
 
 ## 0. Project Lifecycle & Grandfather Clause
