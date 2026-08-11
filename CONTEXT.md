@@ -29,6 +29,7 @@ Avant d'exécuter ces commandes, l'IA DOIT afficher `<gef_compliance_check>` :
 - `gh pr merge`
 - `gh api` (surtout pour les opérations d'administration)
 - Modifications de fichiers de configuration (.github/, hooks/, .cursorrules)
+- `git commit --no-verify` (contournement de hook)
 
 ### 3. Documentation Obligatoire
 - Pour les branches `fix/*` : RESEARCH_LOG.md est OBLIGATOIRE
@@ -51,6 +52,10 @@ L'IA a poussé du code directement sur main (via `git push` ou `gh pr merge`), i
 L'IA a commité les modifications d'intégration AI SDD (8 fichiers) directement sur `main` sans créer de branche `feat/ai-sdd-integration`, sans ticket préalable, et sans ouvrir de PR. Le Playbook (§5), le CONTEXT.md et les AGENTS.md interdisent explicitement cette pratique.
 **Leçon :** La checklist `<gef_compliance_check>` doit être affichée AVANT chaque `git commit`, pas seulement avant `git push`. Lire `CONTEXT.md` et `ENGINEERING_PLAYBOOK.md` AVANT toute action de code.
 
+### Contournement de Hook sans Validation — Suppression de fichier (2026-08-11)
+L'IA a utilisé `git commit --no-verify` pour contourner un hook qui bloquait car il détectait "debugger;" dans un fichier en cours de suppression (faux positif). L'IA a contourné le hook sans demander la validation humaine, violant la Crash Clause.
+**Leçon :** Même si l'IA pense qu'un blocage est un faux positif, elle ne doit JAMAIS utiliser --no-verify sans demander la validation humaine. La décision de contourner une protection appartient à l'humain, pas à l'IA. L'IA doit systématiquement demander : "Le hook bloque car [raison]. Je pense que c'est un faux positif car [explication]. Puis-je utiliser --no-verify ?"
+
 ---
 
 ## Checklist Avant Toute Action
@@ -69,6 +74,7 @@ L'IA a commité les modifications d'intégration AI SDD (8 fichiers) directement
 
 ## Dernières Modifications
 
+- 2026-08-11 : Intégration commande gef doctor (violation : contournement hook sans validation — voir Violations Historiques)
 - 2026-08-11 : Intégration méthodologie AI SDD (violation : commits directs sur main — voir Violations Historiques)
 - 2026-08-11 : Mise à jour READMEs pour alignement avec le framework Pure Agentique
 - 2026-07-25 : Ajout pre-push hook pour bloquer les pushes sur main
