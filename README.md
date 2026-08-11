@@ -11,7 +11,7 @@
 ![Git Hooks](https://img.shields.io/badge/Hooks-Native-FF4154?style=flat&logo=git&logoColor=white)
 ![AI-Powered](https://img.shields.io/badge/AI-Cursor%20%7C%20Windsurf-8A2BE2?style=flat)
 ![Status](https://img.shields.io/badge/Status-Production_Ready-4CAF50?style=flat)
-![Version](https://img.shields.io/badge/Version-1.8.0-blue?style=flat)
+![Version](https://img.shields.io/npm/v/create-gef?label=Version&color=blue&style=flat)
 
 </div>
 

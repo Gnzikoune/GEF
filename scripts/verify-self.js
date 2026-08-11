@@ -101,12 +101,24 @@ function checkVersionConsistency() {
   const currentVersion = pkg.version;
   const readmeContent = fs.readFileSync(readmePath, 'utf8');
 
-  // Recherche d'un badge npm ou d'une mention de version dans le README
+  // Un badge npm dynamique (shields.io/npm/v/<pkg>) est la méthode recommandée :
+  // il ne nécessite pas de mise à jour manuelle et reste toujours exact.
+  const hasDynamicNpmBadge = /shields\.io\/npm\/v\/create-gef/.test(readmeContent);
+  if (hasDynamicNpmBadge) {
+    ok(`Badge npm dynamique détecté dans README.md — versioning automatique.`);
+    return;
+  }
+
+  // Fallback : vérification d'une mention statique de la version
   const versionPattern = /v(\d+\.\d+\.\d+)/g;
   const mentionedVersions = [...readmeContent.matchAll(versionPattern)].map((m) => m[1]);
 
   if (mentionedVersions.length === 0) {
-    warn(`Aucune version trouvée dans README.md. Ajoutez un badge npm ou une mention de v${currentVersion}.`);
+    warn(
+      `Aucune version trouvée dans README.md. ` +
+      `Ajoutez le badge dynamique npm : ` +
+      `![Version](https://img.shields.io/npm/v/create-gef?label=Version&color=blue&style=flat)`
+    );
     return;
   }
 

@@ -6,6 +6,10 @@
 >
 > *Guardian — the mechanical guardian that protects your projects from silent drift.*
 
+![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat&logo=nodedotjs&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=flat&logo=githubactions&logoColor=white)
+![Version](https://img.shields.io/npm/v/create-gef?label=Version&color=blue&style=flat)
+
 ---
 
 ## Table of Contents
