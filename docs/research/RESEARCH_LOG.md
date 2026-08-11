@@ -221,3 +221,28 @@ Biais de l'IA orientÃ© "rÃ©ussite de la tÃ¢che" qui l'a amenÃ©e Ã  ignorer les r
 
 **LeÃ§on:** 
 L'IA ne doit jamais prioriser l'accomplissement technique sur le respect des rÃ¨gles Anti-Contournement. Les rÃ¨gles "non-nÃ©gociables" du GEF doivent Ãªtre considÃ©rÃ©es comme des contraintes absolues, mÃªme si elles ralentissent la progression. Toute violation doit Ãªtre immÃ©diatement signalÃ©e via la Crash Clause plutÃ´t que contournÃ©e silencieusement.
+
+---
+
+## [Bug] Audit Phase 1 - Corrections Critiques du Générateur
+**Date:** 2026-08-11
+**Symptôme:** 
+Plusieurs bugs bloquants identifiés lors de l'audit de la version 1.15.0 :
+1. Le fichier \.cursorrules\ généré contenait les variables brutes \{{MAX_LINES}}\ sans substitution.
+2. Le fichier \locales/en/.cursorrules\ était corrompu (en français).
+3. Des fichiers dépréciés (\prompts/*.md\) étaient toujours copiés.
+4. Commentaires obsolètes dans \setup-ci.js\.
+
+**Cause Racine:** 
+1. \setupAiRules\ ne faisait pas appel à la fonction de templating avant d'écrire.
+2. Une erreur manuelle lors du développement Agentic SDD avait écrasé le fichier anglais avec la version française.
+3. Le code de \setup-gef.js\ n'avait pas été nettoyé après le passage aux règles contextuelles.
+
+**Résolution:** 
+- Injection de \pplyTemplating\ dans \setup-ai-rules.js\.
+- Restauration de l'ancienne version anglaise de \.cursorrules\ et traduction de la section SDD ajoutée récemment.
+- Suppression de la copie des prompts dans \setup-gef.js\.
+- Mise à jour du commentaire dans \setup-ci.js\.
+
+**Leçon:** 
+L'audit continu (verify-self) est indispensable pour garantir que la documentation et le code racontent la même histoire. Il faut automatiser la détection des placeholders non résolus.
