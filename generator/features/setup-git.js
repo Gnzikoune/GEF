@@ -68,16 +68,27 @@ function generatePreCommit(strictness) {
   return `#!/bin/bash
 # Hook: pre-commit
 
-SECRETS=$(git diff --cached -G"(api_key|secret|token|password)[ ]*=[ ]*['\\\"][a-zA-Z0-9_\\\\-]+['\\\"]" --name-only)
+SECRETS=$(git diff --cached -G"(api_key|secret|token|password)[ ]*=[ ]*['\\\"][a-zA-Z0-9_\\\\-]+['\\\"]|(sk-[a-zA-Z0-9]{20,48})|(xox[baprs]-[0-9a-zA-Z]{10,48})" --name-only)
 if [ -n "$SECRETS" ]; then
-  echo "Erreur: Potentiel secret en clair."
+  echo "Erreur: Potentiel secret en clair détecté."
   exit 1
 fi
 
-DEBUG_FILES=$(git diff --cached --name-only | grep -E "(^|/)(debug_|test_)" | grep -v "^tests/")
+DEBUG_FILES=$(git diff --cached --name-only | grep -E "(^|/)(debug_|test_|\\.tmp$)")
 if [ -n "$DEBUG_FILES" ]; then
-  echo "Erreur: Fichier de debug détecté hors de tests/."
+  echo "Erreur: Fichier temporaire ou de debug détecté."
   exit 1
+fi
+
+SCORIA=$(git diff --cached -G"debugger;" --name-only)
+if [ -n "$SCORIA" ]; then
+  echo "Erreur: Instruction 'debugger;' détectée."
+  exit 1
+fi
+
+LOGS=$(git diff --cached -G"console\\.log[[:space:]]*\\(" --name-only)
+if [ -n "$LOGS" ]; then
+  echo "Avertissement: Des 'console.log' ont été détectés."
 fi
 
 for file in $(git diff --cached --name-only); do
@@ -115,6 +126,14 @@ if [[ ! $COMMIT_MSG =~ $PATTERN ]]; then
   echo "Erreur: Le message doit suivre Conventional Commits et inclure (#Ticket)."
   echo "Exemple: feat: ajout du bouton login (#42)"
   exit 1
+fi
+
+# Vérification du numéro de ticket via GitHub CLI (si disponible)
+ISSUE_NUM=$(echo "$COMMIT_MSG" | sed -n 's/.*(#\\([0-9]*\\))$/\\1/p')
+if command -v gh &> /dev/null && [ -n "$ISSUE_NUM" ]; then
+  if ! gh issue view "$ISSUE_NUM" &> /dev/null; then
+    echo "Avertissement: Le ticket #$ISSUE_NUM est introuvable sur ce dépôt GitHub."
+  fi
 fi
 
 # Body obligatoire — le Squash and Merge GitHub utilise le body comme description de PR

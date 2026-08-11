@@ -11,22 +11,36 @@ if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
 fi
 
 # 1. Vérification des secrets en clair
-# Recherche naïve de patterns de type api_key="qqchose" ou secret = "qqchose" dans le code mis en stage
-SECRETS=$(git diff --cached -G"(api_key|secret|token|password)[ ]*=[ ]*['\"][a-zA-Z0-9_\-]+['\"]" --name-only)
+# Recherche de patterns de type api_key="qqchose", token stripe/openai, slack...
+SECRETS=$(git diff --cached -G"(api_key|secret|token|password)[ ]*=[ ]*['\"][a-zA-Z0-9_\-]+['\"]|(sk-[a-zA-Z0-9]{20,48})|(xox[baprs]-[0-9a-zA-Z]{10,48})" --name-only)
 if [ -n "$SECRETS" ]; then
-  echo -e "\033[31mErreur: Potentiel secret en clair détecté dans les fichiers suivants :\033[0m"
+  echo -e "\033[31mErreur: Potentiel secret en clair (API key, token, mot de passe) détecté dans les fichiers suivants :\033[0m"
   echo "$SECRETS"
   echo "Bloqué selon le Playbook. Utilisez des variables d'environnement."
   exit 1
 fi
 
-# 2. Vérification des fichiers de debug non voulus
-DEBUG_FILES=$(git diff --cached --name-only | grep -E "(^|/)(debug_|test_)" | grep -v "^tests/")
+# 2. Vérification des fichiers de debug non voulus et des scories dans le code
+DEBUG_FILES=$(git diff --cached --name-only | grep -E "(^|/)(debug_|test_|\.tmp$)")
 if [ -n "$DEBUG_FILES" ]; then
-  echo -e "\033[31mErreur: Fichier de debug ou de test hors du dossier officiel 'tests/' détecté :\033[0m"
+  echo -e "\033[31mErreur: Fichier temporaire ou de debug détecté :\033[0m"
   echo "$DEBUG_FILES"
-  echo "Bloqué selon le Playbook §12."
   exit 1
+fi
+
+SCORIA=$(git diff --cached -G"debugger;" --name-only)
+if [ -n "$SCORIA" ]; then
+  echo -e "\033[31mErreur: Instruction 'debugger;' détectée dans :\033[0m"
+  echo "$SCORIA"
+  echo "Nettoyez votre code de debug avant de commiter."
+  exit 1
+fi
+
+LOGS=$(git diff --cached -G"console\.log[[:space:]]*\(" --name-only | grep -vE "(^|/)(scripts|generator|tests)/")
+if [ -n "$LOGS" ]; then
+  echo -e "\033[33mAvertissement: Des 'console.log' ont été détectés dans les fichiers suivants :\033[0m"
+  echo "$LOGS"
+  echo "Assurez-vous qu'il ne s'agit pas d'oublis de debug."
 fi
 
 # 3. Synchronisation IA (Cursor / Windsurf)

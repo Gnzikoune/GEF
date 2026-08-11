@@ -7,9 +7,10 @@
     "create-gef": "./generator/index.js"
   },
   "scripts": {
-    "start": "node generator/index.js",
+    "start": "node bin/create-gef.js",
+    "test": "node --test",
+    "lint": "echo \"Linting not configured yet\" && exit 0",
     "verify-self": "node scripts/verify-self.js",
-    "test": "node generator/index.js --help && npm run verify-self",
     "prepublishOnly": "npm run test",
     "version-bump": "node scripts/version-bump.js"
   },
