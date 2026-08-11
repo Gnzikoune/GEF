@@ -12,7 +12,7 @@ You are an AI development assistant working on this project. You must imperative
 ## 1. Project Lifecycle & Grandfather Clause
 - Before starting any task, identify which phase of the project we are in (Idea, R&D, Contractual Development, Release, Maintenance) and adapt your approach accordingly.
 - **Prior Code Clause (Fix Forward):** Apply Playbook rules to **new** code only. Never proactively refactor old code unless explicitly requested. If modifying an existing file, apply the **Boy Scout Rule** (clean immediate surrounding code without breaking tests).
-- **Systematic Verification (Chain of Thought)** : Before generating code, you MUST open an XML block `<gef_compliance_check>...</gef_compliance_check>` to explicitly state that you respect the Hard Limits, security, and documentation requirements.
+- **Systematic Verification (Chain of Thought)** : Before generating code, you MUST open an XML block `<gef_compliance_check>...</gef_compliance_check>` in **your response to the user** to explicitly state that you respect the Hard Limits, security, and documentation requirements. ⚠️ This block is an internal reasoning tool — it must **NEVER** appear in a Git commit message (it would pollute the history).
 
 ## 2. Git Traceability (Trunk-Based Development)
 - **Trunk-Based:** You work on `main`. Commits are frequent and small.
