@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/Gnzikoune/GEF/compare/v1.13.0...v1.14.0) (2026-08-11)
+
+
+### Features
+
+* implémentation Phase 4 (CI/CD et tests) ([#76](https://github.com/Gnzikoune/GEF/issues/76)) ([#77](https://github.com/Gnzikoune/GEF/issues/77)) ([f71ee71](https://github.com/Gnzikoune/GEF/commit/f71ee717b486c1626f69dde2cc44d8ea4a414f16))
+
 ## [1.13.0](https://github.com/Gnzikoune/GEF/compare/v1.12.0...v1.13.0) (2026-08-11)
 
 
