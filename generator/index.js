@@ -46,7 +46,7 @@ async function run() {
   }
 
   setupGef(answers, GEF_DIR);
-  setupAiRules(GEF_DIR, projectPath);
+  setupAiRules(GEF_DIR, projectPath, answers.strictness);
   
   if (answers.includeCI) {
     setupCI(answers.projectName, {

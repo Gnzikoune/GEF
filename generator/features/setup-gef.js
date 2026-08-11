@@ -29,7 +29,7 @@ function createDirectories(includeCI) {
  * Applique les règles de Hard Limits selon la sévérité choisie.
  * La substitution opère sur le fichier source de la bonne locale — pas de traduction à la volée.
  */
-function applyTemplating(content, strictness) {
+export function applyTemplating(content, strictness) {
   let maxLines = '30';
   let maxParams = '3';
   let maxComplexity = '10';
@@ -73,7 +73,6 @@ function resolveLocaleDir(gefDir, language) {
  */
 export function copyAndTemplateGefAssets(gefDir, strictness, language) {
   console.log(chalk.cyan('📚 Ajout du Playbook et des Prompts IA dynamiques...'));
-  fs.mkdirSync('.gef/prompts', { recursive: true });
 
   const localeDir = resolveLocaleDir(gefDir, language);
 
@@ -83,13 +82,7 @@ export function copyAndTemplateGefAssets(gefDir, strictness, language) {
     fs.writeFileSync('.gef/ENGINEERING_PLAYBOOK.md', applyTemplating(raw, strictness));
   }
 
-  const promptsSrc = path.join(localeDir, 'prompts');
-  if (fs.existsSync(promptsSrc)) {
-    fs.readdirSync(promptsSrc).forEach((p) => {
-      const raw = fs.readFileSync(path.join(promptsSrc, p), 'utf8');
-      fs.writeFileSync(path.join('.gef/prompts', p), applyTemplating(raw, strictness));
-    });
-  }
+
 }
 
 function createAdrTemplate(gefDir) {

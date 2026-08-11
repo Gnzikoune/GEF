@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
+import { applyTemplating } from './setup-gef.js';
 
-export function setupAiRules(gefDir, projectPath) {
+export function setupAiRules(gefDir, projectPath, strictness) {
   console.log(chalk.blue('Configuration des barrières de sécurité IA (.cursorrules, .agents)...'));
 
   // Source unique de vérité : le .cursorrules du framework GEF lui-même
@@ -13,7 +14,8 @@ export function setupAiRules(gefDir, projectPath) {
     return;
   }
 
-  const aiRulesContent = fs.readFileSync(sourceRulesPath, 'utf-8');
+  let aiRulesContent = fs.readFileSync(sourceRulesPath, 'utf-8');
+  aiRulesContent = applyTemplating(aiRulesContent, strictness || 'Standard');
 
   // Écriture pour Cursor et Windsurf
   fs.writeFileSync(path.join(projectPath, '.cursorrules'), aiRulesContent);

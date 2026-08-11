@@ -1,4 +1,4 @@
-// features/scaffold-ci.js — Pipeline CI/CD Agentique
+// features/setup-ci.js — Pipeline CI/CD Agentique
 // Réf. Playbook §6 : CI/CD
 
 import fs from 'fs';
