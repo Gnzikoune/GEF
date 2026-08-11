@@ -63,6 +63,34 @@ jobs:
           config: p/owasp-top-ten
         continue-on-error: false
 
+      - name: Vérification Intention PR (Anti-Contournement)
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "🔍 Analyse de l'intention de la PR..."
+          PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
+          # Extraire la section Intention, ignorer commentaires HTML et texte par défaut
+          INTENTION=$(echo "$PR_BODY" | awk '/^## Intention/{flag=1; next} /^## /{flag=0} flag' | grep -v "^<!--" | grep -v "^\*Décrivez ici" | tr -d '\n\r' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+          
+          if [ \$\{#INTENTION} -lt 30 ]; then
+            echo "::error::L'intention de la PR est trop courte ou absente (\$\{#INTENTION} caractères). Elle doit faire au moins 30 caractères décrivant le problème métier."
+            exit 1
+          fi
+          echo "✅ Intention suffisante (\$\{#INTENTION} caractères)."
+
+      - name: ADR Check (Dépendances)
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "🔍 Vérification de la création d'ADR pour les dépendances..."
+          git fetch origin \$\{{ github.base_ref }}
+          if git diff --name-only origin/\$\{{ github.base_ref }}...\$\{{ github.sha }} | grep -q "package\\.json$"; then
+            echo "⚠️ Modification de package.json détectée."
+            if ! git diff --name-only origin/\$\{{ github.base_ref }}...\$\{{ github.sha }} | grep -q "^docs/explanation/adr/.*\\.md$"; then
+              echo "::warning::Vous avez modifié package.json mais aucun ADR n'a été ajouté/modifié dans docs/explanation/adr/. Assurez-vous de documenter tout changement d'architecture."
+            else
+              echo "✅ ADR détecté."
+            fi
+          fi
+
       - name: Vérification synchronisation cursorrules/windsurfrules
         run: |
           if [ -f ".cursorrules" ] && [ -f ".windsurfrules" ]; then

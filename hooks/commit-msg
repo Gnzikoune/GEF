@@ -28,6 +28,15 @@ if [[ ! $COMMIT_MSG =~ $PATTERN ]]; then
   exit 1
 fi
 
+# Vérification du numéro de ticket via GitHub CLI (si disponible)
+ISSUE_NUM=$(echo "$COMMIT_MSG" | sed -n 's/.*(#\([0-9]*\))$/\1/p')
+if command -v gh &> /dev/null && [ -n "$ISSUE_NUM" ]; then
+  if ! gh issue view "$ISSUE_NUM" &> /dev/null; then
+    echo -e "\033[33mAvertissement: Le ticket #$ISSUE_NUM est introuvable sur ce dépôt GitHub.\033[0m"
+    echo "Assurez-vous que le numéro est correct ou que vous êtes authentifié via 'gh auth login'."
+  fi
+fi
+
 # Récupération de la description (après le préfixe)
 DESCRIPTION="${BASH_REMATCH[3]}"
 
