@@ -27,6 +27,7 @@ ${chalk.bold.cyan('USAGE')}
   ${chalk.green('npx create-gef .')}                Installe GEF dans le dossier courant
   ${chalk.green('npx create-gef <nom>')}            Crée un dossier et installe GEF
   ${chalk.green('npx create-gef update')}           Met à jour le Playbook, les Prompts et les Hooks d'un projet existant
+  ${chalk.green('npx create-gef doctor')}           Audit la conformité d'un projet existant au GEF
   ${chalk.green('npx create-gef --help')}           Affiche ce message d'aide
   ${chalk.green('npx create-gef --version')}        Affiche la version du framework
 
