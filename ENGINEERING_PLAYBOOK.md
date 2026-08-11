@@ -43,7 +43,7 @@ L'écriture du code doit suivre les **Google Engineering Practices** : la clart�
 - **Variables / Fonctions :** `camelCase` (ex: `getUserData`).
 - **Constantes Globales :** `UPPER_SNAKE_CASE` (ex: `MAX_RETRY_COUNT`).
 - **Rigueur :** Lint obligatoire (la CI doit échouer en cas d'erreur de linting, interdiction d'utiliser `|| true`), typage strict (TypeScript/mypy), zéro warning ignoré sans commentaire explicite.
-  - *Note : Certains linters modernes (Biome, Ruff) n'imposent pas strictement les Hard Limits du GEF par défaut. Le développeur doit s'assurer de leur configuration ou se fier aux avertissements du pre-commit.*
+  - *Note sur l'asymétrie des Linters : ESLint permet d'imposer nativement ces limites physiques (`max-lines-per-function`, `max-params`). En revanche, des linters plus récents (Biome, Ruff) privilégient l'analyse sémantique (complexité cyclomatique, nesting) plutôt que les limites physiques strictes de lignes. Dans tous les cas, le développeur doit s'assurer de leur configuration, ou se fier au hook `pre-commit` du GEF qui applique ces limites mécaniquement.*
 
 ---
 
