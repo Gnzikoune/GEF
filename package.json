@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node generator/index.js",
-    "test": "node generator/index.js --help",
+    "verify-self": "node scripts/verify-self.js",
+    "test": "node generator/index.js --help && npm run verify-self",
     "prepublishOnly": "npm run test",
     "version-bump": "node scripts/version-bump.js"
   },
@@ -75,6 +76,7 @@
     "hooks",
     "prompts",
     "locales",
+    "scripts",
     ".agents",
     "ENGINEERING_PLAYBOOK.md",
     "PROJECT_CONFIG.template.md",
