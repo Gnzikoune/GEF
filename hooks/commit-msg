@@ -38,11 +38,4 @@ if [ ${#DESCRIPTION} -lt 10 ]; then
   # Non bloquant
 fi
 
-# Vérification obligatoire du bloc gef_compliance_check (Anti-Contournement IA)
-if ! grep -q "<gef_compliance_check>" "$COMMIT_MSG_FILE"; then
-  echo -e "\033[31mErreur: Le bloc <gef_compliance_check> est manquant dans le message de commit.\033[0m"
-  echo "Pour garantir le respect des règles GEF, l'IA (ou le développeur) doit inclure ce bloc dans le message de commit."
-  exit 1
-fi
-
 exit 0

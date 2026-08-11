@@ -116,21 +116,27 @@ La documentation technique (dossier `docs/`) doit suivre le framework cognitif *
 ## 7. Assurance Qualité (QA) : Shift-Left & Test Pyramid
 
 La qualité s'injecte avant le code, pas après.
-- **Shift-Left Testing :** La réflexion sur les tests et la sécurité commence dès l'écriture des spécifications.
-- **Behavior-Driven Development (BDD) :** Aligner la technique et le métier. Les tests (surtout E2E) doivent suivre la syntaxe `Given / When / Then`.
+- **Shift-Left Testing :** La réflexion sur les tests et la sécurité commence dès l'écriture des spécifications (SDD).
+- **Critères d'Acceptation :** Les spécifications doivent définir des critères clairs. L'IA doit privilégier les **Tests Unitaires et d'Intégration** pour prouver que le code respecte la spec.
 - **La Pyramide des Tests :**
-  - **Base :** 80% de Tests Unitaires (très rapides, ciblent la logique métier sans DB).
+  - **Base :** 80% de Tests Unitaires (très rapides, ciblent la logique métier, déterministes pour l'IA).
   - **Milieu :** 15% de Tests d'Intégration (valident la communication DB / API).
-  - **Sommet :** 5% de Tests End-to-End (E2E type Playwright). Ils sont lents et fragiles, l'IA ne doit pas s'appuyer uniquement sur eux.
+  - **Sommet :** 5% de Tests End-to-End (E2E type Playwright). Ils sont lents, fragiles et complexes à imaginer pour une IA sans interface visuelle. Ils sont donc écrits **après** que l'implémentation soit stable (voire par un agent QA dédié), et non de manière stricte avant le code.
 
 ---
 
-## 8. Pilotage Kanban et Autonomie de l'IA
+## 8. Agentic Spec-Driven Development (SDD) & Autonomie de l'IA
 
-L'IA agit comme un Tech Lead autonome, mais sous le contrôle strict de l'intention métier.
-- **Processus de Vérification Systématique (Anti-Amnésie) :** À chaque nouveau prompt de l'utilisateur, la TOUTE PREMIÈRE action de l'IA doit être de lire et relire le fichier `ENGINEERING_PLAYBOOK.md` (ou `PROJECT_CONFIG.md`) pour se recharger avec les règles dures, avant même de commencer à analyser la demande ou d'écrire du code.
-- **Le "Pourquoi" avant tout :** Chaque Issue, PR/MR ou tâche doit obligatoirement commencer par expliciter le but ultime (l'intention métier). L'IA ne doit pas deviner le but, elle doit le suivre.
-  - *Mécanique CI :* L'intention déclarée dans une PR doit faire au minimum **30 caractères**, sous peine de rejet par la CI anti-contournement.
+L'IA agit comme un Ingénieur Logiciel Agentique (Agentic Software Engineer), pilotée par des spécifications.
+- **Processus SDD Obligatoire :**
+  1. **Intent :** L'humain exprime le besoin.
+  2. **Specification :** L'IA rédige les spécifications (`specs/spec.md`).
+  3. **Design & Tasks :** L'IA planifie l'architecture (`specs/plan.md`) et les tâches (`specs/tasks.md`).
+  4. **Validation Humaine :** L'humain approuve les artefacts SDD. L'IA ne doit **JAMAIS** coder avant cette validation.
+  5. **Implementation & Tests :** L'IA exécute les tâches, écrit les tests unitaires/intégration, puis le code.
+- **Processus de Vérification Systématique (Anti-Amnésie) :** À chaque nouveau prompt, la TOUTE PREMIÈRE action de l'IA doit être de lire le Playbook, puis de lire le contexte du projet (ex: `specs/spec.md` et `CONTEXT.md`), avant d'analyser ou de coder.
+- **Le "Pourquoi" avant tout :** L'intention métier définie dans la spec guide tout. 
+  - *Mécanique CI :* L'intention déclarée dans une PR doit faire au minimum **30 caractères**, sous peine de rejet par la CI.
 - **Découpage en Issues :** Utiliser la CLI GitHub (`gh issue create`) pour découper un grand chantier en sous-tâches.
 - **Création de Pull Requests (PR) :** Si des branches temporaires sont requises pour une revue par l'utilisateur, utiliser `gh pr create`.
 - **Validation Humaine Obligatoire :** L'IA ne merge **JAMAIS** de Pull/Merge Request elle-même. Elle prépare tout et demande à l'utilisateur de cliquer sur le bouton de Merge.

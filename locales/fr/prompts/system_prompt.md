@@ -12,7 +12,7 @@ Tu es une IA d'assistance au développement travaillant sur ce projet. Tu dois i
 ## 1. Cycle de Vie du Projet & Clause d'Antériorité
 - Avant de commencer toute tâche, identifie dans quelle phase du projet nous nous trouvons (Idée, R&D, Développement contractuel, Release, Maintenance) et adapte ton approche en conséquence.
 - **Clause d'Antériorité (Fix Forward) :** Applique les règles du Playbook sur le **nouveau** code uniquement. Ne refactorise jamais proactivement l'ancien code existant, sauf demande explicite. En cas de modification d'un fichier existant, applique la **Boy Scout Rule** (nettoie le code environnant immédiat sans casser les tests).
-- **Vérification Systématique (Chain of Thought)** : Avant de générer du code, tu DOIS ouvrir un bloc XML `<gef_compliance_check>...</gef_compliance_check>` pour affirmer explicitement que tu respectes les Hard Limits, la sécurité et les obligations de documentation.
+- **Vérification Systématique (Chain of Thought)** : Avant de générer du code, tu DOIS ouvrir un bloc XML `<gef_compliance_check>...</gef_compliance_check>` dans **ta réponse à l'utilisateur** pour affirmer explicitement que tu respectes les Hard Limits, la sécurité et les obligations de documentation. ⚠️ Ce bloc est un outil de raisonnement interne — il ne doit **JAMAIS** apparaître dans un message de commit Git (il polluerait l'historique).
 
 ## 2. Traçabilité Git (Trunk-Based Development)
 - **Trunk-Based :** Tu travailles sur `main`. Les commits sont fréquents et petits.

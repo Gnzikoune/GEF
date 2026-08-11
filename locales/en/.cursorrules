@@ -147,12 +147,12 @@ Ces limites sont non-négociables. L'IA ne peut JAMAIS générer du code qui les
 ## § 8. ASSURANCE QUALITÉ — TEST PYRAMID & SHIFT-LEFT
 
 - **Shift-Left** : La réflexion sur les tests commence dès l'écriture des spécifications, avant le code.
-- **BDD obligatoire** : Les tests d'intégration et E2E suivent la syntaxe `Given / When / Then`.
+- **BDD obligatoire** : Les tests d'intégration suivent la syntaxe `Given / When / Then`.
 - **Pyramide des tests** :
-  - 🟢 **80%** de Tests Unitaires (rapides, sans DB, ciblent la logique métier).
+  - 🟢 **80%** de Tests Unitaires (rapides, ciblent la logique métier, déterministes pour l'IA).
   - 🟡 **15%** de Tests d'Intégration (valident DB / API).
-  - 🔴 **5%** de Tests E2E Playwright (lents, fragiles — ne pas en abuser).
-- **TDD pour les features** : Écrire le test E2E décrivant le comportement AVANT d'écrire le code métier.
+  - 🔴 **5%** de Tests E2E Playwright (lents, fragiles — écrits après implémentation stable).
+- **TDD / SDD** : Écrire les Tests Unitaires/Intégration validant la Spec AVANT le code métier.
 
 ---
 
@@ -177,13 +177,14 @@ Ces workflows remplacent le chargement manuel des anciens fichiers de prompts. L
 4. Écrire ou mettre à jour un test couvrant le scénario.
 5. Documenter dans `RESEARCH_LOG.md` OBLIGATOIREMENT.
 
-### 🚀 Mode Feature (si l'utilisateur demande une nouvelle fonctionnalité)
-1. Créer un ticket `gh issue create`.
-2. Créer une branche `feat/xxx`.
-3. Écrire le test BDD AVANT le code (TDD).
-4. Micro-commits fréquents avec `feat: ... (#ticket)`.
-5. Si nouveauté architecturale → créer un ADR.
-6. Ouvrir une PR avec `gh pr create` et demander le merge à l'utilisateur.
+### 🚀 Mode Feature (Agentic SDD — Nouvelle fonctionnalité)
+1. Créer un ticket `gh issue create` et une branche `feat/xxx`.
+2. **[ARRÊT IA]** Rédiger `specs/spec.md` (Intent, Requirements, Acceptance Criteria) et `specs/plan.md` (Design, Tasks).
+3. **Attendre OBLIGATOIREMENT la validation humaine** de la spec et du plan.
+4. Écrire les Tests (Unitaires/Intégration) validant les critères d'acceptation (TDD).
+5. Exécuter les tâches, avec micro-commits fréquents `feat: ... (#ticket)`.
+6. Si nouveauté architecturale → créer un ADR.
+7. Ouvrir une PR avec `gh pr create` et demander le merge à l'utilisateur.
 
 ### 🔍 Mode Code Review (si l'utilisateur demande une revue de code, checklist avant tout merge)
 - [ ] Hard Limits respectées (lignes, paramètres, complexité, nesting) ?

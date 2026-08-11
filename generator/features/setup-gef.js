@@ -11,6 +11,7 @@ const DIATAXIS_DIRS = [
   'docs/reference',
   'docs/explanation/adr',
   'docs/research',
+  'specs', // SDD / Agentic Engineering
   'src',
   'tests',
   'scripts',

@@ -116,21 +116,27 @@ Technical documentation (`docs/` folder) must follow the **Diátaxis** cognitive
 ## 7. Quality Assurance (QA): Shift-Left & Test Pyramid
 
 Quality is injected before the code, not after.
-- **Shift-Left Testing:** Thinking about tests and security starts as soon as specifications are written.
-- **Behavior-Driven Development (BDD):** Align technology and business. Tests (especially E2E) must follow the `Given / When / Then` syntax.
+- **Shift-Left Testing:** Thinking about tests and security starts as soon as specifications are written (SDD).
+- **Acceptance Criteria:** Specifications must define clear criteria. The AI must prioritize **Unit and Integration Tests** to prove the code respects the spec.
 - **The Test Pyramid:**
-  - **Base:** 80% Unit Tests (very fast, target business logic without DB).
+  - **Base:** 80% Unit Tests (very fast, target business logic, deterministic for AI).
   - **Middle:** 15% Integration Tests (validate DB / API communication).
-  - **Top:** 5% End-to-End Tests (E2E like Playwright). They are slow and fragile, the AI must not rely solely on them.
+  - **Top:** 5% End-to-End Tests (E2E like Playwright). They are slow, fragile, and complex for an AI to imagine without a visual interface. They are therefore written **after** the implementation is stable (or by a dedicated QA agent), and not strictly before code.
 
 ---
 
-## 8. Kanban Steering and AI Autonomy
+## 8. Agentic Spec-Driven Development (SDD) & AI Autonomy
 
-The AI acts as an autonomous Tech Lead, but under strict control of the business intent.
-- **Systematic Verification Process (Anti-Amnesia):** At each new user prompt, the VERY FIRST action of the AI must be to read and re-read the `ENGINEERING_PLAYBOOK.md` (or `PROJECT_CONFIG.md`) file to recharge itself with the hard rules, even before starting to analyze the request or write code.
-- **The "Why" first and foremost:** Each Issue, PR, or task must necessarily begin by explaining the ultimate goal (the business intent). The AI must not guess the goal, it must follow it.
-  - *CI Mechanic:* The intention declared in a PR must be at least **30 characters** long, otherwise it will be rejected by the anti-bypass CI.
+The AI acts as an Agentic Software Engineer, driven by specifications.
+- **Mandatory SDD Process:**
+  1. **Intent:** The human expresses the need.
+  2. **Specification:** The AI writes the specifications (`specs/spec.md`).
+  3. **Design & Tasks:** The AI plans the architecture (`specs/plan.md`) and tasks (`specs/tasks.md`).
+  4. **Human Validation:** The human approves the SDD artifacts. The AI must **NEVER** code before this validation.
+  5. **Implementation & Tests:** The AI executes tasks, writes unit/integration tests, then the code.
+- **Systematic Verification Process (Anti-Amnesia):** At each new prompt, the VERY FIRST action of the AI must be to read the Playbook, then read the project context (e.g., `specs/spec.md` and `CONTEXT.md`), before analyzing or coding.
+- **The "Why" first and foremost:** The business intent defined in the spec guides everything.
+  - *CI Mechanic:* The intention declared in a PR must be at least **30 characters** long, otherwise it will be rejected by the CI.
 - **Breakdown into Issues:** Use the GitHub CLI (`gh issue create`) to break down a large undertaking into sub-tasks.
 - **Pull Request (PR) Creation:** If temporary branches are required for a user review, use `gh pr create`.
 - **Mandatory Human Validation:** The AI **NEVER** merges a Pull Request itself. It prepares everything and asks the user to click the Merge button.
