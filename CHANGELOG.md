@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/Gnzikoune/GEF/compare/v1.14.1...v1.15.0) (2026-08-11)
+
+
+### Features
+
+* implémentation de la commande gef doctor ([#81](https://github.com/Gnzikoune/GEF/issues/81)) ([#82](https://github.com/Gnzikoune/GEF/issues/82)) ([bac2ae6](https://github.com/Gnzikoune/GEF/commit/bac2ae601afb03004d7f13be7fad66c502bb57b4))
+
 ## [1.14.1](https://github.com/Gnzikoune/GEF/compare/v1.14.0...v1.14.1) (2026-08-11)
 
 
