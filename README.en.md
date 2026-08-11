@@ -59,7 +59,7 @@ GEF/
 │       ├── setup-gef.js          ← Template engine (Playbook, AI Prompts, Diataxis)
 │       ├── setup-git.js          ← Dynamic Git hooks generation
 │       ├── setup-ci.js           ← GitHub Actions Workflows (CI/CD, release-please)
-│       ├── setup-ai-rules.js     ← Block F: Copies .cursorrules into each configured project
+│       ├── setup-ai-rules.js     ← Block F: Copies .cursorrules, .windsurfrules, Copilot and .agents/AGENTS.md (Antigravity)
 │       └── update.js             ← Update an existing project
 │   └── templates/
 │       └── adr-template.md       ← Ready-to-use ADR template
@@ -182,7 +182,7 @@ Automatically installed by the CLI in `.git/hooks/` of each project.
 | Hook | Applied rule |
 |---|---|
 | **`commit-msg`** | Blocks any commit whose message does not follow the `Conventional Commits + Kanban reference` format. Format: `feat: description (#42)`. |
-| **`pre-commit`** | Detects plaintext secrets (API keys, tokens). Checks formatting (linter). Analyzes file sizes based on chosen severity. **Blocks any direct commit on `main` or `master`.** |
+| **`pre-commit`** | Detects plaintext secrets (API keys, tokens). Analyzes Payload size and line limits based on chosen severity. |
 | **`pre-push`** | **Dynamic**: Blocks any direct push to `main` if the project uses GitHub Flow. Runs local tests if using Trunk-Based Development. |
 
 These hooks are configured on the fly by the CLI based on team choices, and installed in `.git/hooks/` of the project.
@@ -199,9 +199,9 @@ npx create-gef update
 
 The CLI creates two files in `.github/workflows/`:
 
-**`main.yml` — Quality Control & Deployment**
-- Adapted to your stack and cloud. Triggered on push `main`, `feat/**`, `fix/**`, tags `v*.*.*`, and pull requests.
-- **Jobs:** setup runtime → install → lint → tests → security analysis → deployment (Vercel/AWS) or GitHub release.
+**`main.yml` — GEF Compliance Check**
+- Triggered on push `main`, `feat/**`, `fix/**` and pull requests.
+- **Job:** Checks the integrity of the framework (ultimate Hard Limits verification, blocks if a file exceeds 400 lines). Makes no assumptions about your application stack.
 
 **`release-please.yml` — Release Automation**
 - On each push to `main`, automatically generates a Release Pull Request with the correct version number (calculated from your `feat:` and `fix:` commits) and the `CHANGELOG.md`.
@@ -249,13 +249,11 @@ GEF goes beyond textual rules. It **mechanically enforces** best practices on AI
 
 | Mechanism | File | Effect |
 |---|---|---|
-| **Native IDE Rules** | `.cursorrules` / `.windsurfrules` | Any AI (Cursor, Windsurf, Copilot) reads these files at startup and instantly knows §0 to §10 of the Playbook (Clean Code, Architecture, OWASP Security, Git Flow, Tests, Workflows). |
+| **Native IDE Rules** | `.cursorrules` / `.windsurfrules` / `AGENTS.md` | Any AI (Cursor, Windsurf, Copilot, Antigravity) reads these files on startup and instantly knows §0 to §10 of the Playbook. |
 | **Crash Clause** | `prompts/system_prompt.md` | The AI is instructed to stop immediately and report any obstacle, instead of silent improvisation. |
-| **Pull Request Checklist** | `.github/PULL_REQUEST_TEMPLATE.md` | The AI (and humans) must physically check validations (Tests, Docs, ADR) before a PR can be merged. |
-| **Linter Lock (Hard Limits)** | `biome.json` / `.eslintrc.json` / `ruff.toml` | The linter is configured with limits (e.g. 15 lines max, 2 params) and will crash if the AI attempts to bypass the framework. |
-| **Local Lock** | `hooks/pre-commit` | A direct commit on `main` is physically impossible, as is a commit that doesn't pass the Linter. |
-| **CI Validation (Intention & Tests)** | `ci-templates/pr-intention-check.yml` & `main.yml` | CI rejects PRs without business intent, and blocks if test coverage < 80%. |
-| **Propagation** | `generator/features/setup-ai-rules.js` | Each configured project automatically inherits the complete `.cursorrules` (single source of truth). |
+| **Pull Request Checklist** | `.github/PULL_REQUEST_TEMPLATE.md` | The AI (and human) must physically check off validations (Tests, Docs, ADR) before a PR can be merged. |
+| **Local Lock** | `hooks/pre-commit` | A file exceeding the size limit (Payload) cannot be committed. |
+| **Propagation** | `generator/features/setup-ai-rules.js` | Each configured project automatically inherits all these rules for all AI assistants on the market. |
 
 > The power lies here: the user never has to explain the rules to the AI. They are already there.
 

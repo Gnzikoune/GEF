@@ -69,7 +69,7 @@ GEF/
 │       ├── setup-gef.js          ← Moteur de templates (Playbook, Prompts IA, Diataxis)
 │       ├── setup-git.js          ← Génération dynamique des hooks Git
 │       ├── setup-ci.js           ← Workflows GitHub Actions (CI/CD, release-please)
-│       ├── setup-ai-rules.js     ← Brique F : Copie .cursorrules dans chaque projet configuré
+│       ├── setup-ai-rules.js     ← Brique F : Copie .cursorrules, .windsurfrules, Copilot et .agents/AGENTS.md (Antigravity)
 │       └── update.js             ← Mise à jour d'un projet existant
 │   └── templates/
 │       └── adr-template.md       ← Template d'ADR prêt à l'emploi
@@ -191,7 +191,7 @@ Installés automatiquement par le CLI dans `.git/hooks/` de chaque projet.
 | Hook | Règle appliquée |
 |---|---|
 | **`commit-msg`** | Bloque tout commit dont le message ne respecte pas le format `Conventional Commits + référence Kanban`. Format : `feat: description (#42)`. |
-| **`pre-commit`** | Détecte les secrets en clair (clés API, tokens). Vérifie le formatage (linter). Analyse la taille des fichiers selon la sévérité choisie. **Bloque tout commit direct sur `main` ou `master`.** |
+| **`pre-commit`** | Détecte les secrets en clair (clés API, tokens). Analyse la taille du Payload et la limite de lignes selon la sévérité choisie. |
 | **`pre-push`** | **Dynamique** : Bloque tout push direct sur `main` si le projet est en GitHub Flow. Exécute les tests locaux si en Trunk-Based Development. |
 
 Ces hooks sont configurés à la volée par le CLI en fonction des choix de l'équipe, et installés dans `.git/hooks/` du projet.
@@ -208,9 +208,9 @@ npx create-gef update
 
 Le CLI crée deux fichiers dans `.github/workflows/` :
 
-**`main.yml` — Contrôle Qualité & Déploiement**
-- Adapté à votre stack et cloud. Déclenché sur push `main`, `feat/**`, `fix/**`, tags `v*.*.*`, et pull requests.
-- **Jobs :** setup runtime → install → lint → tests → analyse sécurité → déploiement (Vercel/AWS) ou release GitHub.
+**`main.yml` — Conformité GEF (Compliance Check)**
+- Déclenché sur push `main`, `feat/**`, `fix/**` et pull requests.
+- **Job :** Vérifie l'intégrité du framework (vérification ultime des Hard Limits, bloque si un fichier dépasse 400 lignes). Ne fait aucune supposition sur votre stack applicative.
 
 **`release-please.yml` — Automatisation des Releases**
 - À chaque push sur `main`, génère automatiquement une Pull Request de Release avec le bon numéro de version (calculé depuis vos commits `feat:` et `fix:`) et le `CHANGELOG.md`.
@@ -265,13 +265,11 @@ Le GEF va au-delà des règles textuelles. Il **impose mécaniquement** aux IA l
 
 | Mécanisme | Fichier | Effet |
 |---|---|---|
-| **Règles natives IDE** | `.cursorrules` / `.windsurfrules` | Toute IA (Cursor, Windsurf, Copilot) lit ces fichiers au démarrage et connaît instantanément les §0 à §10 du Playbook (Clean Code, Architecture, Sécurité OWASP, Git Flow, Tests, Workflows). Ces deux fichiers sont **identiques** et synchronisés via pre-commit. |
+| **Règles natives IDE** | `.cursorrules` / `.windsurfrules` / `AGENTS.md` | Toute IA (Cursor, Windsurf, Copilot, Antigravity) lit ces fichiers au démarrage et connaît instantanément les §0 à §10 du Playbook (Architecture, Sécurité, Git Flow). |
 | **Crash Clause** | `prompts/system_prompt.md` | L'IA est instruite de s'arrêter immédiatement et de signaler tout obstacle, au lieu de l'improvisation silencieuse. |
 | **Checklist Pull Request** | `.github/PULL_REQUEST_TEMPLATE.md` | L'IA (et l'humain) doit physiquement cocher les validations (Tests, Docs, ADR) avant qu'une PR puisse être mergée. |
-| **Blocage Linter (Hard Limits)** | `biome.json` / `.eslintrc.json` / `ruff.toml` | Le linter est configuré avec les limites (ex: 15 lignes max, 2 paramètres) et plantera si l'IA tente de bypasser le framework. |
-| **Blocage local** | `hooks/pre-commit` | Un commit direct sur `main` est physiquement impossible, tout comme un commit qui ne passe pas le Linter. |
-| **Validation CI (Intention & Tests)** | `ci-templates/pr-intention-check.yml` & `main.yml` | La CI rejette les PRs sans intention métier (min 30 caractères), et bloque si la couverture de tests < 80%. |
-| **Propagation** | `generator/features/setup-ai-rules.js` | Chaque projet configuré hérite automatiquement du `.cursorrules` complet (source unique de vérité). |
+| **Blocage local** | `hooks/pre-commit` | Un fichier dépassant la limite de taille (Payload) ne peut pas être commité. |
+| **Propagation** | `generator/features/setup-ai-rules.js` | Chaque projet configuré hérite automatiquement de toutes ces règles pour tous les assistants IA du marché. |
 
 > La puissance réside ici : l'utilisateur n'a jamais à expliquer les règles à l'IA. Elles sont déjà là.
 
@@ -302,13 +300,6 @@ Cette protection DOIT être configurée avec :
 - Exigence d'au moins 1 validateur humain (Review obligatoire).
 - Interdiction stricte de force-push.
 - Statuts CI requis avant de pouvoir merger.
-
----
-
-## Glossaire
-
-Pour un glossaire complet et détaillé de tous les termes techniques utilisés dans le GEF, consultez :
-- [`docs/glossary.md`](./docs/glossary.md) - Glossaire complet (A-Z)
 
 ---
 
