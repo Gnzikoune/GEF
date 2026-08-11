@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.12.0](https://github.com/Gnzikoune/GEF/compare/v1.11.0...v1.12.0) (2026-08-11)
+
+
+### Features
+
+* absorber les prompts contextuels dans les regles IA auto-chargees ([#67](https://github.com/Gnzikoune/GEF/issues/67)) ([#68](https://github.com/Gnzikoune/GEF/issues/68)) ([f983bb5](https://github.com/Gnzikoune/GEF/commit/f983bb543d88b7a32292864ac202390fda428cfa))
+* integration de la methodologie AI SDD et bump v1.13.0 ([#65](https://github.com/Gnzikoune/GEF/issues/65)) ([121864b](https://github.com/Gnzikoune/GEF/commit/121864b8df81a657ac6222e6fd8a37be39ea77e7))
+* transformer GEF en infrastructure Agentic SDD ([#70](https://github.com/Gnzikoune/GEF/issues/70)) ([#70](https://github.com/Gnzikoune/GEF/issues/70)) ([fe38005](https://github.com/Gnzikoune/GEF/commit/fe38005bdc85cdaa69cc1c35a61422d8a1d806a9))
+
 ## [1.11.0](https://github.com/Gnzikoune/GEF/compare/v1.10.0...v1.11.0) (2026-08-10)
 
 
