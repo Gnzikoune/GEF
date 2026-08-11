@@ -12,6 +12,7 @@ import { setupCI } from './features/setup-ci.js';
 import { setupGit } from './features/setup-git.js';
 import { setupGef } from './features/setup-gef.js';
 import { setupAiRules } from './features/setup-ai-rules.js';
+import { doctor } from './features/doctor.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const GEF_DIR = path.resolve(path.dirname(__filename), '..');
@@ -23,6 +24,7 @@ async function run() {
   if (arg === '--help' || arg === '-h') return printHelp();
   if (arg === '--version' || arg === '-v') return printVersion();
   if (arg === 'update') return runUpdate(GEF_DIR);
+  if (arg === 'doctor') return doctor();
 
   // Mode interactif par défaut
   console.log(chalk.cyan.bold('\n🚀 Bienvenue dans le GEF (Guardian Engineering Framework)\n'));

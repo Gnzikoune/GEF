@@ -73,6 +73,7 @@ GEF/
 │       ├── setup-git.js          ← Dynamic Git hooks generation
 │       ├── setup-ci.js           ← GitHub Actions Workflows (CI/CD, release-please)
 │       ├── setup-ai-rules.js     ← Block F: AI rulesets deployment
+│       ├── doctor.js             ← Audit an existing project's compliance
 │       └── update.js             ← Update an existing project
 │
 ├── hooks/                        ← Block B: Git Hooks (installed in the GEF repo itself)
@@ -101,6 +102,7 @@ GEF is designed to be used directly without needing to clone the repository, jus
 |---|---|
 | `npx create-gef` | Launches the interactive CLI and configures the current project or creates a new one |
 | `npx create-gef update` | Updates the Playbook, Prompts and Hooks in an existing project |
+| `npx create-gef doctor` | Audits an existing project's compliance with GEF |
 | `npx create-gef --help` | Displays help and all available commands |
 | `npx create-gef --version` | Displays the current framework version |
 
@@ -117,6 +119,22 @@ From the root of an existing GEF-generated project, update the Playbook, prompts
 ```bash
 npx create-gef update
 ```
+
+### Audit an Existing Project (Doctor)
+
+The GEF Doctor checks an existing project's compliance with the framework. It diagnoses:
+
+- Synchronization of AI rule files (.cursorrules/.windsurfrules)
+- Presence of mandatory files (Playbook, PROJECT_CONFIG, CONTEXT, RESEARCH_LOG)
+- Git configuration (hooks, strategy)
+- CI/CD configuration (GitHub Actions workflows)
+- Linter configuration
+
+```bash
+npx create-gef doctor
+```
+
+The doctor displays a structured report with emojis (✅ / ❌ / ⚠️) and an overall compliance score.
 
 ### Display Help
 
