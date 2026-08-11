@@ -168,29 +168,24 @@ Ces limites sont non-négociables. L'IA ne peut JAMAIS générer du code qui les
 
 ## § 10. WORKFLOWS CONTEXTUELS — COMPORTEMENT SELON LA TÂCHE
 
-### Kickoff d'un nouveau projet
-1. Demander : "Ce projet est-il R&D ou Contractuel/Production ?"
-2. Aider à remplir `PROJECT_CONFIG.md`.
-3. Proposer la structure Feature-Sliced Design.
-4. Créer `docs/` avec les 4 quadrants Diátaxis.
-5. Préparer le workflow GitHub Actions (Lint, Tests, Sécurité) dès le premier jour.
-6. Premier commit : `chore: initialisation du projet via GEF (structure, CI/CD, docs)`
+Ces workflows remplacent le chargement manuel des anciens fichiers de prompts. L'IA DOIT les activer automatiquement dès qu'elle détecte le contexte.
 
-### Développement d'une Feature
-1. Créer un ticket `gh issue create`.
-2. Créer une branche `feat/xxx`.
-3. Écrire le test BDD AVANT le code (TDD).
-4. Micro-commits fréquents avec `feat: ... (#ticket)`.
-5. Ouvrir une PR avec `gh pr create` et demander le merge à l'utilisateur.
-
-### Résolution d'un Bug
+### 🐛 Mode Bugfix (si l'utilisateur parle d'un bug, d'une erreur ou d'un crash)
 1. **Reproduire** le bug de manière isolée. Ne rien modifier avant de comprendre la cause racine.
 2. Évaluer l'impact sécurité en priorité absolue.
 3. Corriger avec un commit `fix: ... (#ticket)`.
 4. Écrire ou mettre à jour un test couvrant le scénario.
 5. Documenter dans `RESEARCH_LOG.md` OBLIGATOIREMENT.
 
-### Revue de Code (checklist avant tout merge)
+### 🚀 Mode Feature (si l'utilisateur demande une nouvelle fonctionnalité)
+1. Créer un ticket `gh issue create`.
+2. Créer une branche `feat/xxx`.
+3. Écrire le test BDD AVANT le code (TDD).
+4. Micro-commits fréquents avec `feat: ... (#ticket)`.
+5. Si nouveauté architecturale → créer un ADR.
+6. Ouvrir une PR avec `gh pr create` et demander le merge à l'utilisateur.
+
+### 🔍 Mode Code Review (si l'utilisateur demande une revue de code, checklist avant tout merge)
 - [ ] Hard Limits respectées (lignes, paramètres, complexité, nesting) ?
 - [ ] Feature-Sliced Design respecté ?
 - [ ] SRP respecté (une seule responsabilité par classe/fonction) ?
@@ -201,11 +196,19 @@ Ces limites sont non-négociables. L'IA ne peut JAMAIS générer du code qui les
 - [ ] Code commenté sur l'INTENTION (le pourquoi), pas le quoi ?
 - **Si un point échoue → bloquer le merge et proposer le correctif.**
 
-### Rédaction d'un ADR
+### 📐 Mode ADR (si l'utilisateur doit prendre une décision architecturale)
 - Fichier : `docs/explanation/adr/ADR-XXX-titre_descriptif.md`
 - Structure : Contexte / Options Considérées / Décision / Conséquences / Diagramme Mermaid (si applicable)
 - Commit dédié : `docs(adr): création ADR-XXX — [titre] (#ticket)`
 - ⚠️ Ne PAS consigner les ADR dans le RESEARCH_LOG (réservé aux bugs).
+
+### 🏁 Mode Kickoff (si l'utilisateur démarre un nouveau projet)
+1. Demander : "Ce projet est-il R&D ou Contractuel/Production ?"
+2. Aider à remplir `PROJECT_CONFIG.md`.
+3. Proposer la structure Feature-Sliced Design.
+4. Créer `docs/` avec les 4 quadrants Diátaxis.
+5. Préparer le workflow GitHub Actions (Lint, Tests, Sécurité) dès le premier jour.
+6. Premier commit : `chore: initialisation du projet via GEF (structure, CI/CD, docs)`
 
 ### Fin d'une tâche (Avant de conclure — OBLIGATOIRE ET AUTOMATIQUE)
 L'IA NE DOIT PAS attendre que l'utilisateur pose ces questions. Elle DOIT les vérifier et les exécuter de sa propre initiative avant de conclure sa réponse :
