@@ -173,7 +173,36 @@ La qualité s'injecte avant le code, pas après.
 
 ---
 
-## 8. Pilotage Kanban et Autonomie de l'IA
+## 8. Outils GEF et Gouvernance
+
+Le GEF fournit des outils pour mécaniser la gouvernance d'ingénierie :
+
+### Compliance as Code (`npx create-gef compliance`)
+- Utilisez `npx create-gef compliance generate` pour créer un fichier `compliance.yml` déclaratif
+- Utilisez `npx create-gef compliance validate` pour vérifier la conformité
+- Utilisez `npx create-gef compliance apply-hooks` pour appliquer les règles aux hooks Git
+- Utilisez `npx create-gef compliance apply-ci` pour appliquer les règles à la CI/CD
+
+### Certification System (`npx create-gef certify`)
+- Utilisez `npx create-gef certify check` pour vérifier le niveau de certification possible
+- Utilisez `npx create-gef certify generate` pour générer un badge et un rapport de certification
+- Les niveaux : Bronze (GEF ≥ 60%, DORA ≥ 40%), Silver (≥ 70%, ≥ 60%), Gold (≥ 85%, ≥ 80%), Platinum (≥ 95%, ≥ 95%)
+
+### Extension System (`npx create-gef extension`)
+- Utilisez `npx create-gef extension install <name>` pour installer des packs de règles spécifiques
+- Utilisez `npx create-gef extension list` pour lister les extensions disponibles
+- Utilisez `npx create-gef extension remove <name>` pour désinstaller une extension
+- Extensions disponibles : Healthcare (HIPAA), Finance (PCI-DSS), Security (OWASP)
+
+### Doctor (`npx create-gef doctor`)
+- Utilisez `npx create-gef doctor` pour auditer la conformité d'un projet existant
+- Le doctor vérifie les fichiers IA, fichiers obligatoires, configuration Git, CI/CD, et linter
+
+Ces outils doivent être utilisés régulièrement pour maintenir la gouvernance du projet.
+
+---
+
+## 9. Pilotage Kanban et Autonomie de l'IA
 
 L'IA agit comme un Tech Lead autonome, mais sous le contrôle strict de l'intention métier.
 - **Processus de Vérification Systématique (Anti-Amnésie) :** À chaque nouveau prompt de l'utilisateur, la TOUTE PREMIÈRE action de l'IA doit être de lire et relire le fichier `ENGINEERING_PLAYBOOK.md` (ou `PROJECT_CONFIG.md`) pour se recharger avec les règles dures, avant même de commencer à analyser la demande ou d'écrire du code.
@@ -187,7 +216,7 @@ L'IA agit comme un Tech Lead autonome, mais sous le contrôle strict de l'intent
 
 ---
 
-## 9. Hygiène, CI/CD et Séparation R&D
+## 10. Hygiène, CI/CD et Séparation R&D
 
 - **Zéro Scories :** Scripts temporaires, fichiers de debug ou commentaires commentés doivent être supprimés avant tout push.
 - **CI/CD :** À chaque push, les workflows CI/CD (GitHub Actions, GitLab CI, etc.) doivent vérifier : Lint, Build, Tests Unitaires, Analyse de sécurité.
@@ -196,7 +225,7 @@ L'IA agit comme un Tech Lead autonome, mais sous le contrôle strict de l'intent
 
 ---
 
-## 10. Verrouillage Mécanique (Ultimate Lockdown)
+## 11. Verrouillage Mécanique (Ultimate Lockdown)
 
 Le GEF ne repose pas uniquement sur la discipline humaine ou l'obéissance de l'IA, il impose ses règles de manière **mécanique et incontournable** :
 - **Documentation Forcée (Git Hooks) :** Tout correctif (`fix/`) sans mise à jour du `RESEARCH_LOG.md` sera rejeté au commit. Tout ajout de dépendance sans nouvel `ADR` sera bloqué.
