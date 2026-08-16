@@ -113,6 +113,7 @@ Le GEF est conçu pour être utilisé directement sans avoir besoin de cloner le
 | `npx create-gef` | Lance le CLI interactif et configure le projet courant ou en crée un nouveau |
 | `npx create-gef update` | Met à jour le Playbook, les Prompts et les Hooks dans un projet existant |
 | `npx create-gef doctor` | Audit la conformité d'un projet existant au GEF |
+| `npx create-gef compliance` | Compliance as Code (generate, validate, apply-hooks, apply-ci) |
 | `npx create-gef --help` | Affiche l'aide et toutes les commandes disponibles |
 | `npx create-gef --version` | Affiche la version actuelle du framework |
 
@@ -145,6 +146,30 @@ npx create-gef doctor
 ```
 
 Le doctor affiche un rapport structuré avec des emojis (✅ / ❌ / ⚠️) et un score de conformité global.
+
+### Compliance as Code
+
+Le GEF Compliance as Code permet de définir les règles d'ingénierie de manière déclarative via un fichier `compliance.yml`. Ce fichier contient :
+
+- **Hard Limits** : Limites de code (max_function_lines, max_params, max_complexity, etc.)
+- **Security Rules** : Règles de sécurité OWASP (jwt_expiry, rate_limit, secret_detection)
+- **Git Strategy** : Configuration du workflow Git (GitHub Flow, Trunk-Based)
+- **DORA Targets** : Objectifs de métriques DORA (deployment_frequency, lead_time, etc.)
+- **Extensions** : Extensions activées et règles personnalisées
+
+```bash
+# Générer le fichier compliance.yml
+npx create-gef compliance generate
+
+# Valider le fichier compliance.yml
+npx create-gef compliance validate
+
+# Appliquer les règles aux hooks Git
+npx create-gef compliance apply-hooks
+
+# Appliquer les règles à la CI/CD
+npx create-gef compliance apply-ci
+```
 
 ### Afficher l'aide
 

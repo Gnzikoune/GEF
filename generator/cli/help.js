@@ -28,8 +28,16 @@ ${chalk.bold.cyan('USAGE')}
   ${chalk.green('npx create-gef <nom>')}            Crée un dossier et installe GEF
   ${chalk.green('npx create-gef update')}           Met à jour le Playbook, les Prompts et les Hooks d'un projet existant
   ${chalk.green('npx create-gef doctor')}           Audit la conformité d'un projet existant au GEF
+  ${chalk.green('npx create-gef compliance')}       Compliance as Code (generate, validate, apply-hooks, apply-ci)
   ${chalk.green('npx create-gef --help')}           Affiche ce message d'aide
   ${chalk.green('npx create-gef --version')}        Affiche la version du framework
+
+${chalk.bold.cyan('COMPLIANCE AS CODE')}
+
+  ${chalk.green('npx create-gef compliance generate')}      Génère compliance.yml avec les règles GEF
+  ${chalk.green('npx create-gef compliance validate')}      Valide le fichier compliance.yml
+  ${chalk.green('npx create-gef compliance apply-hooks')}    Applique les règles aux hooks Git
+  ${chalk.green('npx create-gef compliance apply-ci')}       Applique les règles à la CI/CD
 
 ${chalk.bold.cyan('OPTIONS DU GÉNÉRATEUR INTERACTIF')}
 
