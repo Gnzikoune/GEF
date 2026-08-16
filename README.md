@@ -164,7 +164,7 @@ npx create-gef compliance apply-hooks
 npx create-gef compliance apply-ci
 ```
 
-Pour des exemples détaillés, voir [`docs/usage-guide.md`](./docs/usage-guide.md).
+Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
 
 ### Certification System
 
@@ -173,7 +173,7 @@ npx create-gef certify check
 npx create-gef certify generate
 ```
 
-Pour des exemples détaillés, voir [`docs/usage-guide.md`](./docs/usage-guide.md).
+Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
 
 ### Extension System
 
@@ -183,7 +183,7 @@ npx create-gef extension list
 npx create-gef extension remove healthcare
 ```
 
-Pour des exemples détaillés, voir [`docs/usage-guide.md`](./docs/usage-guide.md).
+Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
 
 ### Afficher l'aide
 
