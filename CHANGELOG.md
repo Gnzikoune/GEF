@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.1](https://github.com/Gnzikoune/GEF/compare/v1.17.0...v1.17.1) (2026-08-16)
+
+
+### Bug Fixes
+
+* remove broken certification badge from README ([#94](https://github.com/Gnzikoune/GEF/issues/94)) ([#95](https://github.com/Gnzikoune/GEF/issues/95)) ([1c96371](https://github.com/Gnzikoune/GEF/commit/1c963711c88386e64184e8b938f4f14889d80075))
+
 ## [1.17.0](https://github.com/Gnzikoune/GEF/compare/v1.16.0...v1.17.0) (2026-08-16)
 
 
