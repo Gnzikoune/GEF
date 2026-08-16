@@ -1,6 +1,6 @@
 {
   "name": "create-gef",
-  "version": "1.20.0",
+  "version": "1.19.0",
   "description": "Interactive project generator enforcing the Guardian Engineering Framework - Clean Code, Security, CI/CD, and AI-proof development standards",
   "type": "module",
   "bin": {
