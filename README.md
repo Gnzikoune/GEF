@@ -2,6 +2,9 @@
 
 # Guardian Engineering Framework 🛡️ ⚙️
 
+![GEF Certified: Silver](gef-certified-badge.svg)
+
+
 **Un framework d'ingénierie logicielle qui transforme des règles de travail en outils automatisés**
 
 *Traçabilité · Sécurité · Qualité logicielle*
@@ -114,6 +117,7 @@ Le GEF est conçu pour être utilisé directement sans avoir besoin de cloner le
 | `npx create-gef update` | Met à jour le Playbook, les Prompts et les Hooks dans un projet existant |
 | `npx create-gef doctor` | Audit la conformité d'un projet existant au GEF |
 | `npx create-gef compliance` | Compliance as Code (generate, validate, apply-hooks, apply-ci) |
+| `npx create-gef certify` | Certification System (check, generate) |
 | `npx create-gef --help` | Affiche l'aide et toutes les commandes disponibles |
 | `npx create-gef --version` | Affiche la version actuelle du framework |
 
@@ -170,6 +174,28 @@ npx create-gef compliance apply-hooks
 # Appliquer les règles à la CI/CD
 npx create-gef compliance apply-ci
 ```
+
+### Certification System
+
+Le GEF Certification System permet d'obtenir un niveau de certification officiel basé sur la conformité GEF et les métriques DORA. Les niveaux disponibles sont :
+
+- **Bronze** : GEF ≥ 60%, DORA ≥ 40%
+- **Silver** : GEF ≥ 70%, DORA ≥ 60%
+- **Gold** : GEF ≥ 85%, DORA ≥ 80%
+- **Platinum** : GEF ≥ 95%, DORA ≥ 95%
+
+```bash
+# Vérifier le niveau de certification possible
+npx create-gef certify check
+
+# Générer badge et rapport de certification
+npx create-gef certify generate
+```
+
+Le système génère :
+- Badge SVG pour README.md
+- Rapport public de certification (GEF_CERTIFICATION_REPORT.md)
+- Audit trail avec date et scores
 
 ### Afficher l'aide
 
