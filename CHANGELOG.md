@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/Gnzikoune/GEF/compare/v1.17.1...v1.18.0) (2026-08-16)
+
+
+### Features
+
+* Extension System avec marketplace intégré ([#89](https://github.com/Gnzikoune/GEF/issues/89)) ([#97](https://github.com/Gnzikoune/GEF/issues/97)) ([9347abe](https://github.com/Gnzikoune/GEF/commit/9347abe6a4fce8138247b25c20fc62de958a80ca))
+
 ## [1.19.0](https://github.com/Gnzikoune/GEF/compare/v1.18.0...v1.19.0) (2026-08-16)
 
 
