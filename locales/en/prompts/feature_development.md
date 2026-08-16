@@ -15,7 +15,7 @@ You must implement the requested feature by respecting the `ENGINEERING_PLAYBOOK
 3. **Continuous Documentation (Ref. Playbook §6)**
    - Update `README.md` **only** if this feature changes the installation, public APIs, prerequisites, architecture, or visible features.
 
-4. **Kanban Steering and TDD (Ref. Playbook §7 and §8)**
+4. **Kanban Steering and TDD (Ref. Playbook §9 and §7)**
    - Use `gh issue create` to create a ticket corresponding to the feature.
    - All your commits must include the ticket reference (e.g., `feat: ... (#12)`).
    - Before writing code, write the E2E/Playwright test describing the behavior (TDD).
@@ -36,3 +36,10 @@ You must implement the requested feature by respecting the `ENGINEERING_PLAYBOOK
      - **UI Components:** 200 lines max (extract logic if > 50 lines into a Hook).
      - **Rule of 3:** If you duplicate a piece of code for the 3rd time, you must refactor it (abstraction).
      - **Security:** Do not generate any flaws. Always validate inputs, limit JSON payloads to {{MAX_PAYLOAD}}, and respect token expiration (JWT < 15 mins).
+
+8. **GEF Tools Usage (Ref. Playbook §8)**
+   - Use `npx create-gef compliance generate` to create a `compliance.yml` file for the project
+   - Use `npx create-gef compliance validate` to verify compliance rules
+   - Use `npx create-gef certify check` to verify the possible certification level
+   - Use `npx create-gef extension install <name>` to install domain-specific rule packs
+   - Use `npx create-gef doctor` to audit the project's compliance at any time

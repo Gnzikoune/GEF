@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 import yaml from 'js-yaml';
+import { calculateChangeFailureRate, calculateTimeToRestore, getDoraLevel } from '../dora.js';
 
 const ROOT = process.cwd();
 
@@ -164,6 +165,21 @@ export function calculateDORAScore() {
     const targets = config.dora.targets;
     const benchmarks = config.dora.benchmarks || DORA_BENCHMARKS;
     
+    // Calculer CFR et MTTR automatiquement si non fournis
+    let cfr = targets.change_failure_rate;
+    let mttr = targets.time_to_restore_hours;
+    
+    if (cfr === undefined) {
+      const gitHistory = getGitHistory();
+      cfr = calculateChangeFailureRate(gitHistory);
+      console.log(chalk.dim(`📊 CFR calculé automatiquement : ${cfr.toFixed(1)}%`));
+    }
+    
+    if (mttr === undefined) {
+      mttr = calculateTimeToRestore(ROOT);
+      console.log(chalk.dim(`📊 MTTR calculé automatiquement : ${mttr.toFixed(1)}h`));
+    }
+    
     let score = 0;
     let max_score = 0;
     
@@ -182,17 +198,23 @@ export function calculateDORAScore() {
     }
     
     // Change Failure Rate
-    if (targets.change_failure_rate) {
+    if (cfr !== undefined) {
       max_score += 25;
-      const level = getDORALevelPercent(targets.change_failure_rate, benchmarks.change_failure_rate, true);
-      score += level * 25;
+      const level = getDoraLevel('changeFailureRate', cfr);
+      const levelScore = level.label === 'Elite' ? 1 : 
+                         level.label === 'High' ? 0.75 : 
+                         level.label === 'Medium' ? 0.5 : 0.25;
+      score += levelScore * 25;
     }
     
     // Time to Restore
-    if (targets.time_to_restore_hours) {
+    if (mttr !== undefined) {
       max_score += 25;
-      const level = getDORALevelHours(targets.time_to_restore_hours, benchmarks.time_to_restore_hours, true);
-      score += level * 25;
+      const level = getDoraLevel('timeToRestore', mttr);
+      const levelScore = level.label === 'Elite' ? 1 : 
+                         level.label === 'High' ? 0.75 : 
+                         level.label === 'Medium' ? 0.5 : 0.25;
+      score += levelScore * 25;
     }
     
     const percentage = max_score > 0 ? Math.round((score / max_score) * 100) : 50;
@@ -203,6 +225,25 @@ export function calculateDORAScore() {
   } catch (err) {
     console.log(chalk.red(`❌ Erreur lors du calcul DORA : ${err.message}`));
     return 50;
+  }
+}
+
+/**
+ * Obtient l'historique Git basique (simplifié)
+ */
+function getGitHistory() {
+  try {
+    const { execSync } = require('child_process');
+    const log = execSync('git log --all --pretty=format:"%H|%s|%ai" -20', 
+                      { encoding: 'utf8', cwd: ROOT });
+    const lines = log.trim().split('\n');
+    const commits = lines.map(line => {
+      const [hash, message, date] = line.split('|');
+      return { hash, message, date: new Date(date) };
+    });
+    return { commits };
+  } catch (err) {
+    return { commits: [] };
   }
 }
 

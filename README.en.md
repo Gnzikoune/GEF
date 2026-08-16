@@ -24,6 +24,7 @@
 8. [The Virtual Tech Lead (Block E)](#8-the-virtual-tech-lead-block-e)
 9. [The AI Anti-Bypass Guarantee (Block F)](#9-the-ai-anti-bypass-guarantee-block-f)
 10. [The Source of Truth](#10-the-source-of-truth)
+11. [Historical Violations & Lessons Learned](#11-historical-violations--lessons-learned)
 
 ---
 
@@ -74,6 +75,9 @@ GEF/
 │       ├── setup-ci.js           ← GitHub Actions Workflows (CI/CD, release-please)
 │       ├── setup-ai-rules.js     ← Block F: AI rulesets deployment
 │       ├── doctor.js             ← Audit an existing project's compliance
+│       ├── compliance.js         ← Compliance as Code (compliance.yml)
+│       ├── certification.js      ← Certification System (badges, reports)
+│       ├── extension.js          ← Extension System (marketplace)
 │       └── update.js             ← Update an existing project
 │
 ├── hooks/                        ← Block B: Git Hooks (installed in the GEF repo itself)
@@ -103,6 +107,10 @@ GEF is designed to be used directly without needing to clone the repository, jus
 | `npx create-gef` | Launches the interactive CLI and configures the current project or creates a new one |
 | `npx create-gef update` | Updates the Playbook, Prompts and Hooks in an existing project |
 | `npx create-gef doctor` | Audits an existing project's compliance with GEF |
+| `npx create-gef compliance` | Compliance as Code (generate, validate, apply-hooks, apply-ci) |
+| `npx create-gef certify` | Certification System (check, generate) |
+| `npx create-gef extension` | Extension System (install, list, remove) |
+| `npx create-gef dora` | DORA Metrics (trends) |
 | `npx create-gef --help` | Displays help and all available commands |
 | `npx create-gef --version` | Displays the current framework version |
 
@@ -134,29 +142,66 @@ The GEF Doctor checks an existing project's compliance with the framework. It di
 npx create-gef doctor
 ```
 
+### Doctor Command
+
+```bash
+npx create-gef doctor
+```
+
 The doctor displays a structured report with emojis (✅ / ❌ / ⚠️) and an overall compliance score.
+
+### Compliance as Code
+
+```bash
+npx create-gef compliance generate
+npx create-gef compliance validate
+npx create-gef compliance apply-hooks
+npx create-gef compliance apply-ci
+```
+
+For detailed examples, see [`docs/usage-guide.en.md`](./docs/usage-guide.en.md).
+
+### Certification System
+
+```bash
+npx create-gef certify check
+npx create-gef certify generate
+```
+
+For detailed examples, see [`docs/usage-guide.en.md`](./docs/usage-guide.en.md).
+
+### Extension System
+
+```bash
+npx create-gef extension install healthcare
+npx create-gef extension list
+npx create-gef extension remove healthcare
+```
+
+For detailed examples, see [`docs/usage-guide.en.md`](./docs/usage-guide.en.md).
+
+### DORA Metrics
+
+```bash
+npx create-gef dora trends
+```
+
+The DORA Metrics system allows you to analyze key DevOps metrics according to DevOps Research and Assessment standards:
+
+- **Deployment Frequency**: Production deployment frequency
+- **Lead Time for Changes**: Time between commit and deployment
+- **Change Failure Rate (CFR)**: Percentage of deployments causing incidents
+- **Mean Time to Restore (MTTR)**: Average time to restore service
+
+The `dora trends` command generates a 30-day analysis report with Mermaid charts under `docs/research/DORA_TRENDS.md`.
+
+For detailed examples, see [`docs/usage-guide.en.md`](./docs/usage-guide.en.md).
 
 ### Display Help
 
 ```bash
 npx create-gef --help
 npx create-gef --version
-```
-
-### Local Framework Development
-
-If you are modifying the GEF framework itself and want to test the CLI locally:
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/Gnzikoune/GEF.git GEF
-cd GEF
-
-# 2. Install dependencies
-npm install
-
-# 3. Make the local command globally accessible
-npm link
 ```
 
 ---
@@ -289,6 +334,21 @@ All rules applied by this framework are defined in a single document:
 **[→ Read the Engineering Playbook](./ENGINEERING_PLAYBOOK.md)**
 
 In case of contradiction between a framework tool and the Playbook, the Playbook is always right.
+
+---
+
+## 11. Historical Violations & Lessons Learned
+
+GEF has learned from its own mistakes to strengthen its protections. These incidents are documented in [`docs/incidents.md`](./docs/incidents.md).
+
+### Ultimate Safeguard: GitHub Branch Protection
+
+Following the incidents above, it was established that client-side mechanisms (hooks, prompts) can be bypassed or corrupted.
+**The only mechanism recognized as infallible by the project is server-side branch protection (GitHub Branch Protection) on `main`.**
+This protection MUST be configured with:
+- Requirement of at least 1 human validator (Review mandatory).
+- Strict prohibition of force-push.
+- Required CI statuses before merging.
 
 ---
 

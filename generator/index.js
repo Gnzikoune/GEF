@@ -15,11 +15,25 @@ import { setupAiRules } from './features/setup-ai-rules.js';
 import { doctor } from './features/doctor.js';
 import { compliance } from './features/compliance.js';
 import { certify } from './features/certification.js';
+import { extension } from './features/extension.js';
+import { generateTrends } from './features/dora-trends.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const GEF_DIR = path.resolve(path.dirname(__filename), '..');
 
 const arg = process.argv[2];
+
+/**
+ * Gère les commandes DORA
+ */
+async function handleDoraCommand(subCommand) {
+  if (subCommand === 'trends') {
+    return generateTrends();
+  }
+  
+  console.log(chalk.red(`❌ Commande DORA inconnue: ${subCommand}`));
+  console.log(chalk.dim('Commandes disponibles: trends'));
+}
 
 async function run() {
   // Gestion des commandes et flags
@@ -29,6 +43,8 @@ async function run() {
   if (arg === 'doctor') return doctor();
   if (arg === 'compliance') return compliance(process.argv[3], { strictness: process.argv[4] });
   if (arg === 'certify') return certify(process.argv[3]);
+  if (arg === 'extension') return extension(process.argv[3], process.argv[4]);
+  if (arg === 'dora') return handleDoraCommand(process.argv[3]);
 
   // Mode interactif par défaut
   console.log(chalk.cyan.bold('\n🚀 Bienvenue dans le GEF (Guardian Engineering Framework)\n'));

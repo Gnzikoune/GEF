@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.19.0](https://github.com/Gnzikoune/GEF/compare/v1.18.0...v1.19.0) (2026-08-16)
+
+
+### Features
+
+* ajouter DORA Metrics Enhancement avec analyse de tendances et benchmarks industriels ([#89](https://github.com/Gnzikoune/GEF/issues/89))
+* implémenter le module dora.js avec calcul de CFR, MTTR et corrélation GEF/DORA
+* ajouter les benchmarks industriels DORA (Elite, High, Medium, Low)
+* intégrer CFR et MTTR dans le système de certification
+* créer le module dora-trends.js pour l'analyse sur 30 jours
+* ajouter la commande CLI `npx create-gef dora trends`
+* générer des graphiques Mermaid pour visualiser les tendances
+* créer l'ADR-010 pour documenter l'architecture DORA
+* mettre à jour la documentation (README, guides d'utilisation)
+* ajouter les tests unitaires pour DORA et DORA trends
+
+---
+
+## [1.18.0](https://github.com/Gnzikoune/GEF/compare/v1.17.0...v1.18.0) (2026-08-16)
+
+
+### Features
+
+* implémentation Extension System avec marketplace intégré ([#89](https://github.com/Gnzikoune/GEF/issues/89))
+* ajout commande CLI `npx create-gef extension` (install, list, remove)
+* 3 extensions par défaut : Healthcare (HIPAA), Finance (PCI-DSS), Security (OWASP)
+* marketplace intégré pour extensions
+* merge automatique des règles extension avec compliance.yml
+* template d'extension pour contributions communautaires
+* tests unitaires pour extension module (13 tests pass)
+* documentation ADR-009 pour Extension System
+
+---
+
 ## [1.17.1](https://github.com/Gnzikoune/GEF/compare/v1.17.0...v1.17.1) (2026-08-16)
 
 
@@ -7,19 +41,14 @@
 
 * remove broken certification badge from README ([#94](https://github.com/Gnzikoune/GEF/issues/94)) ([#95](https://github.com/Gnzikoune/GEF/issues/95)) ([1c96371](https://github.com/Gnzikoune/GEF/commit/1c963711c88386e64184e8b938f4f14889d80075))
 
-## [1.17.0](https://github.com/Gnzikoune/GEF/compare/v1.16.0...v1.17.0) (2026-08-16)
-
-
-### Features
-
-* implémentation Certification System avec niveaux Bronze/Silver/Gold/Platinum ([#89](https://github.com/Gnzikoune/GEF/issues/89)) ([#92](https://github.com/Gnzikoune/GEF/issues/92)) ([d55d5cd](https://github.com/Gnzikoune/GEF/commit/d55d5cd5474a7ec4d5b03ba52b5f623445eedbb5))
+---
 
 ## [1.17.0](https://github.com/Gnzikoune/GEF/compare/v1.16.0...v1.17.0) (2026-08-15)
 
 
 ### Features
 
-* implémentation Certification System avec niveaux Bronze/Silver/Gold/Platinum ([#89](https://github.com/Gnzikoune/GEF/issues/89)) ([feat/gef-governance-first-innovation](https://github.com/Gnzikoune/GEF/commit/))
+* implémentation Certification System avec niveaux Bronze/Silver/Gold/Platinum ([#89](https://github.com/Gnzikoune/GEF/issues/89)) ([#92](https://github.com/Gnzikoune/GEF/issues/92)) ([d55d5cd](https://github.com/Gnzikoune/GEF/commit/d55d5cd5474a7ec4d5b03ba52b5f623445eedbb5))
 * ajout commande CLI `npx create-gef certify` (check, generate)
 * calcul score GEF et DORA pour certification
 * génération badge SVG automatique pour README.md

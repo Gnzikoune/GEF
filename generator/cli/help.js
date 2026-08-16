@@ -44,6 +44,16 @@ ${chalk.bold.cyan('CERTIFICATION SYSTEM')}
   ${chalk.green('npx create-gef certify check')}            Vérifie le niveau de certification possible
   ${chalk.green('npx create-gef certify generate')}         Génère badge et rapport de certification
 
+${chalk.bold.cyan('EXTENSION SYSTEM')}
+
+  ${chalk.green('npx create-gef extension install <name>')}  Installe une extension (healthcare, finance, security)
+  ${chalk.green('npx create-gef extension list')}            Liste les extensions installées et disponibles
+  ${chalk.green('npx create-gef extension remove <name>')}   Désinstalle une extension
+
+${chalk.bold.cyan('DORA METRICS ENHANCEMENT')}
+
+  ${chalk.green('npx create-gef dora trends')}            Génère les graphiques de tendance DORA sur 30 jours
+
 ${chalk.bold.cyan('OPTIONS DU GÉNÉRATEUR INTERACTIF')}
 
   ${chalk.magenta('Workflow Git')}    GitHub Flow ${chalk.dim('(PRs, main verrouillé — Recommandé)')} | Trunk-Based Development

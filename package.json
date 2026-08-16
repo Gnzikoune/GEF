@@ -1,6 +1,6 @@
 {
   "name": "create-gef",
-  "version": "1.17.1",
+  "version": "1.19.0",
   "description": "Interactive project generator enforcing the Guardian Engineering Framework - Clean Code, Security, CI/CD, and AI-proof development standards",
   "type": "module",
   "bin": {
@@ -11,6 +11,7 @@
     "test": "node --test",
     "lint": "echo \"Linting not configured yet\" && exit 0",
     "verify-self": "node scripts/verify-self.js",
+    "sync-locales": "node scripts/sync-locales.js",
     "prepublishOnly": "npm run test",
     "version-bump": "node scripts/version-bump.js"
   },

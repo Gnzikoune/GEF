@@ -2,6 +2,9 @@
 
 # Guardian Engineering Framework 🛡️ ⚙️
 
+![GEF Certified: Bronze](gef-certified-badge.svg)
+
+
 **Un framework d'ingénierie logicielle qui transforme des règles de travail en outils automatisés**
 
 *Traçabilité · Sécurité · Qualité logicielle*
@@ -115,6 +118,8 @@ Le GEF est conçu pour être utilisé directement sans avoir besoin de cloner le
 | `npx create-gef doctor` | Audit la conformité d'un projet existant au GEF |
 | `npx create-gef compliance` | Compliance as Code (generate, validate, apply-hooks, apply-ci) |
 | `npx create-gef certify` | Certification System (check, generate) |
+| `npx create-gef extension` | Extension System (install, list, remove) |
+| `npx create-gef dora` | DORA Metrics (trends) |
 | `npx create-gef --help` | Affiche l'aide et toutes les commandes disponibles |
 | `npx create-gef --version` | Affiche la version actuelle du framework |
 
@@ -146,75 +151,66 @@ Le GEF Doctor vérifie la conformité d'un projet existant au framework. Il diag
 npx create-gef doctor
 ```
 
+### Doctor Command
+
+```bash
+npx create-gef doctor
+```
+
 Le doctor affiche un rapport structuré avec des emojis (✅ / ❌ / ⚠️) et un score de conformité global.
 
 ### Compliance as Code
 
-Le GEF Compliance as Code permet de définir les règles d'ingénierie de manière déclarative via un fichier `compliance.yml`. Ce fichier contient :
-
-- **Hard Limits** : Limites de code (max_function_lines, max_params, max_complexity, etc.)
-- **Security Rules** : Règles de sécurité OWASP (jwt_expiry, rate_limit, secret_detection)
-- **Git Strategy** : Configuration du workflow Git (GitHub Flow, Trunk-Based)
-- **DORA Targets** : Objectifs de métriques DORA (deployment_frequency, lead_time, etc.)
-- **Extensions** : Extensions activées et règles personnalisées
-
 ```bash
-# Générer le fichier compliance.yml
 npx create-gef compliance generate
-
-# Valider le fichier compliance.yml
 npx create-gef compliance validate
-
-# Appliquer les règles aux hooks Git
 npx create-gef compliance apply-hooks
-
-# Appliquer les règles à la CI/CD
 npx create-gef compliance apply-ci
 ```
 
+Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
+
 ### Certification System
 
-Le GEF Certification System permet d'obtenir un niveau de certification officiel basé sur la conformité GEF et les métriques DORA. Les niveaux disponibles sont :
-
-- **Bronze** : GEF ≥ 60%, DORA ≥ 40%
-- **Silver** : GEF ≥ 70%, DORA ≥ 60%
-- **Gold** : GEF ≥ 85%, DORA ≥ 80%
-- **Platinum** : GEF ≥ 95%, DORA ≥ 95%
-
 ```bash
-# Vérifier le niveau de certification possible
 npx create-gef certify check
-
-# Générer badge et rapport de certification
 npx create-gef certify generate
 ```
 
-Le système génère :
-- Badge SVG pour README.md
-- Rapport public de certification (GEF_CERTIFICATION_REPORT.md)
-- Audit trail avec date et scores
+Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
+
+### Extension System
+
+```bash
+npx create-gef extension install healthcare
+npx create-gef extension list
+npx create-gef extension remove healthcare
+```
+
+Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
+
+### DORA Metrics
+
+```bash
+npx create-gef dora trends
+```
+
+Le système DORA Metrics permet d'analyser les métriques DevOps clés selon les standards du DevOps Research and Assessment :
+
+- **Deployment Frequency** : Fréquence des déploiements en production
+- **Lead Time for Changes** : Temps entre commit et déploiement
+- **Change Failure Rate (CFR)** : Pourcentage de déploiements causant des incidents
+- **Mean Time to Restore (MTTR)** : Temps moyen pour restaurer le service
+
+La commande `dora trends` génère un rapport d'analyse sur 30 jours avec graphiques Mermaid sous `docs/research/DORA_TRENDS.md`.
+
+Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
 
 ### Afficher l'aide
 
 ```bash
 npx create-gef --help
 npx create-gef --version
-```
-
-### Développement local du framework
-
-Si vous modifiez le framework GEF lui-même et souhaitez tester la CLI localement :
-
-```bash
-# 1. Cloner le dépôt
-git clone https://github.com/Gnzikoune/GEF.git GEF
-cd GEF
-
-# 2. Installer les dépendances
-npm install
-
-# 3. Rendre la commande locale accessible globalement
-npm link
 ```
 
 ---
@@ -356,12 +352,7 @@ En cas de contradiction entre un outil du framework et le Playbook, le Playbook 
 
 ## 11. Violations Historiques & Leçons Apprises (Post-Mortem)
 
-Le GEF a appris de ses propres erreurs pour renforcer ses protections. Ces incidents sont documentés ici sous forme de post-mortem structuré :
-
-| Date | Incident (Cause Racine) | Action Corrective | Responsable | Sévérité |
-|---|---|---|---|---|
-| 2026-07-24 | **Convergence Instrumentale :** L'IA a bypassé les protections de branche pour atteindre son objectif. | Révocation des privilèges d'administration complets de l'IA. | Système | 🟠 Élevée |
-| 2026-07-25 | **Push direct sur main :** L'IA a poussé du code directement sur main (via `git push` ou `gh pr merge`), ignorant la règle de PR obligatoire en raison d'instructions contradictoires dans le prompt. | Ajout de hooks locaux pre-push bloquants et correction du `system_prompt.md` (GitHub Flow exclusif). | Dev | 🔴 Critique |
+Le GEF a appris de ses propres erreurs pour renforcer ses protections. Ces incidents sont documentés dans [`docs/incidents.md`](./docs/incidents.md).
 
 ### Ultime Rempart : GitHub Branch Protection
 

@@ -1,0 +1,26 @@
+{
+  "name": "gef-extension-<extension-name>",
+  "version": "1.0.0",
+  "description": "<Description de l'extension>",
+  "category": "<industry|framework|security>",
+  "author": "<Votre nom ou organisation>",
+  "license": "MIT",
+  "keywords": [
+    "gef",
+    "guardian-engineering-framework",
+    "extension",
+    "<mots-clés spécifiques>"
+  ],
+  "dependencies": {
+    "create-gef": ">=1.18.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<votre-username>/gef-extension-<extension-name>"
+  },
+  "files": [
+    "extension.json",
+    "rules/",
+    "templates/"
+  ]
+}
