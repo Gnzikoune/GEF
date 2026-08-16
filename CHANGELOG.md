@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/Gnzikoune/GEF/compare/v1.16.0...v1.17.0) (2026-08-16)
+
+
+### Features
+
+* implémentation Certification System avec niveaux Bronze/Silver/Gold/Platinum ([#89](https://github.com/Gnzikoune/GEF/issues/89)) ([#92](https://github.com/Gnzikoune/GEF/issues/92)) ([d55d5cd](https://github.com/Gnzikoune/GEF/commit/d55d5cd5474a7ec4d5b03ba52b5f623445eedbb5))
+
 ## [1.17.0](https://github.com/Gnzikoune/GEF/compare/v1.16.0...v1.17.0) (2026-08-15)
 
 
