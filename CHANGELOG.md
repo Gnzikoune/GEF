@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/Gnzikoune/GEF/compare/v1.15.0...v1.16.0) (2026-08-16)
+
+
+### Features
+
+* implémentation Compliance as Code avec fichier compliance.yml ([#89](https://github.com/Gnzikoune/GEF/issues/89)) ([#90](https://github.com/Gnzikoune/GEF/issues/90)) ([069b058](https://github.com/Gnzikoune/GEF/commit/069b058f08c0e2f92142b93c9dd0e594c210a28c))
+
 ## [1.16.0](https://github.com/Gnzikoune/GEF/compare/v1.15.0...v1.16.0) (2026-08-15)
 
 
