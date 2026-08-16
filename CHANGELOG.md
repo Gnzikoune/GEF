@@ -1,7 +1,26 @@
 # Changelog
 
-## [1.18.0](https://github.com/Gnzikoune/GEF/compare/v1.17.1...v1.18.0) (2026-08-16)
+## [1.20.0](https://github.com/Gnzikoune/GEF/compare/v1.18.0...v1.20.0) (2026-08-16)
 
+
+### Features
+
+* ajouter Smart CLI avec assistant intelligent et mode offline garanti ([#89](https://github.com/Gnzikoune/GEF/issues/89))
+* implémenter module smart-cli.js avec routing des actions (analyze, chat, explain, suggest, audit)
+* analyse contextuelle du projet avec calcul de score de conformité
+* mode assistant conversationnel interactif (offline)
+* explication détaillée des règles GEF avec exemples et références
+* suggestions d'améliorations basées sur l'analyse du code
+* audit en profondeur avec corrélation GEF/DORA
+* mode offline garanti (basé sur ENGINEERING_PLAYBOOK.md)
+* intégration CLI : npx create-gef smart <action>
+* tests unitaires complets (25 tests passants après refactor)
+* documentation complète (guides FR/EN, README)
+* ADR-011 pour Smart CLI
+
+---
+
+## [1.18.0](https://github.com/Gnzikoune/GEF/compare/v1.17.1...v1.18.0) (2026-08-16)
 
 ### Features
 
