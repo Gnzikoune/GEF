@@ -39,6 +39,11 @@ ${chalk.bold.cyan('COMPLIANCE AS CODE')}
   ${chalk.green('npx create-gef compliance apply-hooks')}    Applique les règles aux hooks Git
   ${chalk.green('npx create-gef compliance apply-ci')}       Applique les règles à la CI/CD
 
+${chalk.bold.cyan('CERTIFICATION SYSTEM')}
+
+  ${chalk.green('npx create-gef certify check')}            Vérifie le niveau de certification possible
+  ${chalk.green('npx create-gef certify generate')}         Génère badge et rapport de certification
+
 ${chalk.bold.cyan('OPTIONS DU GÉNÉRATEUR INTERACTIF')}
 
   ${chalk.magenta('Workflow Git')}    GitHub Flow ${chalk.dim('(PRs, main verrouillé — Recommandé)')} | Trunk-Based Development

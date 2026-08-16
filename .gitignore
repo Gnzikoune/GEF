@@ -7,3 +7,5 @@ website/node_modules/
 website/dist/
 compliance.yml
 compliance.yml.backup
+gef-certified-badge.svg
+GEF_CERTIFICATION_REPORT.md
