@@ -10,6 +10,8 @@
 
 ### 1.1. Structure du Projet
 
+**Dépôt GitHub séparé :** https://github.com/Gnzikoune/gef-cloud
+
 ```
 gef-cloud/
 ├── apps/
@@ -24,6 +26,13 @@ gef-cloud/
 └── docs/
     └── adr/                 ← Architecture Decision Records
 ```
+
+**Raison du dépôt séparé :**
+- Stack technique différente du package npm GEF
+- Sécurité : données utilisateurs privées (secrets, tokens OAuth)
+- CI/CD simplifié : workflows adaptés au SaaS (publication vs déploiement)
+- Scale indépendante : le SaaS peut croître sans impacter le package npm
+- Licensing : facilité de vendre/licencier le SaaS séparément
 
 ### 1.2. Flux d'Architecture
 

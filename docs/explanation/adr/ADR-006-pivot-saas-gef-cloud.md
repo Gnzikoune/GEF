@@ -145,7 +145,10 @@ graph TB
 ## Notes
 
 - Le package npm restera le cœur du GEF (open-source, gratuit)
-- Le SaaS sera construit autour du package npm, pas en remplacement
+- Le SaaS sera construit dans un dépôt séparé (gef-cloud), pas en remplacement
+- **Dépôt SaaS** : https://github.com/Gnzikoune/gef-cloud (créé et initialisé)
+- **Raison du dépôt séparé** : Stack technique différente, sécurité (données utilisateurs privées), CI/CD simplifié, scale indépendante
+- **Structure créée** : apps/, packages/, workers/, docs/ initialisés
 - La décision sera réévaluée après la Phase 1 (MVP) en fonction de l'adoption
 - ADR à réviser après 6 mois de lancement du MVP
 
