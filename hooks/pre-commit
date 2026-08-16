@@ -119,8 +119,8 @@ if echo "$CACHED_FILES" | grep -q "^package.json$"; then
   fi
 fi
 
-# c) Si ENGINEERING_PLAYBOOK.md modifié -> synchroniser locales automatiquement
-if echo "$CACHED_FILES" | grep -q "^ENGINEERING_PLAYBOOK.md$"; then
+# c) Si ENGINEERING_PLAYBOOK.md ou ENGINEERING_PLAYBOOK.en.md modifié -> synchroniser locales automatiquement
+if echo "$CACHED_FILES" | grep -q "^ENGINEERING_PLAYBOOK.md$" || echo "$CACHED_FILES" | grep -q "^ENGINEERING_PLAYBOOK.en.md$"; then
   echo -e "\033[33mSynchronisation automatique des fichiers locales avec ENGINEERING_PLAYBOOK.md...\033[0m"
   if [ -f "package.json" ] && grep -q '"sync-locales"' package.json; then
     npm run sync-locales

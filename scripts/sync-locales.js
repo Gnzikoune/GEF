@@ -1,17 +1,18 @@
 // scripts/sync-locales.js — Synchronisation automatique des fichiers locales
-// Objectif : Synchroniser locales/fr/ et locales/en/ avec ENGINEERING_PLAYBOOK.md à la racine
+// Objectif : Synchroniser locales/fr/ et locales/en/ avec leurs sources respectives
 
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 
 const ROOT = path.join(process.cwd());
-const SOURCE_PLAYBOOK = path.join(ROOT, 'ENGINEERING_PLAYBOOK.md');
+const SOURCE_PLAYBOOK_FR = path.join(ROOT, 'ENGINEERING_PLAYBOOK.md');
+const SOURCE_PLAYBOOK_EN = path.join(ROOT, 'ENGINEERING_PLAYBOOK.en.md');
 const LOCALES_DIR = path.join(ROOT, 'locales');
 
 const LOCALE_FILES = [
-  { source: SOURCE_PLAYBOOK, target: path.join(LOCALES_DIR, 'fr', 'ENGINEERING_PLAYBOOK.md') },
-  { source: SOURCE_PLAYBOOK, target: path.join(LOCALES_DIR, 'en', 'ENGINEERING_PLAYBOOK.md') }
+  { source: SOURCE_PLAYBOOK_FR, target: path.join(LOCALES_DIR, 'fr', 'ENGINEERING_PLAYBOOK.md') },
+  { source: SOURCE_PLAYBOOK_EN, target: path.join(LOCALES_DIR, 'en', 'ENGINEERING_PLAYBOOK.md') }
 ];
 
 function success(message) {
