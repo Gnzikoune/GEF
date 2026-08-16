@@ -69,6 +69,20 @@ npx create-gef extension remove healthcare
 
 Les extensions mettent à jour automatiquement le fichier `compliance.yml` avec les règles spécifiques du domaine.
 
+## Créer une Extension
+
+Le GEF fournit un template pour créer facilement des extensions. Consultez [`templates/extension-template/README.md`](../templates/extension-template/README.md) pour le guide complet.
+
+Structure de base :
+```bash
+templates/extension-template/
+├── package.json          # Métadonnées de l'extension
+├── extension.json        # Configuration des règles GEF
+├── rules/               # Règles spécifiques (optionnel)
+├── templates/           # Templates de fichiers (optionnel)
+└── README.md            # Documentation
+```
+
 ## Développement Local du Framework
 
 Si vous modifiez le framework GEF lui-même et souhaitez tester la CLI localement :

@@ -28,6 +28,7 @@
 * 3 extensions par défaut : Healthcare (HIPAA), Finance (PCI-DSS), Security (OWASP)
 * marketplace intégré pour extensions
 * merge automatique des règles extension avec compliance.yml
+* template d'extension pour contributions communautaires
 * tests unitaires pour extension module (13 tests pass)
 * documentation ADR-009 pour Extension System
 

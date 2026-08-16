@@ -1,0 +1,28 @@
+{
+  "name": "gef-extension-<extension-name>",
+  "version": "1.0.0",
+  "description": "<Description de l'extension>",
+  "category": "<industry|framework|security>",
+  "author": "<Votre nom ou organisation>",
+  "rules": {
+    "hard_limits": {
+      "max_function_lines": <nombre, ex: 50>,
+      "max_params": <nombre, ex: 4>,
+      "max_complexity": <nombre, ex: 10>,
+      "max_file_lines": <nombre, ex: 400>,
+      "max_nesting_depth": <nombre, ex: 3>
+    },
+    "security": {
+      "<règle1>": <valeur>,
+      "<règle2>": <valeur>
+    },
+    "git": {
+      "<règle1>": <valeur>,
+      "<règle2>": <valeur>
+    },
+    "testing": {
+      "<règle1>": <valeur>,
+      "<règle2>": <valeur>
+    }
+  }
+}
