@@ -2,6 +2,9 @@
 
 # Guardian Engineering Framework 🛡️ ⚙️
 
+![GEF Certified: Bronze](gef-certified-badge.svg)
+
+
 **Un framework d'ingénierie logicielle qui transforme des règles de travail en outils automatisés**
 
 *Traçabilité · Sécurité · Qualité logicielle*
@@ -116,6 +119,7 @@ Le GEF est conçu pour être utilisé directement sans avoir besoin de cloner le
 | `npx create-gef compliance` | Compliance as Code (generate, validate, apply-hooks, apply-ci) |
 | `npx create-gef certify` | Certification System (check, generate) |
 | `npx create-gef extension` | Extension System (install, list, remove) |
+| `npx create-gef dora` | DORA Metrics (trends) |
 | `npx create-gef --help` | Affiche l'aide et toutes les commandes disponibles |
 | `npx create-gef --version` | Affiche la version actuelle du framework |
 
@@ -182,6 +186,23 @@ npx create-gef extension install healthcare
 npx create-gef extension list
 npx create-gef extension remove healthcare
 ```
+
+Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
+
+### DORA Metrics
+
+```bash
+npx create-gef dora trends
+```
+
+Le système DORA Metrics permet d'analyser les métriques DevOps clés selon les standards du DevOps Research and Assessment :
+
+- **Deployment Frequency** : Fréquence des déploiements en production
+- **Lead Time for Changes** : Temps entre commit et déploiement
+- **Change Failure Rate (CFR)** : Pourcentage de déploiements causant des incidents
+- **Mean Time to Restore (MTTR)** : Temps moyen pour restaurer le service
+
+La commande `dora trends` génère un rapport d'analyse sur 30 jours avec graphiques Mermaid sous `docs/research/DORA_TRENDS.md`.
 
 Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
 

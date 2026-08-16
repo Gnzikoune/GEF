@@ -110,6 +110,7 @@ GEF is designed to be used directly without needing to clone the repository, jus
 | `npx create-gef compliance` | Compliance as Code (generate, validate, apply-hooks, apply-ci) |
 | `npx create-gef certify` | Certification System (check, generate) |
 | `npx create-gef extension` | Extension System (install, list, remove) |
+| `npx create-gef dora` | DORA Metrics (trends) |
 | `npx create-gef --help` | Displays help and all available commands |
 | `npx create-gef --version` | Displays the current framework version |
 
@@ -176,6 +177,23 @@ npx create-gef extension install healthcare
 npx create-gef extension list
 npx create-gef extension remove healthcare
 ```
+
+For detailed examples, see [`docs/usage-guide.en.md`](./docs/usage-guide.en.md).
+
+### DORA Metrics
+
+```bash
+npx create-gef dora trends
+```
+
+The DORA Metrics system allows you to analyze key DevOps metrics according to DevOps Research and Assessment standards:
+
+- **Deployment Frequency**: Production deployment frequency
+- **Lead Time for Changes**: Time between commit and deployment
+- **Change Failure Rate (CFR)**: Percentage of deployments causing incidents
+- **Mean Time to Restore (MTTR)**: Average time to restore service
+
+The `dora trends` command generates a 30-day analysis report with Mermaid charts under `docs/research/DORA_TRENDS.md`.
 
 For detailed examples, see [`docs/usage-guide.en.md`](./docs/usage-guide.en.md).
 

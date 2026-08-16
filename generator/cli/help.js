@@ -50,6 +50,10 @@ ${chalk.bold.cyan('EXTENSION SYSTEM')}
   ${chalk.green('npx create-gef extension list')}            Liste les extensions installées et disponibles
   ${chalk.green('npx create-gef extension remove <name>')}   Désinstalle une extension
 
+${chalk.bold.cyan('DORA METRICS ENHANCEMENT')}
+
+  ${chalk.green('npx create-gef dora trends')}            Génère les graphiques de tendance DORA sur 30 jours
+
 ${chalk.bold.cyan('OPTIONS DU GÉNÉRATEUR INTERACTIF')}
 
   ${chalk.magenta('Workflow Git')}    GitHub Flow ${chalk.dim('(PRs, main verrouillé — Recommandé)')} | Trunk-Based Development

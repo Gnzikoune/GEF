@@ -69,6 +69,34 @@ npx create-gef extension remove healthcare
 
 Extensions automatically update the `compliance.yml` file with domain-specific rules.
 
+## DORA Metrics
+
+The GEF DORA Metrics allows you to analyze key DevOps metrics according to DevOps Research and Assessment standards. The 4 key metrics are:
+
+- **Deployment Frequency**: Production deployment frequency
+- **Lead Time for Changes**: Time between commit and deployment
+- **Change Failure Rate (CFR)**: Percentage of deployments causing incidents
+- **Mean Time to Restore (MTTR)**: Average time to restore service
+
+```bash
+# Analyze DORA trends over 30 days
+npx create-gef dora trends
+```
+
+The command generates an analysis report with:
+- Weekly data grouping (4 periods)
+- Weekly metric calculations
+- Mermaid charts for visualization
+- Report under `docs/research/DORA_TRENDS.md`
+
+DORA industry benchmarks are integrated:
+- **Elite**: On-demand, < 1h lead time, < 15% CFR, < 1h MTTR
+- **High**: 1/week-1/month, < 1 week, < 20% CFR, < 1 day MTTR
+- **Medium**: 1/month-6/months, < 6 months, < 30% CFR, < 1 week MTTR
+- **Low**: < 1/month, > 6 months, > 30% CFR, > 1 week MTTR
+
+These metrics are also integrated in the Certification System for GEF/DORA correlation.
+
 ## Create an Extension
 
 GEF provides a template to easily create extensions. See [`templates/extension-template/README.md`](../templates/extension-template/README.md) for the complete guide.
