@@ -117,15 +117,41 @@ La documentation technique (dossier `docs/`) doit suivre le framework cognitif *
 
 La qualité s'injecte avant le code, pas après.
 - **Shift-Left Testing :** La réflexion sur les tests et la sécurité commence dès l'écriture des spécifications (SDD).
-- **Critères d'Acceptation :** Les spécifications doivent définir des critères clairs. L'IA doit privilégier les **Tests Unitaires et d'Intégration** pour prouver que le code respecte la spec.
-- **La Pyramide des Tests :**
-  - **Base :** 80% de Tests Unitaires (très rapides, ciblent la logique métier, déterministes pour l'IA).
-  - **Milieu :** 15% de Tests d'Intégration (valident la communication DB / API).
-  - **Sommet :** 5% de Tests End-to-End (E2E type Playwright). Ils sont lents, fragiles et complexes à imaginer pour une IA sans interface visuelle. Ils sont donc écrits **après** que l'implémentation soit stable (voire par un agent QA dédié), et non de manière stricte avant le code.
+- **Pyramide des Tests :** 80% unitaires, 15% intégration, 5% E2E (Playwright). Les tests unitaires doivent être déterministes pour l'IA.
+- **TDD / SDD :** Écrire les tests validant la Spec AVANT le code métier.
 
 ---
 
-## 8. Agentic Spec-Driven Development (SDD) & Autonomie de l'IA
+## 8. Outils GEF et Gouvernance
+
+Le GEF fournit des outils pour mécaniser la gouvernance d'ingénierie :
+
+### Compliance as Code (`npx create-gef compliance`)
+- Utilisez `npx create-gef compliance generate` pour créer un fichier `compliance.yml` déclaratif
+- Utilisez `npx create-gef compliance validate` pour vérifier la conformité
+- Utilisez `npx create-gef compliance apply-hooks` pour appliquer les règles aux hooks Git
+- Utilisez `npx create-gef compliance apply-ci` pour appliquer les règles à la CI/CD
+
+### Certification System (`npx create-gef certify`)
+- Utilisez `npx create-gef certify check` pour vérifier le niveau de certification possible
+- Utilisez `npx create-gef certify generate` pour générer un badge et un rapport de certification
+- Les niveaux : Bronze (GEF ≥ 60%, DORA ≥ 40%), Silver (≥ 70%, ≥ 60%), Gold (≥ 85%, ≥ 80%), Platinum (≥ 95%, ≥ 95%)
+
+### Extension System (`npx create-gef extension`)
+- Utilisez `npx create-gef extension install <name>` pour installer des packs de règles spécifiques
+- Utilisez `npx create-gef extension list` pour lister les extensions disponibles
+- Utilisez `npx create-gef extension remove <name>` pour désinstaller une extension
+- Extensions disponibles : Healthcare (HIPAA), Finance (PCI-DSS), Security (OWASP)
+
+### Doctor (`npx create-gef doctor`)
+- Utilisez `npx create-gef doctor` pour auditer la conformité d'un projet existant
+- Le doctor vérifie les fichiers IA, fichiers obligatoires, configuration Git, CI/CD, et linter
+
+Ces outils doivent être utilisés régulièrement pour maintenir la gouvernance du projet.
+
+---
+
+## 9. Agentic Spec-Driven Development (SDD) & Autonomie de l'IA
 
 L'IA agit comme un Ingénieur Logiciel Agentique (Agentic Software Engineer), pilotée par des spécifications.
 - **Processus SDD Obligatoire :**
@@ -145,7 +171,7 @@ L'IA agit comme un Ingénieur Logiciel Agentique (Agentic Software Engineer), pi
 
 ---
 
-## 9. Hygiène, CI/CD et Séparation R&D
+## 10. Hygiène, CI/CD et Séparation R&D
 
 - **Zéro Scories :** Scripts temporaires, fichiers de debug ou commentaires commentés doivent être supprimés avant tout push.
 - **CI/CD :** À chaque push, les workflows GitHub Actions doivent vérifier : Lint, Build, Tests Unitaires, Analyse de sécurité. 
@@ -154,7 +180,7 @@ L'IA agit comme un Ingénieur Logiciel Agentique (Agentic Software Engineer), pi
 
 ---
 
-## 10. Verrouillage Mécanique (Ultimate Lockdown)
+## 11. Verrouillage Mécanique (Ultimate Lockdown)
 
 Le GEF ne repose pas uniquement sur la discipline humaine ou l'obéissance de l'IA, il impose ses règles de manière **mécanique et incontournable** :
 - **Documentation Forcée (Git Hooks) :** Tout correctif (`fix/`) sans mise à jour du `RESEARCH_LOG.md` sera rejeté au commit. Tout ajout de dépendance sans nouvel `ADR` sera bloqué.

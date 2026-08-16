@@ -125,7 +125,36 @@ Quality is injected before the code, not after.
 
 ---
 
-## 8. Agentic Spec-Driven Development (SDD) & AI Autonomy
+## 8. GEF Tools and Governance
+
+GEF provides tools to mechanize engineering governance:
+
+### Compliance as Code (`npx create-gef compliance`)
+- Use `npx create-gef compliance generate` to create a declarative `compliance.yml` file
+- Use `npx create-gef compliance validate` to verify compliance
+- Use `npx create-gef compliance apply-hooks` to apply rules to Git hooks
+- Use `npx create-gef compliance apply-ci` to apply rules to CI/CD
+
+### Certification System (`npx create-gef certify`)
+- Use `npx create-gef certify check` to verify possible certification level
+- Use `npx create-gef certify generate` to generate a badge and certification report
+- Levels: Bronze (GEF ≥ 60%, DORA ≥ 40%), Silver (≥ 70%, ≥ 60%), Gold (≥ 85%, ≥ 80%), Platinum (≥ 95%, ≥ 95%)
+
+### Extension System (`npx create-gef extension`)
+- Use `npx create-gef extension install <name>` to install specific rule packs
+- Use `npx create-gef extension list` to list available extensions
+- Use `npx create-gef extension remove <name>` to remove an extension
+- Available extensions: Healthcare (HIPAA), Finance (PCI-DSS), Security (OWASP)
+
+### Doctor (`npx create-gef doctor`)
+- Use `npx create-gef doctor` to audit an existing project's compliance
+- The doctor checks AI files, mandatory files, Git configuration, CI/CD, and linter
+
+These tools should be used regularly to maintain project governance.
+
+---
+
+## 9. Agentic Spec-Driven Development (SDD) & AI Autonomy
 
 The AI acts as an Agentic Software Engineer, driven by specifications.
 - **Mandatory SDD Process:**
@@ -145,7 +174,7 @@ The AI acts as an Agentic Software Engineer, driven by specifications.
 
 ---
 
-## 9. Hygiene, CI/CD, and R&D Separation
+## 10. Hygiene, CI/CD, and R&D Separation
 
 - **Zero Scraps:** Temporary scripts, debug files, or commented-out comments must be deleted before any push.
 - **CI/CD:** On each push, GitHub Actions workflows must check: Lint, Build, Unit Tests, Security Analysis.
@@ -154,7 +183,7 @@ The AI acts as an Agentic Software Engineer, driven by specifications.
 
 ---
 
-## 10. Mechanical Lockdown (Ultimate Lockdown)
+## 11. Mechanical Lockdown (Ultimate Lockdown)
 
 The GEF does not rely solely on human discipline or AI obedience; it enforces its rules in a **mechanical and unavoidable** way:
 - **Mandatory Documentation (Git Hooks):** Any bugfix (`fix/`) without updating the `RESEARCH_LOG.md` will be rejected at commit. Any added dependency without a new `ADR` will be blocked.
