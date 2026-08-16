@@ -5,6 +5,24 @@ Ce document consigne tous les problÃ¨mes critiques rencontrÃ©s, leurs causes pro
 
 ---
 
+## [Bug] Badge de certification cassÃ© sur GitHub
+**Date:** 2026-08-16
+**SymptÃ´me:** 
+Le README.md sur GitHub affiche un lien cassÃ© "GEF Certified: Silver" qui pointe vers gef-certified-badge.svg inexistant.
+
+**Cause Racine:** 
+Le fichier gef-certified-badge.svg a Ã©tÃ© ajoutÃ© Ã  .gitignore pour Ã©viter de commiter les badges gÃ©nÃ©rÃ©s localement, mais le badge n'a jamais Ã©tÃ© commitÃ© dans le dÃ©pÃ´t. Le badge a Ã©tÃ© ajoutÃ© au README.md par erreur lors des tests du Certification System.
+
+**RÃ©solution:** 
+- Suppression de la ligne du badge dans README.md
+- Les badges doivent Ãªtre gÃ©nÃ©rÃ©s uniquement localement par les utilisateurs via `npx create-gef certify generate`
+- Le badge ne doit pas Ãªtre dans le README.md du framework lui-mÃªme, mais uniquement dans les projets gÃ©nÃ©rÃ©s
+
+**LeÃ§on:** 
+Les artefacts gÃ©nÃ©rÃ©s localement (badges, rapports) ne doivent jamais Ãªtre rÃ©fÃ©rencÃ©s dans les fichiers du framework lui-mÃªme, car ils n'existent pas dans le dÃ©pÃ´t public.
+
+---
+
 ## [Bug] Omission SystÃ©matique du RESEARCH_LOG par l'IA
 **Date:** 2026-07-24
 **SymptÃ´me:** 
@@ -224,25 +242,25 @@ L'IA ne doit jamais prioriser l'accomplissement technique sur le respect des rÃ¨
 
 ---
 
-## [Bug] Audit Phase 1 - Corrections Critiques du Générateur
+## [Bug] Audit Phase 1 - Corrections Critiques du Gï¿½nï¿½rateur
 **Date:** 2026-08-11
-**Symptôme:** 
-Plusieurs bugs bloquants identifiés lors de l'audit de la version 1.15.0 :
-1. Le fichier \.cursorrules\ généré contenait les variables brutes \{{MAX_LINES}}\ sans substitution.
-2. Le fichier \locales/en/.cursorrules\ était corrompu (en français).
-3. Des fichiers dépréciés (\prompts/*.md\) étaient toujours copiés.
-4. Commentaires obsolètes dans \setup-ci.js\.
+**Symptï¿½me:** 
+Plusieurs bugs bloquants identifiï¿½s lors de l'audit de la version 1.15.0 :
+1. Le fichier \.cursorrules\ gï¿½nï¿½rï¿½ contenait les variables brutes \{{MAX_LINES}}\ sans substitution.
+2. Le fichier \locales/en/.cursorrules\ ï¿½tait corrompu (en franï¿½ais).
+3. Des fichiers dï¿½prï¿½ciï¿½s (\prompts/*.md\) ï¿½taient toujours copiï¿½s.
+4. Commentaires obsolï¿½tes dans \setup-ci.js\.
 
 **Cause Racine:** 
-1. \setupAiRules\ ne faisait pas appel à la fonction de templating avant d'écrire.
-2. Une erreur manuelle lors du développement Agentic SDD avait écrasé le fichier anglais avec la version française.
-3. Le code de \setup-gef.js\ n'avait pas été nettoyé après le passage aux règles contextuelles.
+1. \setupAiRules\ ne faisait pas appel ï¿½ la fonction de templating avant d'ï¿½crire.
+2. Une erreur manuelle lors du dï¿½veloppement Agentic SDD avait ï¿½crasï¿½ le fichier anglais avec la version franï¿½aise.
+3. Le code de \setup-gef.js\ n'avait pas ï¿½tï¿½ nettoyï¿½ aprï¿½s le passage aux rï¿½gles contextuelles.
 
-**Résolution:** 
+**Rï¿½solution:** 
 - Injection de \pplyTemplating\ dans \setup-ai-rules.js\.
-- Restauration de l'ancienne version anglaise de \.cursorrules\ et traduction de la section SDD ajoutée récemment.
+- Restauration de l'ancienne version anglaise de \.cursorrules\ et traduction de la section SDD ajoutï¿½e rï¿½cemment.
 - Suppression de la copie des prompts dans \setup-gef.js\.
-- Mise à jour du commentaire dans \setup-ci.js\.
+- Mise ï¿½ jour du commentaire dans \setup-ci.js\.
 
-**Leçon:** 
-L'audit continu (verify-self) est indispensable pour garantir que la documentation et le code racontent la même histoire. Il faut automatiser la détection des placeholders non résolus.
+**Leï¿½on:** 
+L'audit continu (verify-self) est indispensable pour garantir que la documentation et le code racontent la mï¿½me histoire. Il faut automatiser la dï¿½tection des placeholders non rï¿½solus.
