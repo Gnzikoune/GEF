@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://github.com/Gnzikoune/GEF/compare/v1.18.0...v1.19.0) (2026-08-16)
+
+
+### Features
+
+* ajouter Smart CLI avec assistant intelligent et mode offline garanti ([#89](https://github.com/Gnzikoune/GEF/issues/89)) ([#99](https://github.com/Gnzikoune/GEF/issues/99)) ([4f7a031](https://github.com/Gnzikoune/GEF/commit/4f7a031f4c09a3a11adffb1def7f32e6a207ac3c))
+
 ## [1.20.0](https://github.com/Gnzikoune/GEF/compare/v1.18.0...v1.20.0) (2026-08-16)
 
 
