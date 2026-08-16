@@ -111,6 +111,7 @@ GEF is designed to be used directly without needing to clone the repository, jus
 | `npx create-gef certify` | Certification System (check, generate) |
 | `npx create-gef extension` | Extension System (install, list, remove) |
 | `npx create-gef dora` | DORA Metrics (trends) |
+| `npx create-gef smart` | Smart CLI (analyze, chat, explain, suggest, audit) |
 | `npx create-gef --help` | Displays help and all available commands |
 | `npx create-gef --version` | Displays the current framework version |
 
@@ -194,6 +195,20 @@ The DORA Metrics system allows you to analyze key DevOps metrics according to De
 - **Mean Time to Restore (MTTR)**: Average time to restore service
 
 The `dora trends` command generates a 30-day analysis report with Mermaid charts under `docs/research/DORA_TRENDS.md`.
+
+For detailed examples, see [`docs/usage-guide.en.md`](./docs/usage-guide.en.md).
+
+### Smart CLI
+
+```bash
+npx create-gef smart analyze
+npx create-gef smart chat
+npx create-gef smart explain <rule>
+npx create-gef smart suggest
+npx create-gef smart audit
+```
+
+The Smart CLI is an intelligent assistant capable of analyzing project context, providing contextual recommendations, and automating governance tasks. It operates in offline mode (without external AI dependency) with responses based on ENGINEERING_PLAYBOOK.md.
 
 For detailed examples, see [`docs/usage-guide.en.md`](./docs/usage-guide.en.md).
 

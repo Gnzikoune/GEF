@@ -54,6 +54,14 @@ ${chalk.bold.cyan('DORA METRICS ENHANCEMENT')}
 
   ${chalk.green('npx create-gef dora trends')}            Génère les graphiques de tendance DORA sur 30 jours
 
+${chalk.bold.cyan('SMART CLI')}
+
+  ${chalk.green('npx create-gef smart analyze')}          Analyse le contexte du projet et le score de conformité
+  ${chalk.green('npx create-gef smart chat')}             Mode assistant conversationnel (offline)
+  ${chalk.green('npx create-gef smart explain <rule>')}    Explique une règle GEF spécifique
+  ${chalk.green('npx create-gef smart suggest')}           Suggère des améliorations basées sur l'analyse
+  ${chalk.green('npx create-gef smart audit')}             Audit en profondeur avec corrélation GEF/DORA
+
 ${chalk.bold.cyan('OPTIONS DU GÉNÉRATEUR INTERACTIF')}
 
   ${chalk.magenta('Workflow Git')}    GitHub Flow ${chalk.dim('(PRs, main verrouillé — Recommandé)')} | Trunk-Based Development

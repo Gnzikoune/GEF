@@ -2,7 +2,7 @@
 
 # Guardian Engineering Framework 🛡️ ⚙️
 
-![GEF Certified: Bronze](gef-certified-badge.svg)
+![GEF Certified: Silver](gef-certified-badge.svg)
 
 
 **Un framework d'ingénierie logicielle qui transforme des règles de travail en outils automatisés**
@@ -120,6 +120,7 @@ Le GEF est conçu pour être utilisé directement sans avoir besoin de cloner le
 | `npx create-gef certify` | Certification System (check, generate) |
 | `npx create-gef extension` | Extension System (install, list, remove) |
 | `npx create-gef dora` | DORA Metrics (trends) |
+| `npx create-gef smart` | Smart CLI (analyze, chat, explain, suggest, audit) |
 | `npx create-gef --help` | Affiche l'aide et toutes les commandes disponibles |
 | `npx create-gef --version` | Affiche la version actuelle du framework |
 
@@ -203,6 +204,20 @@ Le système DORA Metrics permet d'analyser les métriques DevOps clés selon les
 - **Mean Time to Restore (MTTR)** : Temps moyen pour restaurer le service
 
 La commande `dora trends` génère un rapport d'analyse sur 30 jours avec graphiques Mermaid sous `docs/research/DORA_TRENDS.md`.
+
+Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
+
+### Smart CLI
+
+```bash
+npx create-gef smart analyze
+npx create-gef smart chat
+npx create-gef smart explain <rule>
+npx create-gef smart suggest
+npx create-gef smart audit
+```
+
+Le Smart CLI est un assistant intelligent capable d'analyser le contexte du projet, de fournir des recommandations contextuelles et d'automatiser certaines tâches de gouvernance. Il fonctionne en mode offline (sans dépendance IA externe) avec des réponses basées sur ENGINEERING_PLAYBOOK.md.
 
 Pour des exemples détaillés, voir [`docs/usage-guide.fr.md`](./docs/usage-guide.fr.md).
 

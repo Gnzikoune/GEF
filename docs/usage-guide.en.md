@@ -97,6 +97,85 @@ DORA industry benchmarks are integrated:
 
 These metrics are also integrated in the Certification System for GEF/DORA correlation.
 
+## Smart CLI
+
+The GEF Smart CLI is an intelligent assistant capable of analyzing project context, providing contextual recommendations, and automating governance tasks. It operates in offline mode (without external AI dependency) with responses based on ENGINEERING_PLAYBOOK.md.
+
+### Available commands
+
+```bash
+# Analyze project context and compliance score
+npx create-gef smart analyze
+
+# Conversational assistant mode (offline)
+npx create-gef smart chat
+
+# Explain a specific GEF rule
+npx create-gef smart explain max-function-lines
+
+# Suggest improvements based on analysis
+npx create-gef smart suggest
+
+# Deep audit with GEF/DORA correlation
+npx create-gef smart audit
+```
+
+### Global options
+
+```bash
+# Verbose mode to display debugging details
+npx create-gef smart analyze --verbose
+
+# JSON output format for integration
+npx create-gef smart analyze --json
+```
+
+### Detailed features
+
+#### smart analyze
+Analyzes project context and generates a compliance report:
+- Detection of mandatory GEF files
+- Git configuration analysis (hooks, strategy)
+- CI/CD configuration analysis (GitHub Actions workflows)
+- Compliance score calculation (0-100%)
+- Status categorization (excellent/good/acceptable/poor)
+
+#### smart chat
+Interactive conversational mode:
+- Ask questions about GEF rules
+- Request explanations for compliance errors
+- Get configuration suggestions
+- Works entirely in offline mode
+
+#### smart explain <rule>
+Detailed explanation of a GEF rule:
+- References to specific sections of ENGINEERING_PLAYBOOK.md
+- Examples of compliant and non-compliant code
+- Explanation of the "why" behind each rule
+- Suggested fixes if violations are detected
+
+#### smart suggest
+Improvement suggestions based on code analysis:
+- Detection of Hard Limits violations
+- Suggestions prioritized by impact (critical/high/medium/low)
+- Automatic fixes when possible
+- Before/after code snippets
+
+#### smart audit
+Deep project audit:
+- Correlation between GEF compliance and DORA metrics
+- Identification of recurring violation patterns
+- Prioritized improvement plan with effort estimates
+- Detailed report with recommendations
+
+### Guaranteed offline mode
+
+The Smart CLI operates entirely in offline mode:
+- Responses based on ENGINEERING_PLAYBOOK.md
+- No external AI dependency required
+- Graceful fallback if optional AI API unavailable
+- Optimal performance (< 2s for analyze, < 10s for audit)
+
 ## Create an Extension
 
 GEF provides a template to easily create extensions. See [`templates/extension-template/README.md`](../templates/extension-template/README.md) for the complete guide.

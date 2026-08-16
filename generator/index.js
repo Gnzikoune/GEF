@@ -17,6 +17,7 @@ import { compliance } from './features/compliance.js';
 import { certify } from './features/certification.js';
 import { extension } from './features/extension.js';
 import { generateTrends } from './features/dora-trends.js';
+import { smart } from './features/smart-cli.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const GEF_DIR = path.resolve(path.dirname(__filename), '..');
@@ -30,9 +31,21 @@ async function handleDoraCommand(subCommand) {
   if (subCommand === 'trends') {
     return generateTrends();
   }
-  
+
   console.log(chalk.red(`❌ Commande DORA inconnue: ${subCommand}`));
   console.log(chalk.dim('Commandes disponibles: trends'));
+}
+
+/**
+ * Gère les commandes Smart CLI
+ */
+async function handleSmartCommand(action, target, options = {}) {
+  const smartOptions = {
+    target,
+    verbose: process.argv.includes('--verbose') || process.argv.includes('-v'),
+    json: process.argv.includes('--json')
+  };
+  return smart(action, smartOptions);
 }
 
 async function run() {
@@ -45,6 +58,7 @@ async function run() {
   if (arg === 'certify') return certify(process.argv[3]);
   if (arg === 'extension') return extension(process.argv[3], process.argv[4]);
   if (arg === 'dora') return handleDoraCommand(process.argv[3]);
+  if (arg === 'smart') return handleSmartCommand(process.argv[3], process.argv[4]);
 
   // Mode interactif par défaut
   console.log(chalk.cyan.bold('\n🚀 Bienvenue dans le GEF (Guardian Engineering Framework)\n'));
