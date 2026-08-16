@@ -2,9 +2,6 @@
 
 # Guardian Engineering Framework 🛡️ ⚙️
 
-![GEF Certified: Silver](gef-certified-badge.svg)
-
-
 **Un framework d'ingénierie logicielle qui transforme des règles de travail en outils automatisés**
 
 *Traçabilité · Sécurité · Qualité logicielle*
