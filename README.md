@@ -115,6 +115,7 @@ Le GEF est conçu pour être utilisé directement sans avoir besoin de cloner le
 | `npx create-gef doctor` | Audit la conformité d'un projet existant au GEF |
 | `npx create-gef compliance` | Compliance as Code (generate, validate, apply-hooks, apply-ci) |
 | `npx create-gef certify` | Certification System (check, generate) |
+| `npx create-gef extension` | Extension System (install, list, remove) |
 | `npx create-gef --help` | Affiche l'aide et toutes les commandes disponibles |
 | `npx create-gef --version` | Affiche la version actuelle du framework |
 
@@ -193,6 +194,27 @@ Le système génère :
 - Badge SVG pour README.md
 - Rapport public de certification (GEF_CERTIFICATION_REPORT.md)
 - Audit trail avec date et scores
+
+### Extension System
+
+Le GEF Extension System permet d'installer des packs de règles spécifiques par industrie, framework ou standard de sécurité. Les extensions disponibles incluent :
+
+- **Healthcare** : Règles HIPAA pour la protection des données de santé
+- **Finance** : Règles PCI-DSS pour la conformité financière
+- **Security** : OWASP étendu pour la sécurité renforcée
+
+```bash
+# Installer une extension
+npx create-gef extension install healthcare
+
+# Lister les extensions installées et disponibles
+npx create-gef extension list
+
+# Désinstaller une extension
+npx create-gef extension remove healthcare
+```
+
+Les extensions mettent à jour automatiquement le fichier `compliance.yml` avec les règles spécifiques du domaine.
 
 ### Afficher l'aide
 

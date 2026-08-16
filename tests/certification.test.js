@@ -35,15 +35,17 @@ describe('Certification Module Tests', () => {
       const compliancePath = path.join(process.cwd(), 'compliance.yml');
       
       let originalContent = null;
+      let fileExisted = false;
       if (fs.existsSync(compliancePath)) {
         originalContent = fs.readFileSync(compliancePath, 'utf8');
+        fileExisted = true;
         fs.unlinkSync(compliancePath);
       }
       
       const score = calculateDORAScore();
       assert.strictEqual(score, 50, 'Devrait retourner 50 par défaut');
       
-      if (originalContent) {
+      if (fileExisted && originalContent) {
         fs.writeFileSync(compliancePath, originalContent);
       }
     });
