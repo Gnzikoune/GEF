@@ -79,7 +79,20 @@ export function copyAndTemplateGefAssets(gefDir, strictness, language) {
   const playbookSrc = path.join(localeDir, 'ENGINEERING_PLAYBOOK.md');
   if (fs.existsSync(playbookSrc)) {
     const raw = fs.readFileSync(playbookSrc, 'utf8');
+    // Créer le dossier .gef s'il n'existe pas
+    if (!fs.existsSync('.gef')) {
+      fs.mkdirSync('.gef', { recursive: true });
+    }
     fs.writeFileSync('.gef/ENGINEERING_PLAYBOOK.md', applyTemplating(raw, strictness));
+  }
+
+  const contextSrc = path.join(localeDir, 'CONTEXT.md');
+  if (fs.existsSync(contextSrc)) {
+    const raw = fs.readFileSync(contextSrc, 'utf8');
+    if (!fs.existsSync('.gef')) {
+      fs.mkdirSync('.gef', { recursive: true });
+    }
+    fs.writeFileSync('.gef/CONTEXT.md', raw);
   }
 
 
