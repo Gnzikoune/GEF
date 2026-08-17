@@ -6,6 +6,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import fs from 'fs';
 import path from 'path';
+import yaml from 'js-yaml';
 import * as extension from '../generator/features/extension.js';
 
 describe('Extension Module Tests', () => {
@@ -42,21 +43,17 @@ describe('Extension Module Tests', () => {
     it('devrait mettre à jour compliance.yml existant', async () => {
       const compliancePath = path.join(process.cwd(), 'compliance.yml');
       
-      // Créer un compliance.yml de base
-      const baseConfig = {
-        version: '1.0.0',
-        gef: {
-          strictness: 'Standard',
-          hard_limits: {},
-          security: {},
-          git: {}
-        },
-        extensions: {
-          enabled: []
-        }
-      };
+      // Créer un compliance.yml de base en YAML
+      const baseConfig = `version: '1.0.0'
+gef:
+  strictness: Standard
+  hard_limits: {}
+  security: {}
+  git: {}
+extensions:
+  enabled: []`;
       
-      fs.writeFileSync(compliancePath, JSON.stringify(baseConfig), 'utf8');
+      fs.writeFileSync(compliancePath, baseConfig, 'utf8');
       
       const result = await extension.installExtension('finance');
       
@@ -90,18 +87,15 @@ describe('Extension Module Tests', () => {
     it('devrait lister les extensions installées', async () => {
       const compliancePath = path.join(process.cwd(), 'compliance.yml');
       
-      // Créer un compliance.yml avec une extension installée
-      const config = {
-        version: '1.0.0',
-        gef: {
-          strictness: 'Standard'
-        },
-        extensions: {
-          enabled: ['healthcare']
-        }
-      };
+      // Créer un compliance.yml avec une extension installée en YAML
+      const config = `version: '1.0.0'
+gef:
+  strictness: Standard
+extensions:
+  enabled:
+    - healthcare`;
       
-      fs.writeFileSync(compliancePath, JSON.stringify(config), 'utf8');
+      fs.writeFileSync(compliancePath, config, 'utf8');
       
       const result = await extension.listExtensions();
       

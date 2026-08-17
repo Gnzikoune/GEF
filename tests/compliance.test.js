@@ -86,7 +86,11 @@ describe('Compliance Module Tests', () => {
       let originalContent = null;
       if (fs.existsSync(compliancePath)) {
         originalContent = fs.readFileSync(compliancePath, 'utf8');
-        fs.unlinkSync(compliancePath);
+        try {
+          fs.unlinkSync(compliancePath);
+        } catch (err) {
+          // Ignorer si le fichier n'existe pas
+        }
       }
       
       const result = compliance.applyComplianceToHooks();
