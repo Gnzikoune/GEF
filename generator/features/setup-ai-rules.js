@@ -11,6 +11,7 @@ export function setupAiRules(gefDir, projectPath, strictness) {
 
   if (!fs.existsSync(sourceRulesPath)) {
     console.warn(chalk.yellow('Avertissement: .cursorrules source introuvable dans le répertoire GEF. Les règles IA ne seront pas copiées.'));
+    console.warn(chalk.dim(`Chemin recherché: ${sourceRulesPath}`));
     return;
   }
 
