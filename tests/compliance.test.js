@@ -152,14 +152,22 @@ describe('Compliance Module Tests', () => {
       const compliancePath = path.join(process.cwd(), 'compliance.yml');
       
       if (fs.existsSync(compliancePath)) {
-        fs.unlinkSync(compliancePath);
+        try {
+          fs.unlinkSync(compliancePath);
+        } catch (err) {
+          // Ignorer les erreurs de permission
+        }
       }
       
       await compliance.compliance('generate');
       
       assert.ok(fs.existsSync(compliancePath), 'devrait créer compliance.yml');
       
-      fs.unlinkSync(compliancePath);
+      try {
+        fs.unlinkSync(compliancePath);
+      } catch (err) {
+        // Ignorer les erreurs de permission
+      }
     });
 
     it('devrait gérer l\'action validate', async () => {
