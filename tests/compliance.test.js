@@ -137,13 +137,26 @@ describe('Compliance Module Tests', () => {
     it('devrait retourner true si compliance.yml existe', async () => {
       const compliancePath = path.join(process.cwd(), 'compliance.yml');
       
-      if (!fs.existsSync(compliancePath)) {
+      let originalContent = null;
+      let fileExisted = false;
+      if (fs.existsSync(compliancePath)) {
+        originalContent = fs.readFileSync(compliancePath, 'utf8');
+        fileExisted = true;
+      } else {
         compliance.generateComplianceTemplate('Standard');
       }
       
       const result = compliance.applyComplianceToCI();
       
       assert.strictEqual(result, true, 'devrait retourner true');
+      
+      if (!fileExisted) {
+        try {
+          fs.unlinkSync(compliancePath);
+        } catch (err) {
+          // Ignorer les erreurs de permission
+        }
+      }
     });
   });
 
@@ -171,14 +184,28 @@ describe('Compliance Module Tests', () => {
     });
 
     it('devrait gérer l\'action validate', async () => {
-      if (!fs.existsSync(path.join(process.cwd(), 'compliance.yml'))) {
+      const compliancePath = path.join(process.cwd(), 'compliance.yml');
+      let fileExisted = false;
+      
+      if (!fs.existsSync(compliancePath)) {
         compliance.generateComplianceTemplate('Standard');
+        fileExisted = false;
+      } else {
+        fileExisted = true;
       }
       
       // Ne devrait pas lancer d'erreur
       await compliance.compliance('validate');
       
       assert.ok(true, 'devrait s\'exécuter sans erreur');
+      
+      if (!fileExisted) {
+        try {
+          fs.unlinkSync(compliancePath);
+        } catch (err) {
+          // Ignorer les erreurs de permission
+        }
+      }
     });
 
     it('devrait gérer l\'action inconnue', async () => {
