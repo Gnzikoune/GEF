@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.20.1](https://github.com/Gnzikoune/GEF/compare/v1.20.0...v1.20.1) (2026-08-17)
+
+### Bug Fixes
+
+* corriger création du dossier .gef et chemin dans setupGef ([#89](https://github.com/Gnzikoune/GEF/issues/89))
+* ajouter vérification et création du dossier .gef avant écriture des fichiers
+* corriger dépendance projectPath dans setupGef pour copie correcte des fichiers
+
 ## [1.20.0](https://github.com/Gnzikoune/GEF/compare/v1.18.0...v1.20.0) (2026-08-16)
 
 
