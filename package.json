@@ -4,7 +4,7 @@
   "description": "Interactive project generator enforcing the Guardian Engineering Framework - Clean Code, Security, CI/CD, and AI-proof development standards",
   "type": "module",
   "bin": {
-    "create-gef": "./generator/index.js"
+    "create-gef": "generator/index.js"
   },
   "scripts": {
     "start": "node bin/create-gef.js",
@@ -65,7 +65,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gnzikoune/GEF.git"
+    "url": "git+https://github.com/Gnzikoune/GEF.git"
   },
   "homepage": "https://github.com/Gnzikoune/GEF#readme",
   "bugs": {
