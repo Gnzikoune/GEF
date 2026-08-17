@@ -5,6 +5,34 @@ Ce document consigne tous les problèmes critiques rencontrés, leurs causes pro
 
 ---
 
+## [Bug] Crash lors de la génération de projet avec package publié — Dossier .gef manquant
+**Date:** 2026-08-17
+**Symptôme:** 
+Exécution de `npx create-gef@latest test-gef-latest` échoue avec l'erreur :
+```
+ENOENT: no such file or directory, open 'C:\Users\hp\Desktop\Projets\Tests\test-gef-latest\.gef\ENGINEERING_PLAYBOOK.md'
+```
+La génération échoue dans `generator/features/setup-gef.js` lors de l'écriture des fichiers.
+
+**Cause Racine:** 
+La fonction `copyAndTemplateGefAssets()` dans `setup-gef.js` tentait d'écrire directement dans `.gef/ENGINEERING_PLAYBOOK.md` sans vérifier ni créer le dossier `.gef` au préalable. De plus, le chemin utilisé était relatif au processus courant plutôt qu'au chemin du projet cible (`projectPath`).
+
+**Résolution:** 
+- Ajout de vérification et création du dossier `.gef` avant écriture des fichiers dans `setupGef()`
+- Correction de la dépendance sur `projectPath` pour garantir que les chemins sont relatifs au projet généré, pas au framework
+- Ajout de tests YAML dans les tests d'extension et compliance (ces tests créaient des fichiers JSON au lieu de YAML)
+- Correction de la configuration `bin` dans `package.json` (chemin relatif sans `./` requis par npm)
+
+**Commits concernés:** 
+- `f1983e5 fix: corriger création du dossier .gef et chemin dans setupGef (#89)`
+- `14864a9 fix: corriger tests YAML compliance.yml (#89)`
+- `be228cd fix: corriger configuration bin package.json (#89)`
+
+**Leçon:** 
+Toute opération d'écriture de fichiers doit vérifier l'existence des dossiers parents. Les chemins dans le générateur doivent toujours être relatifs au projet cible (`projectPath`), jamais au dépôt framework. Les tests doivent utiliser le même format de fichier que le code de production (YAML vs JSON).
+
+---
+
 ## [Bug] Badge de certification cassé sur GitHub
 **Date:** 2026-08-16
 **Symptôme:** 
